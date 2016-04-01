@@ -21,22 +21,22 @@
 namespace PSX\Data\Tests;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
 use PSX\Cache\Pool;
 use PSX\Data\Configuration;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
 use PSX\Data\Writer;
-use PSX\Framework\Test\Environment;
 
 /**
- * SerializeTestAbstract
+ * SerializeTestCase
  *
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class SerializeTestAbstract extends \PHPUnit_Framework_TestCase
+abstract class SerializeTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * Checks whether the records can be serialzed to the content format and the
@@ -74,7 +74,9 @@ abstract class SerializeTestAbstract extends \PHPUnit_Framework_TestCase
             return $processor;
         }
 
-        $reader    = new AnnotationReader();
+        $reader = new SimpleAnnotationReader();
+        $reader->addNamespace('PSX\\Schema\\Parser\\Popo\\Annotation');
+
         $cache     = new Pool(new ArrayCache());
         $processor = new Processor(Configuration::createDefault($reader, $cache));
 
