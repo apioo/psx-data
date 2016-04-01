@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-namespace PSX\Data\Tests;
+namespace PSX\Data\Test;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
