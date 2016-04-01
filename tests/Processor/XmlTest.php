@@ -24,6 +24,7 @@ use PSX\Data\Payload;
 use PSX\Data\Tests\Processor\Model\Comment;
 use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Data\Tests\Processor\Model\Person;
+use PSX\Data\Tests\ProcessorTestCase;
 use PSX\Framework\Test\Environment;
 
 /**
@@ -33,7 +34,7 @@ use PSX\Framework\Test\Environment;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class XmlTest extends \PHPUnit_Framework_TestCase
+class XmlTest extends ProcessorTestCase
 {
     public function testReadWriteJson()
     {
@@ -63,8 +64,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
 </record>
 XML;
 
-        $dm    = Environment::getService('io');
-        $entry = $dm->read(Entry::class, Payload::xml($body));
+        $entry = $this->processor->read(Entry::class, Payload::xml($body));
 
         $this->assertEquals(1, $entry->getId());
         $this->assertEquals('foo', $entry->getTitle());

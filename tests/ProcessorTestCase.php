@@ -18,33 +18,42 @@
  * limitations under the License.
  */
 
-namespace PSX\Data\Writer;
+namespace PSX\Data\Tests;
 
-use PSX\Http\MediaType;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\SimpleAnnotationReader;
+use Doctrine\Common\Cache\ArrayCache;
+use PSX\Cache\Pool;
+use PSX\Data\Configuration;
+use PSX\Data\Payload;
+use PSX\Data\Processor;
+use PSX\Data\Record;
+use PSX\Data\Tests\Processor\Model\Entry;
+use PSX\Schema\Visitor\OutgoingVisitor;
+use PSX\Validate\Filter;
 
 /**
- * Text
+ * ProcessorTestCase
  *
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Text extends TemplateAbstract
+abstract class ProcessorTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected static $mime = 'text/plain';
+    /**
+     * @var \PSX\Data\Processor
+     */
+    protected $processor;
 
-    public function isContentTypeSupported(MediaType $contentType)
+    protected function setUp()
     {
-        return $contentType->getName() == self::$mime;
-    }
+        $reader = new SimpleAnnotationReader();
+        $reader->addNamespace('PSX\\Schema\\Parser\\Popo\\Annotation');
 
-    public function getContentType()
-    {
-        return self::$mime;
-    }
+        $cache     = new Pool(new ArrayCache());
+        $processor = new Processor(Configuration::createDefault($reader, $cache));
 
-    public function getFileExtension()
-    {
-        return 'txt';
+        $this->processor = $processor;
     }
 }

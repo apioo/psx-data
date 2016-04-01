@@ -20,7 +20,13 @@
 
 namespace PSX\Data\Tests\Processor;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Cache\ArrayCache;
+use PSX\Cache\Pool;
+use PSX\Data\Configuration;
 use PSX\Data\Payload;
+use PSX\Data\Processor;
+use PSX\Data\Tests\ProcessorTestCase;
 use PSX\Data\Transformer;
 use PSX\Framework\Test\Environment;
 use PSX\Model\Rss\Rss;
@@ -32,7 +38,7 @@ use PSX\Model\Rss\Rss;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RssTest extends \PHPUnit_Framework_TestCase
+class RssTest extends ProcessorTestCase
 {
     public function testReadRss()
     {
@@ -61,8 +67,7 @@ class RssTest extends \PHPUnit_Framework_TestCase
 </rss>
 XML;
 
-        $dm  = Environment::getService('io');
-        $rss = $dm->read(Rss::class, Payload::create($body, 'application/rss+xml'));
+        $rss = $this->processor->read(Rss::class, Payload::create($body, 'application/rss+xml'));
 
         $this->assertInstanceOf('PSX\Model\Rss\Rss', $rss);
         $this->assertEquals('Liftoff News', $rss->getTitle());
@@ -98,8 +103,7 @@ XML;
 </item>
 XML;
 
-        $dm   = Environment::getService('io');
-        $rss  = $dm->read(Rss::class, Payload::create($body, 'application/rss+xml'));
+        $rss  = $this->processor->read(Rss::class, Payload::create($body, 'application/rss+xml'));
         $item = $rss->getItem()[0];
 
         $this->assertInstanceOf('PSX\Model\Rss\Item', $item);

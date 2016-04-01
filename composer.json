@@ -20,10 +20,13 @@
     "psx/model": "dev-master",
     "psx/datetime": "dev-master",
     "psr/cache": "^1.0",
-    "doctrine/annotations": "^1.2"
+    "doctrine/annotations": "^1.2",
+
+    "psx/uri": "dev-master"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8"
+    "phpunit/phpunit": "^4.8",
+    "psx/cache": "dev-master"
   },
   "autoload": {
     "psr-4": {

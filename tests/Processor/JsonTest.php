@@ -20,10 +20,16 @@
 
 namespace PSX\Data\Tests\Processor;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Cache\ArrayCache;
+use PSX\Cache\Pool;
+use PSX\Data\Configuration;
 use PSX\Data\Payload;
+use PSX\Data\Processor;
 use PSX\Data\Tests\Processor\Model\Comment;
 use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Data\Tests\Processor\Model\Person;
+use PSX\Data\Tests\ProcessorTestCase;
 use PSX\Framework\Test\Environment;
 
 /**
@@ -33,7 +39,7 @@ use PSX\Framework\Test\Environment;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class JsonTest extends \PHPUnit_Framework_TestCase
+class JsonTest extends ProcessorTestCase
 {
     public function testReadWriteJson()
     {
@@ -60,8 +66,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 }
 JSON;
 
-        $dm    = Environment::getService('io');
-        $entry = $dm->read(Entry::class, Payload::json($body));
+        $entry = $this->processor->read(Entry::class, Payload::json($body));
 
         $this->assertEquals(1, $entry->getId());
         $this->assertEquals('foo', $entry->getTitle());
@@ -79,7 +84,7 @@ JSON;
         $this->assertEquals('foo', $entry->getComments()[0]->getTitle());
         $this->assertEquals('bar', $entry->getComments()[1]->getTitle());
 
-        $data = $dm->write(Payload::json($entry));
+        $data = $this->processor->write(Payload::json($entry));
 
         $this->assertJsonStringEqualsJsonString($body, $data);
     }

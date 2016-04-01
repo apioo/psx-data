@@ -20,10 +20,14 @@
 
 namespace PSX\Data\Tests;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Cache\ArrayCache;
+use PSX\Cache\Pool;
+use PSX\Data\Configuration;
 use PSX\Data\Payload;
+use PSX\Data\Processor;
 use PSX\Data\Record;
 use PSX\Data\Tests\Processor\Model\Entry;
-use PSX\Framework\Test\Environment;
 use PSX\Schema\Visitor\OutgoingVisitor;
 use PSX\Validate\Filter;
 
@@ -34,18 +38,8 @@ use PSX\Validate\Filter;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ProcessorTest extends \PHPUnit_Framework_TestCase
+class ProcessorTest extends ProcessorTestCase
 {
-    /**
-     * @var \PSX\Data\Processor
-     */
-    protected $processor;
-
-    protected function setUp()
-    {
-        $this->processor = Environment::getService('io');
-    }
-
     public function testRead()
     {
         $entry = $this->processor->read(Entry::class, Payload::json('{"title": "foo"}'));

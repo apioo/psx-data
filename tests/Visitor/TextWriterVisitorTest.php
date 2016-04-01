@@ -41,7 +41,7 @@ class TextWriterVisitorTest extends VisitorTestCase
         $graph = new GraphTraverser();
         $graph->traverse($this->getRecord(), $visitor);
 
-        Assert::assertStringMatchIgnoreWhitespace($this->getExpected(), $visitor->getOutput());
+        $this->assertEquals($this->getExpected(), $visitor->getOutput());
     }
 
     public function testTraverseTextLong()
@@ -61,7 +61,7 @@ Object(foo){
 
 TEXT;
 
-        Assert::assertStringMatchIgnoreWhitespace($except, $visitor->getOutput());
+        $this->assertEquals($except, $visitor->getOutput());
     }
 
     protected function getExpected()

@@ -20,8 +20,13 @@
 
 namespace PSX\Data\Tests\Processor;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Cache\ArrayCache;
+use PSX\Cache\Pool;
+use PSX\Data\Configuration;
 use PSX\Data\Payload;
-use PSX\Framework\Test\Environment;
+use PSX\Data\Processor;
+use PSX\Data\Tests\ProcessorTestCase;
 use PSX\Model\Atom\Atom;
 
 /**
@@ -31,7 +36,7 @@ use PSX\Model\Atom\Atom;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class AtomTest extends \PHPUnit_Framework_TestCase
+class AtomTest extends ProcessorTestCase
 {
     public function testReadAtom()
     {
@@ -73,8 +78,7 @@ class AtomTest extends \PHPUnit_Framework_TestCase
 </feed>
 XML;
 
-        $dm   = Environment::getService('io');
-        $atom = $dm->read(Atom::class, Payload::create($body, 'application/atom+xml'));
+        $atom = $this->processor->read(Atom::class, Payload::create($body, 'application/atom+xml'));
 
         $this->assertInstanceOf('PSX\Model\Atom\Atom', $atom);
         $this->assertEquals('dive into mark', $atom->getTitle());
@@ -198,8 +202,7 @@ HTML;
 </feed>
 XML;
 
-        $dm    = Environment::getService('io');
-        $atom  = $dm->read(Atom::class, Payload::create($body, 'application/atom+xml'));
+        $atom  = $this->processor->read(Atom::class, Payload::create($body, 'application/atom+xml'));
         $entry = $atom->getEntry()[0];
 
         $this->assertInstanceOf('PSX\Model\Atom\Entry', $entry);
@@ -243,8 +246,7 @@ XML;
 </entry>
 XML;
 
-        $dm    = Environment::getService('io');
-        $atom  = $dm->read(Atom::class, Payload::create($body, 'application/atom+xml'));
+        $atom  = $this->processor->read(Atom::class, Payload::create($body, 'application/atom+xml'));
         $entry = $atom->getEntry()[0];
 
         $this->assertInstanceOf('PSX\Model\Atom\Entry', $entry);

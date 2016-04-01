@@ -49,7 +49,6 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->writerFactory = new WriterFactory();
         $this->writerFactory->addWriter(new Writer\Json(), 48);
-        $this->writerFactory->addWriter(new Writer\Html($template, $reverseRouter), 40);
         $this->writerFactory->addWriter(new Writer\Atom(), 32);
         $this->writerFactory->addWriter(new Writer\Form(), 24);
         $this->writerFactory->addWriter(new Writer\Jsonp(), 16);
@@ -72,7 +71,6 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
     public function testGetWriterByContentType()
     {
         $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('application/json'));
-        $this->assertInstanceOf('PSX\Data\Writer\Html', $this->writerFactory->getWriterByContentType('text/html'));
         $this->assertInstanceOf('PSX\Data\Writer\Atom', $this->writerFactory->getWriterByContentType('application/atom+xml'));
         $this->assertInstanceOf('PSX\Data\Writer\Form', $this->writerFactory->getWriterByContentType('application/x-www-form-urlencoded'));
         $this->assertInstanceOf('PSX\Data\Writer\Jsonp', $this->writerFactory->getWriterByContentType('application/javascript'));
@@ -86,8 +84,6 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $contentType = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
 
-        $this->assertInstanceOf('PSX\Data\Writer\Html', $this->writerFactory->getWriterByContentType($contentType));
-        $this->assertInstanceOf('PSX\Data\Writer\Html', $this->writerFactory->getWriterByContentType($contentType, array('PSX\Data\Writer\Html')));
         $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType($contentType, array('PSX\Data\Writer\Xml')));
         $this->assertNull($this->writerFactory->getWriterByContentType($contentType, array('PSX\Data\Writer\Json')));
     }
@@ -103,7 +99,6 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
     public function testGetWriterByInstance()
     {
         $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Json'));
-        $this->assertInstanceOf('PSX\Data\Writer\Html', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Html'));
         $this->assertInstanceOf('PSX\Data\Writer\Atom', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Atom'));
         $this->assertInstanceOf('PSX\Data\Writer\Form', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Form'));
         $this->assertInstanceOf('PSX\Data\Writer\Jsonp', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Jsonp'));
@@ -142,9 +137,9 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->writerFactory->setContentNegotiation('image/*', WriterInterface::HTML);
 
-        $this->assertInstanceOf('PSX\Data\Writer\Html', $this->writerFactory->getWriterByContentType('image/webp,*/*;q=0.8'));
-        $this->assertInstanceOf('PSX\Data\Writer\Html', $this->writerFactory->getWriterByContentType('image/png, image/svg+xml, image/*;q=0.8, */*;q=0.5'));
-        $this->assertInstanceOf('PSX\Data\Writer\Html', $this->writerFactory->getWriterByContentType('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'));
+        $this->assertEquals(null, $this->writerFactory->getWriterByContentType('image/webp,*/*;q=0.8'));
+        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('image/png, image/svg+xml, image/*;q=0.8, */*;q=0.5'));
+        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'));
     }
 
     /**
@@ -160,8 +155,8 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
     public function browserAcceptHeaderProvider()
     {
         return [
-            ['text/html, application/xhtml+xml, */*', 'PSX\Data\Writer\Html'], // IE Version 11.0
-            ['text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'PSX\Data\Writer\Html'], // Chrome Version 43.0
+            ['text/html, application/xhtml+xml, */*', 'PSX\Data\Writer\Xml'], // IE Version 11.0
+            ['text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'PSX\Data\Writer\Xml'], // Chrome Version 43.0
         ];
     }
 }

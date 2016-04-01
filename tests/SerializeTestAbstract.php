@@ -20,7 +20,12 @@
 
 namespace PSX\Data\Tests;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Cache\ArrayCache;
+use PSX\Cache\Pool;
+use PSX\Data\Configuration;
 use PSX\Data\Payload;
+use PSX\Data\Processor;
 use PSX\Data\Writer;
 use PSX\Framework\Test\Environment;
 
@@ -43,21 +48,36 @@ abstract class SerializeTestAbstract extends \PHPUnit_Framework_TestCase
     protected function assertRecordEqualsContent($record, $content)
     {
         // serialize the record
-        $response = Environment::getService('io')->write(Payload::json($record));
+        $response = $this->getProcessor()->write(Payload::json($record));
 
         // check whether the response is the same as the content
         $this->assertJsonStringEqualsJsonString($content, $response);
 
         // create a new record of the same class and import the content
-        $newRecord = Environment::getService('io')->read(get_class($record), Payload::json($content));
+        $newRecord = $this->getProcessor()->read(get_class($record), Payload::json($content));
 
         // get response
-        $newResponse = Environment::getService('io')->write(Payload::json($newRecord));
+        $newResponse = $this->getProcessor()->write(Payload::json($newRecord));
 
         // check whether the newResponse is the same as the content
         $this->assertJsonStringEqualsJsonString($content, $newResponse);
 
         // check whether the newResponse is the same as the response
         $this->assertJsonStringEqualsJsonString($response, $newResponse);
+    }
+
+    protected function getProcessor()
+    {
+        static $processor;
+
+        if ($processor) {
+            return $processor;
+        }
+
+        $reader    = new AnnotationReader();
+        $cache     = new Pool(new ArrayCache());
+        $processor = new Processor(Configuration::createDefault($reader, $cache));
+
+        return $processor;
     }
 }
