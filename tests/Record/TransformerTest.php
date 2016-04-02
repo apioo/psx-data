@@ -20,7 +20,7 @@
 
 namespace PSX\Data\Tests\Record;
 
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Data\Record\Transformer;
 
 /**
@@ -42,7 +42,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
         $expect = Record::fromArray(['id' => 1, 'foo' => 'bar']);
 
-        $this->assertInstanceOf('PSX\Data\RecordInterface', $result);
+        $this->assertInstanceOf('PSX\Record\RecordInterface', $result);
         $this->assertEquals($expect, $result);
     }
 

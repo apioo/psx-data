@@ -21,7 +21,7 @@
 namespace PSX\Data\Tests;
 
 use PSX\Data\Accessor;
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Validate\Filter;
 use PSX\Validate\Validate;
 

@@ -20,7 +20,7 @@
 
 namespace PSX\Data\Tests\Writer;
 
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Data\Writer\Atom;
 use PSX\DateTime\DateTime;
 use PSX\Http\MediaType;

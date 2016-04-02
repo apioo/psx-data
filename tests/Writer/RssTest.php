@@ -21,7 +21,7 @@
 namespace PSX\Data\Tests\Writer;
 
 use DateTime;
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Data\Writer\Rss;
 use PSX\Http\MediaType;
 use PSX\Model\Rss\Item;

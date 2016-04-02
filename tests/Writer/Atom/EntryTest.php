@@ -21,8 +21,7 @@
 namespace PSX\Data\Tests\Writer\Atom;
 
 use DateTime;
-use PSX\Atom\Writer;
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Data\Writer\Atom\Entry;
 
 /**

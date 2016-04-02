@@ -27,7 +27,7 @@ use PSX\Cache\Pool;
 use PSX\Data\Configuration;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Schema\Visitor\OutgoingVisitor;
 use PSX\Validate\Filter;

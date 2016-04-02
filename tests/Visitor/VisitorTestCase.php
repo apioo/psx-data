@@ -21,7 +21,7 @@
 namespace PSX\Data\Tests\Visitor;
 
 use DateTime;
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Uri\Uri;
 
 /**

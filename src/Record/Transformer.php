@@ -21,7 +21,7 @@
 namespace PSX\Data\Record;
 
 use PSX\Data\GraphTraverser;
-use PSX\Data\RecordInterface;
+use PSX\Record\RecordInterface;
 use PSX\Data\Visitor\ArraySerializeVisitor;
 use PSX\Data\Visitor\RecordSerializeVisitor;
 use PSX\Data\Visitor\StdClassSerializeVisitor;
@@ -39,8 +39,8 @@ class Transformer
      * Transforms an arbitrary data structure into a record graph
      *
      * @param mixed $data
-     * @param \PSX\Data\RecordInterface $root
-     * @return \PSX\Data\RecordInterface
+     * @param \PSX\Record\RecordInterface $root
+     * @return \PSX\Record\RecordInterface
      */
     public static function toRecord($data, RecordInterface $root = null)
     {

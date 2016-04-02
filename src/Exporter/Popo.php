@@ -24,8 +24,8 @@ use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
 use PSX\Data\ExporterInterface;
 use PSX\Data\GraphTraverser;
-use PSX\Data\Record;
-use PSX\Data\RecordInterface;
+use PSX\Record\Record;
+use PSX\Record\RecordInterface;
 use PSX\Schema\Parser\Popo\ObjectReader;
 use ReflectionObject;
 

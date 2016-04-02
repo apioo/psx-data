@@ -20,8 +20,8 @@
 
 namespace PSX\Data\Visitor;
 
-use PSX\Data\Record;
-use PSX\Data\RecordInterface;
+use PSX\Record\Record;
+use PSX\Record\RecordInterface;
 
 /**
  * Creates a new object tree using a record as object representation

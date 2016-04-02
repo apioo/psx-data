@@ -26,7 +26,7 @@ use PSX\Cache\Pool;
 use PSX\Data\Configuration;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
-use PSX\Data\Record;
+use PSX\Record\Record;
 use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Schema\Visitor\OutgoingVisitor;
 use PSX\Validate\Filter;
@@ -73,7 +73,7 @@ class ProcessorTest extends ProcessorTestCase
 
         $data = $this->processor->transform($entry);
 
-        $this->assertInstanceOf('PSX\Data\Record', $data);
+        $this->assertInstanceOf('PSX\Record\Record', $data);
         $this->assertEquals('foo', $data->title);
     }
 
@@ -102,7 +102,7 @@ class ProcessorTest extends ProcessorTestCase
         // the outgoing visitor silently removes unknown properties
         $data = $this->processor->assimilate($data, $schema, null, null, new OutgoingVisitor());
 
-        $this->assertInstanceOf('PSX\Data\Record', $data);
+        $this->assertInstanceOf('PSX\Record\Record', $data);
         $this->assertEquals('foo', $data->title);
         $this->assertEquals(['title' => 'foo'], $data->getProperties());
     }
