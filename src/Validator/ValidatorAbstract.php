@@ -24,6 +24,7 @@ use PSX\Data\GraphTraverser;
 use PSX\Data\Visitor\ValidationVisitor;
 use PSX\Validate\Validate;
 use PSX\Validate\ValidationException;
+use PSX\Validate\ValidatorInterface;
 
 /**
  * ValidatorAbstract
@@ -43,7 +44,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
 
     /**
      * @param \PSX\Validate\Validate $validate
-     * @param \PSX\Validate\Property[] $fields
+     * @param \PSX\Data\Validator\Property[] $fields
      * @param integer $flag
      */
     public function __construct(Validate $validate, array $fields = null, $flag = self::THROW_ERRORS)
@@ -54,7 +55,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
-     * @param \PSX\Validate\Property[] $fields
+     * @param \PSX\Data\Validator\Property[] $fields
      */
     public function setFields(array $fields)
     {
@@ -62,7 +63,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
     }
 
     /**
-     * @return \PSX\Validate\Property[]
+     * @return \PSX\Data\Validator\Property[]
      */
     public function getFields()
     {
@@ -153,7 +154,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
      * Returns the validated value or throws an exception. If the flag
      * COLLECT_ERRORS was set null gets returned on an invalid value
      *
-     * @param \PSX\Validate\Property $property
+     * @param \PSX\Data\Validator\Property $property
      * @param mixed $value
      * @param string $key
      * @return mixed

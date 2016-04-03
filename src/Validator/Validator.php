@@ -21,6 +21,7 @@
 namespace PSX\Data\Validator;
 
 use PSX\Validate\Validate;
+use PSX\Validate\ValidatorInterface;
 
 /**
  * Validator

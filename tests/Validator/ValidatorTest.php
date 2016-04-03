@@ -20,11 +20,11 @@
 
 namespace PSX\Data\Tests\Validator;
 
+use PSX\Data\Validator\Property;
+use PSX\Data\Validator\Validator;
 use PSX\Validate\Filter;
-use PSX\Validate\Property;
 use PSX\Validate\Validate;
 use PSX\Validate\ValidationException;
-use PSX\Validate\Validator;
 use PSX\Validate\ValidatorInterface;
 
 /**
