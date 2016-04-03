@@ -25,6 +25,7 @@ use InvalidArgumentException;
 use JsonSerializable;
 use PSX\Data\Util\CurveArray;
 use Traversable;
+use PSX\Record\RecordInterface;
 
 /**
  * GraphTraverser

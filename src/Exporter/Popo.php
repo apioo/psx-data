@@ -126,6 +126,8 @@ class Popo implements ExporterInterface
 
     protected function exportValue($value)
     {
+        $value = GraphTraverser::reveal($value);
+
         if ($value === null) {
             return null;
         } elseif (is_scalar($value) || $value instanceof \DateTime || $value instanceof \DateInterval) {
@@ -135,7 +137,7 @@ class Popo implements ExporterInterface
         } elseif (GraphTraverser::isArray($value)) {
             return $this->exportArray($value);
         } elseif (is_object($value)) {
-            return $this->exportObject(GraphTraverser::reveal($value));
+            return $this->exportObject($value);
         } else {
             throw new InvalidArgumentException('Invalid data ' . gettype($value) . ' in model object');
         }
