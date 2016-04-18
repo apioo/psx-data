@@ -21,8 +21,6 @@
 namespace PSX\Data\Tests;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Cache\ArrayCache;
-use PSX\Cache\Pool;
 use PSX\Data\Configuration;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
@@ -86,7 +84,10 @@ class ProcessorTest extends ProcessorTestCase
         $data->title = 'foo';
         $data->bar = 'foo';
 
-        $schema = $this->processor->getSchema(Entry::class);
+        $schema = $this->processor
+            ->getConfiguration()
+            ->getSchemaManager()
+            ->getSchema(Entry::class);
 
         $this->processor->assimilate($data, $schema);
     }
@@ -97,7 +98,10 @@ class ProcessorTest extends ProcessorTestCase
         $data->title = 'foo';
         $data->bar = 'foo';
 
-        $schema = $this->processor->getSchema(Entry::class);
+        $schema = $this->processor
+            ->getConfiguration()
+            ->getSchemaManager()
+            ->getSchema(Entry::class);
 
         // the outgoing visitor silently removes unknown properties
         $data = $this->processor->assimilate($data, $schema, null, null, new OutgoingVisitor());

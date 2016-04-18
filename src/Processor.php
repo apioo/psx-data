@@ -91,7 +91,7 @@ class Processor
      * explicit specified. Then we validate the data according to the provided
      * schema
      *
-     * @param string|\PSX\Schema\SchemaInterface $source
+     * @param string $source
      * @param \PSX\Data\Payload $payload
      * @return mixed
      * @throws \PSX\Data\InvalidDataException
@@ -101,7 +101,7 @@ class Processor
     {
         return $this->assimilate(
             $this->parse($payload),
-            $this->getSchema($schema),
+            $this->config->getSchemaManager()->getSchema($schema),
             $payload->getValidator(),
             $payload->getRevealer()
         );
@@ -139,7 +139,7 @@ class Processor
      * gets adjusted to the format
      *
      * @param \PSX\Data\Payload $payload
-     * @param string|\PSX\Schema\SchemaInterface|null $schema
+     * @param string|null $schema
      * @return string
      * @throws \PSX\Data\InvalidDataException
      * @throws \PSX\Http\Exception\NotAcceptableException
@@ -157,7 +157,7 @@ class Processor
         if ($schema !== null) {
             $data = $this->assimilate(
                 $data,
-                $this->getSchema($schema),
+                $this->config->getSchemaManager()->getSchema($schema),
                 $payload->getValidator(),
                 $payload->getRevealer(),
                 new OutgoingVisitor()
@@ -265,42 +265,6 @@ class Processor
         }
 
         return $writer;
-    }
-
-    /**
-     * Returns a schema based on a class name
-     *
-     * @param string $schema
-     * @return \PSX\Schema\Schema|SchemaInterface
-     * @throws \PSX\Data\InvalidDataException
-     */
-    public function getSchema($schema)
-    {
-        if (is_string($schema)) {
-            $key  = __CLASS__ . $schema;
-            $item = null;
-
-            if (!$this->config->getDebug()) {
-                $item = $this->config->getCache()->getItem($key);
-
-                if ($item->isHit()) {
-                    return $item->get();
-                }
-            }
-
-            $schema = $this->parser->parse($schema);
-
-            if (!$this->config->getDebug()) {
-                $item->set($schema);
-                $this->config->getCache()->save($item);
-            }
-
-            return $schema;
-        } elseif ($schema instanceof SchemaInterface) {
-            return $schema;
-        } else {
-            throw new InvalidDataException('Schema must be either a string or \PSX\Schema\SchemaInterface');
-        }
     }
 
     protected function getDefaultTransformer($contentType)

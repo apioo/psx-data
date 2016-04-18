@@ -21,7 +21,7 @@
 namespace PSX\Data;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
-use Psr\Cache\CacheItemPoolInterface;
+use PSX\Schema\SchemaManagerInterface;
 
 /**
  * Configuration
@@ -38,14 +38,9 @@ class Configuration
     protected $annotationReader;
 
     /**
-     * @var \Psr\Cache\CacheItemPoolInterface
+     * @var \PSX\Schema\SchemaManagerInterface
      */
-    protected $cache;
-
-    /**
-     * @var boolean
-     */
-    protected $debug;
+    protected $schemaManager;
 
     /**
      * @var string
@@ -62,11 +57,10 @@ class Configuration
      */
     protected $writerFactory;
 
-    public function __construct(AnnotationReader $reader, CacheItemPoolInterface $cache, $debug, $namespace)
+    public function __construct(AnnotationReader $reader, SchemaManagerInterface $schemaManager, $namespace)
     {
         $this->annotationReader = $reader;
-        $this->cache            = $cache;
-        $this->debug            = $debug;
+        $this->schemaManager    = $schemaManager;
         $this->namespace        = $namespace;
         $this->readerFactory    = new ReaderFactory();
         $this->writerFactory    = new WriterFactory();
@@ -81,19 +75,11 @@ class Configuration
     }
 
     /**
-     * @return \Psr\Cache\CacheItemPoolInterface
+     * @return \PSX\Schema\SchemaManagerInterface
      */
-    public function getCache()
+    public function getSchemaManager()
     {
-        return $this->cache;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getDebug()
-    {
-        return $this->debug;
+        return $this->schemaManager;
     }
 
     /**
@@ -120,10 +106,10 @@ class Configuration
         return $this->writerFactory;
     }
 
-    public static function createDefault(AnnotationReader $reader, CacheItemPoolInterface $cache, $debug = false, $namespace = null)
+    public static function createDefault(AnnotationReader $reader, SchemaManagerInterface $schemaManager, $namespace = null)
     {
         $soapNamespace = $namespace !== null ? $namespace : 'http://phpsx.org/2014/data';
-        $configuration = new self($reader, $cache, $debug, $namespace);
+        $configuration = new self($reader, $schemaManager, $namespace);
 
         $configuration->getReaderFactory()->addReader(new Reader\Json(), 16);
         $configuration->getReaderFactory()->addReader(new Reader\Form(), 8);

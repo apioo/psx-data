@@ -28,6 +28,7 @@ use PSX\Data\Configuration;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
 use PSX\Data\Writer;
+use PSX\Schema\SchemaManager;
 
 /**
  * SerializeTestCase
@@ -77,8 +78,7 @@ abstract class SerializeTestCase extends \PHPUnit_Framework_TestCase
         $reader = new SimpleAnnotationReader();
         $reader->addNamespace('PSX\\Schema\\Parser\\Popo\\Annotation');
 
-        $cache     = new Pool(new ArrayCache());
-        $processor = new Processor(Configuration::createDefault($reader, $cache));
+        $processor = new Processor(Configuration::createDefault($reader, new SchemaManager($reader)));
 
         return $processor;
     }
