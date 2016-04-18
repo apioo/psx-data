@@ -101,7 +101,7 @@ class Processor
     {
         return $this->assimilate(
             $this->parse($payload),
-            $this->config->getSchemaManager()->getSchema($schema),
+            $this->getSchema($schema),
             $payload->getValidator(),
             $payload->getRevealer()
         );
@@ -157,7 +157,7 @@ class Processor
         if ($schema !== null) {
             $data = $this->assimilate(
                 $data,
-                $this->config->getSchemaManager()->getSchema($schema),
+                $this->getSchema($schema),
                 $payload->getValidator(),
                 $payload->getRevealer(),
                 new OutgoingVisitor()
@@ -286,5 +286,16 @@ class Processor
         }
 
         return null;
+    }
+
+    protected function getSchema($schema)
+    {
+        if (is_string($schema)) {
+            return $this->config->getSchemaManager()->getSchema($schema);
+        } elseif ($schema instanceof SchemaInterface) {
+            return $schema;
+        } else {
+            throw new InvalidDataException('Schema must be either a string or \PSX\Schema\SchemaInterface');
+        }
     }
 }
