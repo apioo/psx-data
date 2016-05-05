@@ -109,7 +109,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
         $result = array();
 
         foreach ($fields as $property) {
-            if (!in_array($property->getName(), $this->visited)) {
+            if ($property->isRequired() && !in_array($property->getName(), $this->visited)) {
                 $result[] = $property->getName();
             }
         }
