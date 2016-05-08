@@ -13,13 +13,13 @@
   ],
   "require": {
     "php": ">=5.5",
-    "psx/datetime": "^0.1",
-    "psx/http": "^0.1",
-    "psx/json": "^0.1",
-    "psx/model": "^0.1",
-    "psx/record": "^0.1",
-    "psx/schema": "^0.1",
-    "psx/validate": "^0.1",
+    "psx/datetime": "^1.0",
+    "psx/http": "^1.0",
+    "psx/json": "^1.0",
+    "psx/model": "^1.0",
+    "psx/record": "^1.0",
+    "psx/schema": "^1.0",
+    "psx/validate": "^1.0",
     "doctrine/annotations": "^1.2"
   },
   "require-dev": {
