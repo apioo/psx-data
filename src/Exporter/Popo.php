@@ -130,7 +130,7 @@ class Popo implements ExporterInterface
 
         if ($value === null) {
             return null;
-        } elseif (is_scalar($value) || $value instanceof \DateTime || $value instanceof \DateInterval) {
+        } elseif (is_scalar($value) || is_resource($value) || $value instanceof \DateTime || $value instanceof \DateInterval) {
             return $value;
         } elseif (GraphTraverser::isObject($value)) {
             return $this->exportMap($value);
