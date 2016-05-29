@@ -57,13 +57,13 @@ class Configuration
      */
     protected $writerFactory;
 
-    public function __construct(AnnotationReader $reader, SchemaManagerInterface $schemaManager, $namespace)
+    public function __construct(AnnotationReader $reader, SchemaManagerInterface $schemaManager, $namespace, ReaderFactory $readerFactory, WriterFactory $writerFactory)
     {
         $this->annotationReader = $reader;
         $this->schemaManager    = $schemaManager;
         $this->namespace        = $namespace;
-        $this->readerFactory    = new ReaderFactory();
-        $this->writerFactory    = new WriterFactory();
+        $this->readerFactory    = $readerFactory;
+        $this->writerFactory    = $writerFactory;
     }
 
     /**
@@ -91,11 +91,27 @@ class Configuration
     }
 
     /**
+     * @param \PSX\Data\ReaderFactory $readerFactory
+     */
+    public function setReaderFactory(ReaderFactory $readerFactory)
+    {
+        $this->readerFactory = $readerFactory;
+    }
+
+    /**
      * @return \PSX\Data\ReaderFactory
      */
     public function getReaderFactory()
     {
         return $this->readerFactory;
+    }
+
+    /**
+     * @param \PSX\Data\WriterFactory $writerFactory
+     */
+    public function setWriterFactory(WriterFactory $writerFactory)
+    {
+        $this->writerFactory = $writerFactory;
     }
 
     /**
@@ -108,21 +124,36 @@ class Configuration
 
     public static function createDefault(AnnotationReader $reader, SchemaManagerInterface $schemaManager, $namespace = null)
     {
-        $soapNamespace = $namespace !== null ? $namespace : 'http://phpsx.org/2014/data';
-        $configuration = new self($reader, $schemaManager, $namespace);
+        return new self(
+            $reader, 
+            $schemaManager, 
+            $namespace,
+            self::createDefaultReaderFactory(),
+            self::createDefaultWriterFactory($namespace)
+        );
+    }
 
-        $configuration->getReaderFactory()->addReader(new Reader\Json(), 16);
-        $configuration->getReaderFactory()->addReader(new Reader\Form(), 8);
-        $configuration->getReaderFactory()->addReader(new Reader\Xml(), 0);
+    protected static function createDefaultReaderFactory()
+    {
+        $readerFactory = new ReaderFactory();
+        $readerFactory->addReader(new Reader\Json(), 16);
+        $readerFactory->addReader(new Reader\Form(), 8);
+        $readerFactory->addReader(new Reader\Xml(), 0);
 
-        $configuration->getWriterFactory()->addWriter(new Writer\Json(), 48);
-        $configuration->getWriterFactory()->addWriter(new Writer\Atom(), 32);
-        $configuration->getWriterFactory()->addWriter(new Writer\Form(), 24);
-        $configuration->getWriterFactory()->addWriter(new Writer\Jsonp(), 16);
-        $configuration->getWriterFactory()->addWriter(new Writer\Jsonx(), 15);
-        $configuration->getWriterFactory()->addWriter(new Writer\Soap($soapNamespace), 8);
-        $configuration->getWriterFactory()->addWriter(new Writer\Xml(), 0);
+        return $readerFactory;
+    }
 
-        return $configuration;
+    protected static function createDefaultWriterFactory($soapNamespace = null)
+    {
+        $writerFactory = new WriterFactory();
+        $writerFactory->addWriter(new Writer\Json(), 48);
+        $writerFactory->addWriter(new Writer\Atom(), 32);
+        $writerFactory->addWriter(new Writer\Form(), 24);
+        $writerFactory->addWriter(new Writer\Jsonp(), 16);
+        $writerFactory->addWriter(new Writer\Jsonx(), 15);
+        $writerFactory->addWriter(new Writer\Soap(!empty($soapNamespace) ? $soapNamespace : 'http://phpsx.org/2014/data'), 8);
+        $writerFactory->addWriter(new Writer\Xml(), 0);
+
+        return $writerFactory;
     }
 }
