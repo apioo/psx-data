@@ -186,14 +186,14 @@ abstract class ValidatorAbstract implements ValidatorInterface
      * Returns the property defined by the name
      *
      * @param string $name
-     * @return \PSX\Validate\Property|null
+     * @return \PSX\Data\Validator\Property|null
      */
     protected function getProperty($name)
     {
         $name = ltrim($name, '/');
 
         foreach ($this->fields as $property) {
-            if (preg_match('#^' . $name . '$#', ltrim($property->getName(), '/'))) {
+            if (preg_match('#^' . ltrim($property->getName(), '/') . '$#', $name)) {
                 return $property;
             }
         }
