@@ -99,7 +99,7 @@ class WriterFactory
     public function getWriterByInstance($className)
     {
         foreach ($this->writers as $writer) {
-            if ($writer instanceof $className) {
+            if (get_class($writer) === $className) {
                 return $writer;
             }
         }

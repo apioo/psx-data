@@ -40,13 +40,6 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $template = $this->getMockBuilder('PSX\Framework\Template\TemplateInterface')
-            ->getMock();
-
-        $reverseRouter = $this->getMockBuilder('PSX\Framework\Loader\ReverseRouter')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->writerFactory = new WriterFactory();
         $this->writerFactory->addWriter(new Writer\Json(), 48);
         $this->writerFactory->addWriter(new Writer\Atom(), 32);
@@ -135,11 +128,14 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testContentNegotiation()
     {
-        $this->writerFactory->setContentNegotiation('image/*', WriterInterface::HTML);
+        $this->writerFactory->setContentNegotiation('image/*', WriterInterface::JSON);
 
-        $this->assertEquals(null, $this->writerFactory->getWriterByContentType('image/webp,*/*;q=0.8'));
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('image/png, image/svg+xml, image/*;q=0.8, */*;q=0.5'));
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'));
+        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('image/webp,*/*;q=0.8'));
+        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('image/webp'));
+        $this->assertNull($this->writerFactory->getWriterByContentType('text/plain'));
+        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('image/png, image/svg+xml, image/*;q=0.8, */*;q=0.5'));
+        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'));
+        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'));
     }
 
     /**
@@ -157,6 +153,7 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
         return [
             ['text/html, application/xhtml+xml, */*', 'PSX\Data\Writer\Xml'], // IE Version 11.0
             ['text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'PSX\Data\Writer\Xml'], // Chrome Version 43.0
+            ['text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'PSX\Data\Writer\Xml'], // Firefox Version 40.0.3
         ];
     }
 }

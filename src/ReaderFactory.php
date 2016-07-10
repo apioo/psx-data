@@ -99,7 +99,7 @@ class ReaderFactory
     public function getReaderByInstance($className)
     {
         foreach ($this->readers as $reader) {
-            if ($reader instanceof $className) {
+            if (get_class($reader) === $className) {
                 return $reader;
             }
         }

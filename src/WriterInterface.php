@@ -33,14 +33,11 @@ interface WriterInterface
 {
     const ATOM  = 'PSX\Data\Writer\Atom';
     const FORM  = 'PSX\Data\Writer\Form';
-    const HTML  = 'PSX\Data\Writer\Html';
     const JSON  = 'PSX\Data\Writer\Json';
     const JSONP = 'PSX\Data\Writer\Jsonp';
     const JSONX = 'PSX\Data\Writer\Jsonx';
     const RSS   = 'PSX\Data\Writer\Rss';
     const SOAP  = 'PSX\Data\Writer\Soap';
-    const SVG   = 'PSX\Data\Writer\Svg';
-    const TEXT  = 'PSX\Data\Writer\Text';
     const XML   = 'PSX\Data\Writer\Xml';
 
     /**
