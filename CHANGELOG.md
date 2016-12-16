@@ -1,4 +1,10 @@
 
+### 2.0.0 (2016-12-16)
+
+* Upgrade psx schema to 2.0 and adjusted code accordingly
+* Removed assimilate method from processor
+* Moved model tests to psx model
+
 ### 1.0.1 (2016-07-10)
 
 * Exporter fixed handling with resource values 
