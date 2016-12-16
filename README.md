@@ -69,17 +69,19 @@ class News
     protected $title;
 
     /**
-     * @Type("Acme\Author")
+     * @Ref("Acme\Author")
      */
     protected $author;
 
     /**
-     * @Type("array<Acme\Comment>")
+     * @Type("array")
+     * @Items(@Ref("Acme\Comment"))
      */
     protected $comments;
 
     /**
-     * @Type("datetime")
+     * @Type("string")
+     * @Format("date-time")
      */
     protected $date;
 
@@ -114,7 +116,7 @@ class Comment
     protected $id;
 
     /**
-     * @Type("Acme\Author")
+     * @Ref("Acme\Author")
      */
     protected $author;
 
