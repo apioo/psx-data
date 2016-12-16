@@ -25,7 +25,6 @@ use PSX\Data\Tests\Processor\Model\Comment;
 use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Data\Tests\Processor\Model\Person;
 use PSX\Data\Tests\ProcessorTestCase;
-use PSX\Framework\Test\Environment;
 
 /**
  * XmlTest
@@ -41,18 +40,18 @@ class XmlTest extends ProcessorTestCase
         $body = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <record>
-	<id>1</id>
-	<title>foo</title>
-	<active>true</active>
-	<count>12</count>
-	<rating>4.8</rating>
-	<date>2014-07-29T23:37:00Z</date>
-	<person>
-	    <name>foo</name>
-	    <uri>http://foo.com</uri>
+    <id>1</id>
+    <title>foo</title>
+    <active>true</active>
+    <count>12</count>
+    <rating>4.8</rating>
+    <date>2014-07-29T23:37:00Z</date>
+    <person>
+        <name>foo</name>
+        <uri>http://foo.com</uri>
     </person>
-	<tags>foo</tags>
-	<tags>bar</tags>
+    <tags>foo</tags>
+    <tags>bar</tags>
     <comments>
         <title>foo</title>
         <date>2014-07-29T23:37:00Z</date>

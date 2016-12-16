@@ -28,7 +28,6 @@ use PSX\Data\Tests\Processor\Model\Comment;
 use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Data\Tests\Processor\Model\Person;
 use PSX\Data\Tests\ProcessorTestCase;
-use PSX\Framework\Test\Environment;
 
 /**
  * JsonTest
@@ -43,24 +42,24 @@ class JsonTest extends ProcessorTestCase
     {
         $body = <<<JSON
 {
-	"id": "1",
-	"title": "foo",
-	"active": true,
-	"count": 12,
-	"rating": 4.8,
-	"date": "2014-07-29T23:37:00Z",
-	"person": {
-	    "name": "foo",
-	    "uri": "http://foo.com"
-	},
-	"tags": ["foo", "bar"],
-	"comments": [{
-	    "title": "foo",
-	    "date": "2014-07-29T23:37:00Z"
-	},{
-	    "title": "bar",
-	    "date": "2014-07-29T23:37:00Z"
-	}]
+    "id": 1,
+    "title": "foo",
+    "active": true,
+    "count": 12,
+    "rating": 4.8,
+    "date": "2014-07-29T23:37:00Z",
+    "person": {
+        "name": "foo",
+        "uri": "http://foo.com"
+    },
+    "tags": ["foo", "bar"],
+    "comments": [{
+        "title": "foo",
+        "date": "2014-07-29T23:37:00Z"
+    },{
+        "title": "bar",
+        "date": "2014-07-29T23:37:00Z"
+    }]
 }
 JSON;
 

@@ -79,7 +79,7 @@ class XmlArray implements TransformerInterface
                     // idea howto handle the data
                     $value = $node;
                 } else {
-                    $value = $node->textContent;
+                    $value = $this->parseValue($node->textContent);
                 }
             }
 
@@ -102,5 +102,25 @@ class XmlArray implements TransformerInterface
         }
 
         return false;
+    }
+
+    /**
+     * In XML we have now information about the data type but in the jsonschema
+     * we require a specific type. This method tries to guess the correct type
+     * 
+     * @param string $value
+     * @return mixed
+     */
+    protected function parseValue($value)
+    {
+        if (is_numeric($value)) {
+            return strpos($value, '.') !== false ? (float) $value : (int) $value;
+        } elseif ($value === 'true' || $value === '1') {
+            return true;
+        } elseif ($value === 'false' || $value === '0') {
+            return false;
+        } else {
+            return $value;
+        }
     }
 }

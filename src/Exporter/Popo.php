@@ -21,13 +21,9 @@
 namespace PSX\Data\Exporter;
 
 use Doctrine\Common\Annotations\Reader;
-use InvalidArgumentException;
 use PSX\Data\ExporterInterface;
 use PSX\Data\GraphTraverser;
-use PSX\Record\Record;
-use PSX\Record\RecordInterface;
-use PSX\Schema\Parser\Popo\ObjectReader;
-use ReflectionObject;
+use PSX\Schema\Parser\Popo\Dumper;
 
 /**
  * Exports an arbitrary object to a record
@@ -39,107 +35,23 @@ use ReflectionObject;
 class Popo implements ExporterInterface
 {
     /**
-     * @var \Doctrine\Common\Annotations\Reader
+     * @var \PSX\Schema\Parser\Popo\Dumper
      */
-    protected $reader;
+    protected $dumper;
 
     public function __construct(Reader $reader)
     {
-        $this->reader = $reader;
+        $this->dumper = new Dumper($reader);
     }
 
     public function export($data)
     {
         if (GraphTraverser::isObject($data)) {
-            return $this->exportMap($data);
+            return $data;
         } elseif (is_object($data)) {
-            return $this->exportObject($data);
+            return $this->dumper->dump($data);
         } else {
-            throw new InvalidArgumentException('Data must be an object');
-        }
-    }
-
-    protected function exportObject($object)
-    {
-        $class  = new ReflectionObject($object);
-        $result = new Record(lcfirst($class->getShortName()));
-        $props  = ObjectReader::getProperties($this->reader, $class);
-
-        foreach ($props as $name => $property) {
-            $getters = [
-                'get' . ucfirst($property->getName()),
-                'is' . ucfirst($property->getName())
-            ];
-
-            foreach ($getters as $getter) {
-                if ($class->hasMethod($getter)) {
-                    $value = $class->getMethod($getter)->invoke($object);
-                    $value = $this->exportValue($value);
-
-                    if ($value !== null) {
-                        $result->setProperty($name, $value);
-                    }
-                    break;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    protected function exportMap($object)
-    {
-        if ($object instanceof RecordInterface) {
-            $result = $object;
-            foreach ($object as $key => $value) {
-                $value = $this->exportValue($value);
-                if ($value !== null) {
-                    $result->setProperty($key, $value);
-                } else {
-                    $result->removeProperty($key);
-                }
-            }
-        } else {
-            $result = new Record('record');
-            foreach ($object as $key => $value) {
-                $value = $this->exportValue($value);
-                if ($value !== null) {
-                    $result->setProperty($key, $value);
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    protected function exportArray($array)
-    {
-        $result = [];
-        foreach ($array as $value) {
-            $value = $this->exportValue($value);
-            if ($value !== null) {
-                $result[] = $value;
-            }
-        }
-        return $result;
-    }
-
-    protected function exportValue($value)
-    {
-        $value = GraphTraverser::reveal($value);
-
-        if ($value === null) {
-            return null;
-        } elseif (is_scalar($value) || is_resource($value) || $value instanceof \DateTime || $value instanceof \DateInterval) {
-            return $value;
-        } elseif (GraphTraverser::isObject($value)) {
-            return $this->exportMap($value);
-        } elseif (GraphTraverser::isArray($value)) {
-            return $this->exportArray($value);
-        } elseif (is_object($value)) {
-            return $this->exportObject($value);
-        } else {
-            throw new InvalidArgumentException('Invalid data ' . gettype($value) . ' in model object');
+            throw new \InvalidArgumentException('Data must be an object');
         }
     }
 }

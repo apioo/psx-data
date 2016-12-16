@@ -27,7 +27,7 @@ use PSX\Http\MediaType;
 use RuntimeException;
 
 /**
- * Transforms an incomming SOAP request
+ * Transforms an incoming SOAP request
  *
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0

@@ -292,7 +292,7 @@ class Atom implements TransformerInterface
         }
 
         if ($el->hasAttribute('length')) {
-            $link->length = $el->getAttribute('length');
+            $link->length = (int) $el->getAttribute('length');
         }
 
         return $link;

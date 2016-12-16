@@ -26,6 +26,7 @@ use PSX\Data\Payload;
 use PSX\Data\Processor;
 use PSX\Record\Record;
 use PSX\Data\Tests\Processor\Model\Entry;
+use PSX\Schema\Visitor\NullVisitor;
 use PSX\Schema\Visitor\OutgoingVisitor;
 use PSX\Validate\Filter;
 
@@ -42,8 +43,21 @@ class ProcessorTest extends ProcessorTestCase
     {
         $entry = $this->processor->read(Entry::class, Payload::json('{"title": "foo"}'));
 
-        $this->assertInstanceOf('PSX\Data\Tests\Processor\Model\Entry', $entry);
+        $this->assertInstanceOf(Entry::class, $entry);
         $this->assertEquals('foo', $entry->getTitle());
+    }
+
+    /**
+     * @expectedException \PSX\Schema\ValidationException
+     */
+    public function testReadError()
+    {
+        $schema = $this->processor
+            ->getConfiguration()
+            ->getSchemaManager()
+            ->getSchema(Entry::class);
+
+        $this->processor->read($schema, Payload::json('{"title": "foo", "bar": "foo"}'));
     }
 
     public function testParse()
@@ -73,41 +87,5 @@ class ProcessorTest extends ProcessorTestCase
 
         $this->assertInstanceOf('PSX\Record\Record', $data);
         $this->assertEquals('foo', $data->title);
-    }
-
-    /**
-     * @expectedException \PSX\Schema\ValidationException
-     */
-    public function testAssimilateIncoming()
-    {
-        $data = new \stdClass();
-        $data->title = 'foo';
-        $data->bar = 'foo';
-
-        $schema = $this->processor
-            ->getConfiguration()
-            ->getSchemaManager()
-            ->getSchema(Entry::class);
-
-        $this->processor->assimilate($data, $schema);
-    }
-
-    public function testAssimilateOutgoing()
-    {
-        $data = new \stdClass();
-        $data->title = 'foo';
-        $data->bar = 'foo';
-
-        $schema = $this->processor
-            ->getConfiguration()
-            ->getSchemaManager()
-            ->getSchema(Entry::class);
-
-        // the outgoing visitor silently removes unknown properties
-        $data = $this->processor->assimilate($data, $schema, null, null, new OutgoingVisitor());
-
-        $this->assertInstanceOf('PSX\Record\Record', $data);
-        $this->assertEquals('foo', $data->title);
-        $this->assertEquals(['title' => 'foo'], $data->getProperties());
     }
 }

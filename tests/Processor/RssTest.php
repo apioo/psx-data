@@ -48,8 +48,8 @@ class RssTest extends ProcessorTestCase
 		<link>http://liftoff.msfc.nasa.gov/</link>
 		<description>Liftoff to Space Exploration.</description>
 		<language>en-us</language>
-		<pubDate>Tue, 10 Jun 2003 04:00:00 GMT</pubDate>
-		<lastBuildDate>Tue, 10 Jun 2003 09:41:01 GMT</lastBuildDate>
+		<pubDate>2003-06-10T04:00:00Z</pubDate>
+		<lastBuildDate>2003-06-10T09:41:01Z</lastBuildDate>
 		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
 		<generator>Weblog Editor 2.0</generator>
 		<managingEditor>editor@example.com</managingEditor>
@@ -58,7 +58,7 @@ class RssTest extends ProcessorTestCase
 			<title>Star City</title>
 			<link>http://liftoff.msfc.nasa.gov/news/2003/news-starcity.asp</link>
 			<description>How do Americans get ready to work with Russians aboard the International Space Station? They take a crash course in culture, language and protocol at Russias &lt;a href="http://howe.iki.rssi.ru/GCTC/gctc_e.htm"&gt;Star City&lt;/a&gt;.</description>
-			<pubDate>Tue, 03 Jun 2003 09:39:21 GMT</pubDate>
+			<pubDate>2003-06-03T09:39:21Z</pubDate>
 			<guid>http://liftoff.msfc.nasa.gov/2003/06/03.html#item573</guid>
 		</item>
 	</channel>
@@ -96,7 +96,7 @@ XML;
 	<title>Star City</title>
 	<link>http://liftoff.msfc.nasa.gov/news/2003/news-starcity.asp</link>
 	<description>How do Americans get ready to work with Russians aboard the International Space Station? They take a crash course in culture, language and protocol at Russia's &lt;a href="http://howe.iki.rssi.ru/GCTC/gctc_e.htm"&gt;Star City&lt;/a&gt;.</description>
-	<pubDate>Tue, 03 Jun 2003 09:39:21 GMT</pubDate>
+	<pubDate>2003-06-03T09:39:21Z</pubDate>
 	<guid>http://liftoff.msfc.nasa.gov/2003/06/03.html#item573</guid>
 </item>
 XML;

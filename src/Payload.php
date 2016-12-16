@@ -20,7 +20,6 @@
 
 namespace PSX\Data;
 
-use PSX\Schema\RevealerInterface;
 use PSX\Validate\ValidatorInterface;
 
 /**
@@ -62,16 +61,6 @@ class Payload
      * @var array
      */
     protected $rwSupported;
-
-    /**
-     * @var \PSX\Validate\ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var \PSX\Schema\RevealerInterface
-     */
-    protected $revealer;
 
     public function __construct($data, $contentType)
     {
@@ -145,42 +134,6 @@ class Payload
     public function setRwSupported(array $rwSupported)
     {
         $this->rwSupported = $rwSupported;
-
-        return $this;
-    }
-
-    /**
-     * @return \PSX\Validate\ValidatorInterface
-     */
-    public function getValidator()
-    {
-        return $this->validator;
-    }
-
-    /**
-     * @param \PSX\Validate\ValidatorInterface $validator
-     */
-    public function setValidator(ValidatorInterface $validator)
-    {
-        $this->validator = $validator;
-
-        return $this;
-    }
-
-    /**
-     * @return \PSX\Schema\RevealerInterface
-     */
-    public function getRevealer()
-    {
-        return $this->revealer;
-    }
-
-    /**
-     * @param \PSX\Schema\RevealerInterface $revealer
-     */
-    public function setRevealer(RevealerInterface $revealer)
-    {
-        $this->revealer = $revealer;
 
         return $this;
     }

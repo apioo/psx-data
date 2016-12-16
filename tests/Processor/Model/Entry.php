@@ -26,51 +26,55 @@ namespace PSX\Data\Tests\Processor\Model;
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @AdditionalProperties(false)
  */
 class Entry
 {
     /**
-     * @var integer
+     * @Type("integer")
      */
     protected $id;
 
     /**
-     * @var string
+     * @Type("string")
      */
     protected $title;
 
     /**
-     * @var boolean
+     * @Type("boolean")
      */
     protected $active;
 
     /**
-     * @var integer
+     * @Type("integer")
      */
     protected $count;
 
     /**
-     * @var float
+     * @Type("number")
      */
     protected $rating;
 
     /**
-     * @var \DateTime
+     * @Type("string")
+     * @Format("date-time")
      */
     protected $date;
 
     /**
-     * @var \PSX\Data\Tests\Processor\Model\Person
+     * @Ref("PSX\Data\Tests\Processor\Model\Person")
      */
     protected $person;
 
     /**
-     * @var array<string>
+     * @Type("array")
+     * @Items(@Schema(type="string"))
      */
     protected $tags;
 
     /**
-     * @var array<PSX\Data\Tests\Processor\Model\Comment>
+     * @Type("array")
+     * @Items(@Ref("PSX\Data\Tests\Processor\Model\Comment"))
      */
     protected $comments;
 

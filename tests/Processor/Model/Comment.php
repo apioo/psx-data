@@ -26,16 +26,18 @@ namespace PSX\Data\Tests\Processor\Model;
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @AdditionalProperties(false)
  */
 class Comment
 {
     /**
-     * @var string
+     * @Type("string")
      */
     protected $title;
 
     /**
-     * @var \DateTime
+     * @Type("string")
+     * @Format("date-time")
      */
     protected $date;
 
@@ -66,7 +68,7 @@ class Comment
     /**
      * @param \DateTime $date
      */
-    public function setDate($date)
+    public function setDate(\DateTime $date)
     {
         $this->date = $date;
     }

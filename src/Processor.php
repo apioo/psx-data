@@ -23,11 +23,9 @@ namespace PSX\Data;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\MediaType;
 use PSX\Schema\Parser;
-use PSX\Schema\RevealerInterface;
 use PSX\Schema\SchemaInterface;
 use PSX\Schema\SchemaTraverser;
-use PSX\Schema\Visitor\IncomingVisitor;
-use PSX\Schema\Visitor\OutgoingVisitor;
+use PSX\Schema\Visitor\TypeVisitor;
 use PSX\Schema\VisitorInterface as SchemaVisitorInterface;
 use PSX\Validate\ValidatorInterface;
 
@@ -91,19 +89,26 @@ class Processor
      * explicit specified. Then we validate the data according to the provided
      * schema
      *
-     * @param string $source
+     * @param string $schema
      * @param \PSX\Data\Payload $payload
+     * @param \PSX\Schema\VisitorInterface $visitor
      * @return mixed
      * @throws \PSX\Data\InvalidDataException
      * @throws \PSX\Http\Exception\UnsupportedMediaTypeException
      */
-    public function read($schema, Payload $payload)
+    public function read($schema, Payload $payload, SchemaVisitorInterface $visitor = null)
     {
-        return $this->assimilate(
-            $this->parse($payload),
-            $this->getSchema($schema),
-            $payload->getValidator(),
-            $payload->getRevealer()
+        $data   = $this->parse($payload);
+        $schema = $this->getSchema($schema);
+
+        if ($visitor === null) {
+            $visitor = new TypeVisitor();
+        }
+
+        return $this->traverser->traverse(
+            $data,
+            $schema,
+            $visitor
         );
     }
 
@@ -135,35 +140,17 @@ class Processor
     /**
      * Writes the payload with a fitting writer and returns the result as
      * string. The writer depends on the content type of the payload or on the
-     * writer type if explicit specified. If a schema was provided the data
-     * gets adjusted to the format
+     * writer type if explicit specified
      *
      * @param \PSX\Data\Payload $payload
-     * @param string|null $schema
      * @return string
      * @throws \PSX\Data\InvalidDataException
      * @throws \PSX\Http\Exception\NotAcceptableException
      */
-    public function write(Payload $payload, $schema = null)
+    public function write(Payload $payload)
     {
-        $data = $payload->getData();
-
-        if ($schema === null && is_object($data) && !GraphTraverser::isObject($data)) {
-            $schema = get_class($data);
-        }
-
-        $data = $this->transform($data);
-
-        if ($schema !== null) {
-            $data = $this->assimilate(
-                $data,
-                $this->getSchema($schema),
-                $payload->getValidator(),
-                $payload->getRevealer(),
-                new OutgoingVisitor()
-            );
-        }
-
+        $data   = $payload->getData();
+        $data   = $this->transform($data);
         $writer = $this->getWriter($payload->getContentType(), $payload->getRwType(), $payload->getRwSupported());
 
         return $writer->write($data);
@@ -178,35 +165,6 @@ class Processor
     public function transform($data)
     {
         return $this->exporter->export($data);
-    }
-
-    /**
-     * @param mixed $data
-     * @param \PSX\Schema\SchemaInterface $schema
-     * @param \PSX\Validate\ValidatorInterface $validator
-     * @param \PSX\Schema\RevealerInterface $revealer
-     * @param \PSX\Schema\VisitorInterface $visitor
-     * @return mixed
-     */
-    public function assimilate($data, SchemaInterface $schema, ValidatorInterface $validator = null, RevealerInterface $revealer = null, SchemaVisitorInterface $visitor = null)
-    {
-        if ($visitor === null) {
-            $visitor = new IncomingVisitor();
-        }
-
-        if ($validator !== null) {
-            $visitor->setValidator($validator);
-        }
-
-        if ($revealer !== null) {
-            $visitor->setRevealer($revealer);
-        }
-
-        return $this->traverser->traverse(
-            $data,
-            $schema,
-            $visitor
-        );
     }
 
     /**

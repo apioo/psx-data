@@ -143,7 +143,7 @@ XML;
 
     public function testGetCustomWriter()
     {
-        $handle = $this->getMock('XMLWriter');
+        $handle = $this->createMock('XMLWriter');
         $writer = new Writer('dive into mark', 'tag:example.org,2003:3', new DateTime('2005-07-31T12:29:29Z'), $handle);
 
         $this->assertTrue($handle === $writer->getWriter());
