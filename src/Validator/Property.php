@@ -26,29 +26,10 @@ namespace PSX\Data\Validator;
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated 
  */
-class Property
+class Property extends \PSX\Schema\Validation\Field
 {
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @var array
-     */
-    protected $filters;
-
-    /**
-     * @var boolean
-     */
-    protected $required;
-
     /**
      * The name should be a JSON pointer which locates the target property i.e.
      * /author/name
@@ -60,29 +41,16 @@ class Property
      */
     public function __construct($name, $type, array $filters = array(), $required = true)
     {
-        $this->name     = $name;
-        $this->type     = $type;
-        $this->filters  = $filters;
-        $this->required = $required;
-    }
-
-    public function getName()
-    {
-        return $this->name;
+        parent::__construct($name, $filters);
     }
 
     public function getType()
     {
-        return $this->type;
-    }
-
-    public function getFilters()
-    {
-        return $this->filters;
+        return null;
     }
 
     public function isRequired()
     {
-        return $this->required;
+        return true;
     }
 }

@@ -29,13 +29,8 @@ use PSX\Validate\ValidatorInterface;
  * @author  Christoph Kappestein <k42b3.x@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
+ * @deprecated 
  */
-class Validator extends ValidatorAbstract
+class Validator extends \PSX\Schema\Validation\Validator
 {
-    public function __construct(array $fields = null, $flag = ValidatorInterface::THROW_ERRORS, Validate $validate = null)
-    {
-        $validate = $validate === null ? new Validate() : $validate;
-
-        parent::__construct($validate, $fields, $flag);
-    }
 }

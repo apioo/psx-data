@@ -1,4 +1,8 @@
 
+### 2.0.1 (2016-12-18)
+
+* Moved validator classes to psx schema
+
 ### 2.0.0 (2016-12-16)
 
 * Upgrade psx schema to 2.0 and adjusted code accordingly
