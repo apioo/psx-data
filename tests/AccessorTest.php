@@ -39,39 +39,14 @@ class AccessorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet($source)
     {
-        $accessor = new Accessor(new Validate(), $source);
-
-        $this->assertEquals($source, $accessor->getSource());
-        $this->assertEquals('bar', $accessor->get('/foo'));
-        $this->assertEquals(1, $accessor->get('/bar/foo'));
-        $this->assertEquals('bar', $accessor->get('/tes/0/foo'));
+        $this->assertEquals('bar', Accessor::get($source, '/foo'));
+        $this->assertEquals(1, Accessor::get($source, '/bar/foo'));
+        $this->assertEquals('bar', Accessor::get($source, '/tes/0/foo'));
     }
 
-    /**
-     * @expectedException \PSX\Validate\ValidationException
-     * @expectedExceptionMessage bar is not set
-     */
     public function testGetMissing()
     {
-        $accessor = new Accessor(new Validate(), ['foo' => 'bar']);
-        $accessor->get('bar');
-    }
-
-    /**
-     * @expectedException \PSX\Validate\ValidationException
-     * @expectedExceptionMessage lorem is not set
-     */
-    public function testGetMissingWithTitle()
-    {
-        $accessor = new Accessor(new Validate(), ['foo' => 'bar']);
-        $accessor->get('bar', Validate::TYPE_STRING, [], 'lorem');
-    }
-
-    public function testGetNotRequired()
-    {
-        $accessor = new Accessor(new Validate(), ['foo' => 'bar']);
-
-        $this->assertNull($accessor->get('bar', Validate::TYPE_STRING, [], null, false));
+        $this->assertNull(Accessor::get(['foo' => 'bar'], 'bar')); 
     }
 
     /**
@@ -79,47 +54,27 @@ class AccessorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFilter($source)
     {
-        $filter = new Filter\Length(3, 8);
-
-        $validate = $this->getMockBuilder('PSX\Validate\Validate')
-            ->setMethods(array('apply'))
-            ->getMock();
-
-        $validate->expects($this->at(0))
-            ->method('apply')
-            ->with($this->equalTo('bar'), $this->equalTo(Validate::TYPE_STRING), $this->equalTo(array()));
-
-        $validate->expects($this->at(1))
-            ->method('apply')
-            ->with($this->equalTo(1), $this->equalTo(Validate::TYPE_INTEGER), $this->equalTo(array()));
-
-        $validate->expects($this->at(2))
-            ->method('apply')
-            ->with($this->equalTo('bar'), $this->equalTo(Validate::TYPE_STRING), $this->equalTo(array($filter)));
-
-        $accessor = new Accessor($validate, $source);
-
-        $accessor->get('/foo');
-        $accessor->get('/bar/foo', Validate::TYPE_INTEGER);
-        $accessor->get('/tes/0/foo', Validate::TYPE_STRING, array($filter));
+        $this->assertEquals('bar', Accessor::get($source, '/foo'));
+        $this->assertEquals('1', Accessor::get($source, '/bar/foo'));
+        $this->assertEquals('bar', Accessor::get($source, '/tes/0/foo', [new Filter\Length(3, 8)]));
     }
 
     public function provideSources()
     {
-        $sources = array();
+        $sources = [];
 
         // array
-        $source = array(
+        $source = [
             'foo' => 'bar',
-            'bar' => array(
+            'bar' => [
                 'foo' => '1',
-            ),
-            'tes' => array(
-                array(
+            ],
+            'tes' => [
+                [
                     'foo' => 'bar'
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $sources[] = [$source];
 
@@ -128,7 +83,7 @@ class AccessorTest extends \PHPUnit_Framework_TestCase
         $source->foo = 'bar';
         $source->bar = new \stdClass();
         $source->bar->foo = 1;
-        $source->tes = array();
+        $source->tes = [];
         $source->tes[0] = new \stdClass();
         $source->tes[0]->foo = 'bar';
 
@@ -152,29 +107,41 @@ class AccessorTest extends \PHPUnit_Framework_TestCase
         return $sources;
     }
 
-    /**
-     * @expectedException \PSX\Validate\ValidationException
-     */
     public function testGetUnknownKey()
     {
-        $source = array(
-            'bar' => array(
+        $source = [
+            'bar' => [
                 'foo' => '1',
-            ),
-        );
+            ],
+        ];
 
-        $accessor = new Accessor(new Validate(), $source);
-        $accessor->get('/bar/bar');
+        $this->assertNull(Accessor::get($source, '/bar/bar'));
     }
 
-    /**
-     * @expectedException \PSX\Validate\ValidationException
-     */
     public function testGetUnknownKeyInvalidSource()
     {
         $source = 'foo';
 
-        $accessor = new Accessor(new Validate(), $source);
-        $accessor->get('/bar/bar');
+        $this->assertNull(Accessor::get($source, '/bar/bar'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage /foo has an invalid length min 4 and max 8 signs
+     */
+    public function testFilterInvalid()
+    {
+        Accessor::get(['foo' => 'bar'], '/foo', [new Filter\Length(4, 8)]);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage /foo contains an invalid value
+     */
+    public function testFilterInvalidClosure()
+    {
+        Accessor::get(['foo' => 'bar'], '/foo', [function(){
+            return false;
+        }]);
     }
 }

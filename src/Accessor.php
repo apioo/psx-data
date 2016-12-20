@@ -21,6 +21,7 @@
 namespace PSX\Data;
 
 use PSX\Json\Pointer;
+use PSX\Validate\FilterInterface;
 use PSX\Validate\Validate;
 
 /**
@@ -32,25 +33,33 @@ use PSX\Validate\Validate;
  */
 class Accessor
 {
-    protected $validate;
-    protected $source;
-
-    public function __construct(Validate $validate, $source)
+    public static function get($source, $path, array $filters = array())
     {
-        $this->validate = $validate;
-        $this->source   = $source;
-    }
+        $pointer = new Pointer('/' . ltrim($path, '/'));
+        $value   = $pointer->evaluate($source);
 
-    public function getSource()
-    {
-        return $this->source;
-    }
+        foreach ($filters as $filter) {
+            $return  = null;
+            $error   = null;
+            if ($filter instanceof FilterInterface) {
+                $return = $filter->apply($value);
+                $error  = $filter->getErrorMessage();
+            } elseif ($filter instanceof \Closure) {
+                $return = $filter($value);
+            }
 
-    public function get($key, $type = Validate::TYPE_STRING, array $filter = array(), $title = null, $required = true)
-    {
-        $pointer = new Pointer('/' . ltrim($key, '/'));
-        $value   = $pointer->evaluate($this->source);
+            if ($return === false) {
+                if (empty($error)) {
+                    $error = '%s contains an invalid value';
+                }
 
-        return $this->validate->apply($value, $type, $filter, $title === null ? $key : $title, $required);
+                throw new \InvalidArgumentException(sprintf($error, $path));
+            } elseif ($return === true) {
+            } else {
+                $value = $return;
+            }
+        }
+
+        return $value;
     }
 }
