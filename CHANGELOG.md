@@ -1,4 +1,8 @@
 
+### 2.0.2 (2016-12-20)
+
+* Update accessor 
+
 ### 2.0.1 (2016-12-18)
 
 * Moved validator classes to psx schema
