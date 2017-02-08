@@ -1,4 +1,9 @@
 
+### 2.0.3 (2016-02-08)
+
+* WriterFactory add method getWriterClassNameByFormat
+* Jsonp writer allow max 64 characters [#1]
+
 ### 2.0.2 (2016-12-20)
 
 * Update accessor 
