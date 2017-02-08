@@ -47,30 +47,30 @@ class ReaderFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDefaultReader()
     {
-        $this->assertInstanceOf('PSX\Data\Reader\Json', $this->readerFactory->getDefaultReader());
+        $this->assertInstanceOf(Reader\Json::class, $this->readerFactory->getDefaultReader());
     }
 
     public function testGetReaderByContentType()
     {
-        $this->assertInstanceOf('PSX\Data\Reader\Json', $this->readerFactory->getReaderByContentType('application/json'));
-        $this->assertInstanceOf('PSX\Data\Reader\Form', $this->readerFactory->getReaderByContentType('application/x-www-form-urlencoded'));
-        $this->assertInstanceOf('PSX\Data\Reader\Xml', $this->readerFactory->getReaderByContentType('application/xml'));
+        $this->assertInstanceOf(Reader\Json::class, $this->readerFactory->getReaderByContentType('application/json'));
+        $this->assertInstanceOf(Reader\Form::class, $this->readerFactory->getReaderByContentType('application/x-www-form-urlencoded'));
+        $this->assertInstanceOf(Reader\Xml::class, $this->readerFactory->getReaderByContentType('application/xml'));
         $this->assertNull($this->readerFactory->getReaderByContentType('application/foo'));
     }
 
     public function testGetReaderByContentTypeSupportedReader()
     {
-        $supportedReader = array('PSX\Data\Reader\Form', 'PSX\Data\Reader\Xml');
+        $supportedReader = array(Reader\Form::class, Reader\Xml::class);
         $contentType     = 'application/xml';
 
-        $this->assertInstanceOf('PSX\Data\Reader\Xml', $this->readerFactory->getReaderByContentType($contentType, $supportedReader));
+        $this->assertInstanceOf(Reader\Xml::class, $this->readerFactory->getReaderByContentType($contentType, $supportedReader));
     }
 
     public function testGetReaderByInstance()
     {
-        $this->assertInstanceOf('PSX\Data\Reader\Json', $this->readerFactory->getReaderByInstance('PSX\Data\Reader\Json'));
-        $this->assertInstanceOf('PSX\Data\Reader\Form', $this->readerFactory->getReaderByInstance('PSX\Data\Reader\Form'));
-        $this->assertInstanceOf('PSX\Data\Reader\Xml', $this->readerFactory->getReaderByInstance('PSX\Data\Reader\Xml'));
+        $this->assertInstanceOf(Reader\Json::class, $this->readerFactory->getReaderByInstance(Reader\Json::class));
+        $this->assertInstanceOf(Reader\Form::class, $this->readerFactory->getReaderByInstance(Reader\Form::class));
+        $this->assertInstanceOf(Reader\Xml::class, $this->readerFactory->getReaderByInstance(Reader\Xml::class));
         $this->assertEquals(null, $this->readerFactory->getReaderByInstance('PSX\Data\Reader\Foo'));
     }
 }
