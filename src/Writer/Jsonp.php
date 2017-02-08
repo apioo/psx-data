@@ -63,7 +63,7 @@ class Jsonp extends Json
 
     public function setCallbackName($callbackName)
     {
-        if (preg_match('/^([A-Za-z0-9._]{3,32})$/', $callbackName)) {
+        if (preg_match('/^([A-Za-z0-9._]{3,64})$/', $callbackName)) {
             $this->callbackName = $callbackName;
         }
     }
