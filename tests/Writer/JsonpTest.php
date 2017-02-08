@@ -130,32 +130,44 @@ TEXT;
         $this->assertJsonp($expect, $actual);
     }
 
-    public function testSetCallbackName()
+    /**
+     * @dataProvider providerValidCallbackNames
+     */
+    public function testSetCallbackName($name)
     {
         $writer = new Jsonp();
-        $writer->setCallbackName('foo');
+        $writer->setCallbackName($name);
 
-        $this->assertEquals('foo', $writer->getCallbackName());
+        $this->assertEquals($name, $writer->getCallbackName());
     }
 
-    public function testSetCallbackNameInvalid()
+    public function providerValidCallbackNames()
+    {
+        return [
+            ['foo'],
+            ['foo.bar'],
+            ['jQuery213040548181975297726_1486482323181'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerInvalidCallbackNames
+     */
+    public function testSetCallbackNameInvalid($name)
     {
         $writer = new Jsonp();
-
-        // invalid signs
-        $writer->setCallbackName('!foo');
+        $writer->setCallbackName($name);
 
         $this->assertEquals(null, $writer->getCallbackName());
+    }
 
-        // min length
-        $writer->setCallbackName('fo');
-
-        $this->assertEquals(null, $writer->getCallbackName());
-
-        // max length
-        $writer->setCallbackName('fooooooooooooooofoooooooooooooooo');
-
-        $this->assertEquals(null, $writer->getCallbackName());
+    public function providerInvalidCallbackNames()
+    {
+        return [
+            ['!foo'],
+            ['fo'],
+            [str_repeat('o', 65)],
+        ];
     }
 
     public function testIsContentTypeSupported()
