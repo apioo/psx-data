@@ -63,58 +63,70 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetWriterByContentType()
     {
-        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('application/json'));
-        $this->assertInstanceOf('PSX\Data\Writer\Atom', $this->writerFactory->getWriterByContentType('application/atom+xml'));
-        $this->assertInstanceOf('PSX\Data\Writer\Form', $this->writerFactory->getWriterByContentType('application/x-www-form-urlencoded'));
-        $this->assertInstanceOf('PSX\Data\Writer\Jsonp', $this->writerFactory->getWriterByContentType('application/javascript'));
-        $this->assertInstanceOf('PSX\Data\Writer\Soap', $this->writerFactory->getWriterByContentType('application/soap+xml'));
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('application/xml'));
+        $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getWriterByContentType('application/json'));
+        $this->assertInstanceOf(Writer\Atom::class, $this->writerFactory->getWriterByContentType('application/atom+xml'));
+        $this->assertInstanceOf(Writer\Form::class, $this->writerFactory->getWriterByContentType('application/x-www-form-urlencoded'));
+        $this->assertInstanceOf(Writer\Jsonp::class, $this->writerFactory->getWriterByContentType('application/javascript'));
+        $this->assertInstanceOf(Writer\Soap::class, $this->writerFactory->getWriterByContentType('application/soap+xml'));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType('application/xml'));
         $this->assertNull($this->writerFactory->getWriterByContentType('application/foo'));
-        $this->assertNull($this->writerFactory->getWriterByContentType('application/json', array('PSX\Data\Writer\Xml')));
+        $this->assertNull($this->writerFactory->getWriterByContentType('application/json', array(Writer\Xml::class)));
     }
 
     public function testGetWriterByContentTypeSupportedWriter()
     {
         $contentType = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
 
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType($contentType, array('PSX\Data\Writer\Xml')));
-        $this->assertNull($this->writerFactory->getWriterByContentType($contentType, array('PSX\Data\Writer\Json')));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType($contentType, array(Writer\Xml::class)));
+        $this->assertNull($this->writerFactory->getWriterByContentType($contentType, array(Writer\Json::class)));
     }
 
     public function testGetWriterByContentTypeOrder()
     {
-        $supportedWriter = array('PSX\Data\Writer\Xml');
+        $supportedWriter = array(Writer\Xml::class);
         $contentType     = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
 
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType($contentType, $supportedWriter));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType($contentType, $supportedWriter));
     }
 
     public function testGetWriterByInstance()
     {
-        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Json'));
-        $this->assertInstanceOf('PSX\Data\Writer\Atom', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Atom'));
-        $this->assertInstanceOf('PSX\Data\Writer\Form', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Form'));
-        $this->assertInstanceOf('PSX\Data\Writer\Jsonp', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Jsonp'));
-        $this->assertInstanceOf('PSX\Data\Writer\Soap', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Soap'));
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByInstance('PSX\Data\Writer\Xml'));
+        $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getWriterByInstance(Writer\Json::class));
+        $this->assertInstanceOf(Writer\Atom::class, $this->writerFactory->getWriterByInstance(Writer\Atom::class));
+        $this->assertInstanceOf(Writer\Form::class, $this->writerFactory->getWriterByInstance(Writer\Form::class));
+        $this->assertInstanceOf(Writer\Jsonp::class, $this->writerFactory->getWriterByInstance(Writer\Jsonp::class));
+        $this->assertInstanceOf(Writer\Soap::class, $this->writerFactory->getWriterByInstance(Writer\Soap::class));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByInstance(Writer\Xml::class));
         $this->assertNull($this->writerFactory->getWriterByInstance('PSX\Data\Writer\Foo'));
+    }
+
+    public function testGetWriterClassNameByFormat()
+    {
+        $this->assertEquals(Writer\Json::class, $this->writerFactory->getWriterClassNameByFormat('json'));
+        $this->assertEquals(Writer\Atom::class, $this->writerFactory->getWriterClassNameByFormat('atom'));
+        $this->assertEquals(Writer\Form::class, $this->writerFactory->getWriterClassNameByFormat('form'));
+        $this->assertEquals(Writer\Jsonp::class, $this->writerFactory->getWriterClassNameByFormat('jsonp'));
+        $this->assertEquals(Writer\Soap::class, $this->writerFactory->getWriterClassNameByFormat('soap'));
+        $this->assertEquals(Writer\Xml::class, $this->writerFactory->getWriterClassNameByFormat('xml'));
+        $this->assertNull($this->writerFactory->getWriterClassNameByFormat('foo'));
+        $this->assertNull($this->writerFactory->getWriterClassNameByFormat(''));
     }
 
     public function testContentNegotiationExplicit()
     {
         $this->writerFactory->setContentNegotiation('text/plain', WriterInterface::XML);
 
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('text/plain'));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType('text/plain'));
     }
 
     public function testContentNegotiationWildcardSubtype()
     {
         $this->writerFactory->setContentNegotiation('text/*', WriterInterface::XML);
 
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('text/plain'));
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('text/foo'));
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('application/xml'));
-        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('application/json'));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType('text/plain'));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType('text/foo'));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType('application/xml'));
+        $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getWriterByContentType('application/json'));
         $this->assertNull($this->writerFactory->getWriterByContentType('image/png'));
     }
 
@@ -122,20 +134,20 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->writerFactory->setContentNegotiation('*/*', WriterInterface::XML);
 
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('text/plain'));
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('application/json'));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType('text/plain'));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType('application/json'));
     }
 
     public function testContentNegotiation()
     {
         $this->writerFactory->setContentNegotiation('image/*', WriterInterface::JSON);
 
-        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('image/webp,*/*;q=0.8'));
-        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('image/webp'));
+        $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getWriterByContentType('image/webp,*/*;q=0.8'));
+        $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getWriterByContentType('image/webp'));
         $this->assertNull($this->writerFactory->getWriterByContentType('text/plain'));
-        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('image/png, image/svg+xml, image/*;q=0.8, */*;q=0.5'));
-        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getWriterByContentType('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'));
-        $this->assertInstanceOf('PSX\Data\Writer\Xml', $this->writerFactory->getWriterByContentType('text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'));
+        $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getWriterByContentType('image/png, image/svg+xml, image/*;q=0.8, */*;q=0.5'));
+        $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getWriterByContentType('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'));
+        $this->assertInstanceOf(Writer\Xml::class, $this->writerFactory->getWriterByContentType('text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'));
     }
 
     /**
@@ -151,9 +163,9 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
     public function browserAcceptHeaderProvider()
     {
         return [
-            ['text/html, application/xhtml+xml, */*', 'PSX\Data\Writer\Xml'], // IE Version 11.0
-            ['text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'PSX\Data\Writer\Xml'], // Chrome Version 43.0
-            ['text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'PSX\Data\Writer\Xml'], // Firefox Version 40.0.3
+            ['text/html, application/xhtml+xml, */*', Writer\Xml::class], // IE Version 11.0
+            ['text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', Writer\Xml::class], // Chrome Version 43.0
+            ['text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', Writer\Xml::class], // Firefox Version 40.0.3
         ];
     }
 }

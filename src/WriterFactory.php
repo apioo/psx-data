@@ -108,6 +108,27 @@ class WriterFactory
     }
 
     /**
+     * Returns a writer class by the class short name
+     * 
+     * @param string $format
+     * @return string|null
+     */
+    public function getWriterClassNameByFormat($format)
+    {
+        $format = strtolower($format);
+        foreach ($this->writers as $writer) {
+            $class = get_class($writer);
+            $name  = strtolower(substr($class, strrpos($class, '\\') + 1));
+
+            if ($name == $format) {
+                return $class;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * With this method you can set which writer should be used for an specific
      * content type. The content type can be i.e. text/plain or image/*
      *
