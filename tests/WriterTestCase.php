@@ -22,7 +22,6 @@ namespace PSX\Data\Tests;
 
 use DateTime;
 use PSX\Record\Record;
-use PSX\Model\ActivityStream;
 
 /**
  * WriterTestCase

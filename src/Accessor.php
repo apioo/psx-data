@@ -22,7 +22,6 @@ namespace PSX\Data;
 
 use PSX\Json\Pointer;
 use PSX\Validate\FilterInterface;
-use PSX\Validate\Validate;
 
 /**
  * Accessor

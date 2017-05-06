@@ -20,14 +20,10 @@
 
 namespace PSX\Data\Test;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
-use Doctrine\Common\Cache\ArrayCache;
-use PSX\Cache\Pool;
 use PSX\Data\Configuration;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
-use PSX\Data\Writer;
 use PSX\Schema\SchemaManager;
 
 /**

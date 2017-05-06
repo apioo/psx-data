@@ -24,7 +24,6 @@ use DOMDocument;
 use DOMElement;
 use InvalidArgumentException;
 use PSX\Data\TransformerInterface;
-use PSX\Http\MediaType;
 
 /**
  * Jsonx

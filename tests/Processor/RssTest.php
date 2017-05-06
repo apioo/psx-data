@@ -20,13 +20,8 @@
 
 namespace PSX\Data\Tests\Processor;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use PSX\Data\Configuration;
 use PSX\Data\Payload;
-use PSX\Data\Processor;
 use PSX\Data\Tests\ProcessorTestCase;
-use PSX\Data\Transformer;
-use PSX\Framework\Test\Environment;
 use PSX\Model\Rss\Rss;
 
 /**

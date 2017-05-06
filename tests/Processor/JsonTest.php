@@ -20,10 +20,7 @@
 
 namespace PSX\Data\Tests\Processor;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use PSX\Data\Configuration;
 use PSX\Data\Payload;
-use PSX\Data\Processor;
 use PSX\Data\Tests\Processor\Model\Comment;
 use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Data\Tests\Processor\Model\Person;

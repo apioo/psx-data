@@ -24,7 +24,6 @@ use DOMDocument;
 use DOMElement;
 use InvalidArgumentException;
 use PSX\Data\TransformerInterface;
-use PSX\Http\MediaType;
 
 /**
  * Takes an DOMDocument and formats it into an stdClass structure which can be

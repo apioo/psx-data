@@ -20,8 +20,6 @@
 
 namespace PSX\Data;
 
-use PSX\Http\MediaType;
-
 /**
  * The transformer can format the response of a reader so that it can be used
  * by an importer

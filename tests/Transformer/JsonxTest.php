@@ -21,7 +21,6 @@
 namespace PSX\Data\Tests\Transformer;
 
 use PSX\Data\Transformer\Jsonx;
-use PSX\Http\MediaType;
 use PSX\Rss;
 
 /**

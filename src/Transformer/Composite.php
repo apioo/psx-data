@@ -21,7 +21,6 @@
 namespace PSX\Data\Transformer;
 
 use PSX\Data\TransformerInterface;
-use PSX\Http\MediaType;
 
 /**
  * Composite

@@ -20,8 +20,6 @@
 
 namespace PSX\Data;
 
-use PSX\Validate\ValidatorInterface;
-
 /**
  * Payload
  *

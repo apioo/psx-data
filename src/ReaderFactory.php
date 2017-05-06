@@ -20,7 +20,6 @@
 
 namespace PSX\Data;
 
-use PSX\Data\Reader;
 use PSX\Data\Util\PriorityQueue;
 use PSX\Http\MediaType;
 

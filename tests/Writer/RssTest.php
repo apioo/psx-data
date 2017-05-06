@@ -21,11 +21,11 @@
 namespace PSX\Data\Tests\Writer;
 
 use DateTime;
-use PSX\Record\Record;
 use PSX\Data\Writer\Rss;
 use PSX\Http\MediaType;
 use PSX\Model\Rss\Item;
 use PSX\Model\Rss\Rss as RssRecord;
+use PSX\Record\Record;
 
 /**
  * RssTest

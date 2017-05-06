@@ -21,10 +21,10 @@
 namespace PSX\Data\Record;
 
 use PSX\Data\GraphTraverser;
-use PSX\Record\RecordInterface;
 use PSX\Data\Visitor\ArraySerializeVisitor;
 use PSX\Data\Visitor\RecordSerializeVisitor;
 use PSX\Data\Visitor\StdClassSerializeVisitor;
+use PSX\Record\RecordInterface;
 
 /**
  * Transformer

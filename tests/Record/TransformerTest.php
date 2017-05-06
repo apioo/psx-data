@@ -20,8 +20,8 @@
 
 namespace PSX\Data\Tests\Record;
 
-use PSX\Record\Record;
 use PSX\Data\Record\Transformer;
+use PSX\Record\Record;
 
 /**
  * TransformerTest

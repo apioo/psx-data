@@ -21,7 +21,6 @@
 namespace PSX\Data;
 
 use PSX\Data\Util\PriorityQueue;
-use PSX\Data\Writer;
 use PSX\Http\MediaType;
 
 /**

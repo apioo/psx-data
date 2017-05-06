@@ -20,16 +20,11 @@
 
 namespace PSX\Data\Tests;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use PSX\Data\Configuration;
-use PSX\Data\Payload;
 use PSX\Data\Processor;
-use PSX\Record\Record;
-use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Schema\SchemaManager;
 use PSX\Schema\Visitor\OutgoingVisitor;
-use PSX\Validate\Filter;
 
 /**
  * ProcessorTestCase

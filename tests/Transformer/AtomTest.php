@@ -21,7 +21,6 @@
 namespace PSX\Data\Tests\Transformer;
 
 use PSX\Data\Transformer\Atom;
-use PSX\Http\MediaType;
 
 /**
  * AtomTest

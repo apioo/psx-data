@@ -20,7 +20,6 @@
 
 namespace PSX\Data\Tests\Writer;
 
-use PSX\Record\Record;
 use PSX\Data\Writer\Atom;
 use PSX\DateTime\DateTime;
 use PSX\Http\MediaType;
@@ -31,6 +30,7 @@ use PSX\Model\Atom\Generator;
 use PSX\Model\Atom\Link;
 use PSX\Model\Atom\Person;
 use PSX\Model\Atom\Text;
+use PSX\Record\Record;
 
 /**
  * AtomTest

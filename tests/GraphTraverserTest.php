@@ -21,10 +21,9 @@
 namespace PSX\Data\Tests;
 
 use PSX\Data\GraphTraverser;
-use PSX\Record\Record;
 use PSX\Data\Tests\Visitor\VisitorTestCase;
 use PSX\Data\Visitor\StdClassSerializeVisitor;
-use PSX\Uri;
+use PSX\Record\Record;
 
 /**
  * GraphTraverserTest

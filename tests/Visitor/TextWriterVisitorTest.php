@@ -21,9 +21,8 @@
 namespace PSX\Data\Tests\Visitor;
 
 use PSX\Data\GraphTraverser;
-use PSX\Record\Record;
 use PSX\Data\Visitor\TextWriterVisitor;
-use PSX\Framework\Test\Assert;
+use PSX\Record\Record;
 
 /**
  * TextWriterVisitorTest

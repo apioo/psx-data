@@ -21,10 +21,10 @@
 namespace PSX\Data\Writer;
 
 use PSX\Data\GraphTraverser;
-use PSX\Record\Record;
 use PSX\Data\Visitor;
 use PSX\Http\MediaType;
 use PSX\Model\Common\Error;
+use PSX\Record\Record;
 use XMLWriter;
 
 /**

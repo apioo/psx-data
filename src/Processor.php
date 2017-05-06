@@ -27,7 +27,6 @@ use PSX\Schema\SchemaInterface;
 use PSX\Schema\SchemaTraverser;
 use PSX\Schema\Visitor\TypeVisitor;
 use PSX\Schema\VisitorInterface as SchemaVisitorInterface;
-use PSX\Validate\ValidatorInterface;
 
 /**
  * Main entry point of the data library. Through the processor it is possible to

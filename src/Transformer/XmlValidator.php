@@ -22,7 +22,6 @@ namespace PSX\Data\Transformer;
 
 use DOMDocument;
 use InvalidArgumentException;
-use PSX\Http\MediaType;
 use RuntimeException;
 
 /**

@@ -21,7 +21,6 @@
 namespace PSX\Data\Tests\Transformer;
 
 use PSX\Data\Transformer\Callback;
-use PSX\Http\MediaType;
 
 /**
  * CallbackTest

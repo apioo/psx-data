@@ -21,8 +21,8 @@
 namespace PSX\Data\Tests\Visitor;
 
 use PSX\Data\GraphTraverser;
-use PSX\Record\Record;
 use PSX\Data\Visitor\RecordSerializeVisitor;
+use PSX\Record\Record;
 
 /**
  * RecordSerializeVisitorTest
