@@ -33,7 +33,8 @@ interface ReaderInterface
 {
     const FORM = 'PSX\Data\Reader\Form';
     const JSON = 'PSX\Data\Reader\Json';
-    const XML  = 'PSX\Data\Reader\Xml';
+    const MULTIPART = 'PSX\Data\Reader\Multipart';
+    const XML = 'PSX\Data\Reader\Xml';
 
     /**
      * Transforms the $request into an parseable form this can be an array
