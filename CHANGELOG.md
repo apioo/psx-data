@@ -1,4 +1,8 @@
 
+### 2.0.4 (2017-10-14)
+
+* Add multipart reader
+
 ### 2.0.3 (2017-02-08)
 
 * WriterFactory add method getWriterClassNameByFormat
