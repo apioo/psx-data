@@ -138,6 +138,7 @@ class Configuration
         $readerFactory = new ReaderFactory();
         $readerFactory->addReader(new Reader\Json(), 16);
         $readerFactory->addReader(new Reader\Form(), 8);
+        $readerFactory->addReader(new Reader\Multipart(), 1);
         $readerFactory->addReader(new Reader\Xml(), 0);
 
         return $readerFactory;
