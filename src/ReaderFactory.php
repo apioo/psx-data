@@ -42,12 +42,17 @@ class ReaderFactory
         $this->readers = new PriorityQueue();
     }
 
+    /**
+     * @param \PSX\Data\ReaderInterface $reader
+     * @param integer $priority
+     */
     public function addReader(ReaderInterface $reader, $priority = 0)
     {
         $this->readers->insert($reader, $priority);
     }
 
     /**
+     * @param array $supportedReader
      * @return \PSX\Data\ReaderInterface
      */
     public function getDefaultReader(array $supportedReader = null)
