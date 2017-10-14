@@ -35,51 +35,42 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     {
         $body = <<<INPUT
 {
-	"foo": "bar",
-	"bar": ["blub","bla"],
-	"test": {"foo": "bar"},
-	"item": {
-		"foo": {
-			"bar": {
-				"title":"foo"
-			}
-		}
-	},
-	"items": {
-		"item": [{
-			"title": "foo",
-			"text": "bar"
-		},{
-			"title": "foo",
-			"text": "bar"
-		}]
-	}
+    "foo": "bar",
+    "bar": [
+        "blub",
+        "bla"
+    ],
+    "test": {
+        "foo": "bar"
+    },
+    "item": {
+        "foo": {
+            "bar": {
+                "title": "foo"
+            }
+        }
+    },
+    "items": {
+        "item": [
+            {
+                "title": "foo",
+                "text": "bar"
+            },
+            {
+                "title": "foo",
+                "text": "bar"
+            }
+        ]
+    }
 }
 INPUT;
 
         $reader = new Json();
-        $json   = $reader->read($body);
+        $actual = json_encode($reader->read($body), JSON_PRETTY_PRINT);
 
-        $expect = new \stdClass();
-        $expect->foo = 'bar';
-        $expect->bar = ['blub', 'bla'];
-        $expect->test = new \stdClass();
-        $expect->test->foo = 'bar';
-        $expect->item = new \stdClass();
-        $expect->item->foo = new \stdClass();
-        $expect->item->foo->bar = new \stdClass();
-        $expect->item->foo->bar->title = 'foo';
-        $expect->items = new \stdClass();
-        $expect->items->item = [];
-        $expect->items->item[0] = new \stdClass();
-        $expect->items->item[0]->title = 'foo';
-        $expect->items->item[0]->text = 'bar';
-        $expect->items->item[1] = new \stdClass();
-        $expect->items->item[1]->title = 'foo';
-        $expect->items->item[1]->text = 'bar';
+        $expect = $body;
 
-        $this->assertInstanceOf('stdClass', $json);
-        $this->assertEquals($expect, $json);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     public function testReadEmpty()

@@ -38,16 +38,22 @@ foo=bar&bar%5B0%5D=blub&bar%5B1%5D=bla&test%5Bfoo%5D=bar
 INPUT;
 
         $reader = new Form();
-        $form   = $reader->read($body);
+        $actual = json_encode($reader->read($body), JSON_PRETTY_PRINT);
 
-        $expect = new \stdClass();
-        $expect->foo = 'bar';
-        $expect->bar = array('blub', 'bla');
-        $expect->test = new \stdClass();
-        $expect->test->foo = 'bar';
+        $expect = <<<JSON
+{
+    "foo": "bar",
+    "bar": [
+        "blub",
+        "bla"
+    ],
+    "test": {
+        "foo": "bar"
+    }
+}
+JSON;
 
-        $this->assertInstanceOf('stdClass', $form);
-        $this->assertEquals($expect, $form);
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     public function testReadEmpty()

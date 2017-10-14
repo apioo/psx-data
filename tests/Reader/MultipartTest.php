@@ -20,40 +20,55 @@
 
 namespace PSX\Data\Tests\Reader;
 
-use DOMDocument;
-use PSX\Data\Reader\Xml;
+use PSX\Data\Reader\Json;
+use PSX\Data\Reader\Multipart;
 
 /**
- * XmlTest
+ * MultipartTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @link	http://phpsx.org
+ * @link    http://phpsx.org
  */
-class XmlTest extends \PHPUnit_Framework_TestCase
+class MultipartTest extends \PHPUnit_Framework_TestCase
 {
     public function testRead()
     {
-        $body = <<<INPUT
-<?xml version="1.0" encoding="UTF-8"?>
-<foo>
-  <bar>jedi</bar>
-  <baz>power</baz>
-</foo>
-INPUT;
+        $files = [];
+        $files['foo'] = [
+            'name' => 'upload.txt',
+            'type' => 'text/plain',
+            'size' => 8,
+            'tmp_name' => '/tmp/upload.txt',
+            'error' => UPLOAD_ERR_OK,
+        ];
 
-        $reader = new Xml();
-        $dom    = $reader->read($body);
+        $post = ['bar' => 'foo'];
 
-        $this->assertEquals(true, $dom instanceof DOMDocument);
-        $this->assertEquals('foo', $dom->documentElement->localName);
+        $reader = new Multipart($files, $post);
+        $actual = json_encode($reader->read(''), JSON_PRETTY_PRINT);
+
+        $expect = <<<JSON
+{
+    "foo": {
+        "name": "upload.txt",
+        "type": "text\/plain",
+        "size": 8,
+        "tmp_name": "\/tmp\/upload.txt",
+        "error": 0
+    },
+    "bar": "foo"
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     public function testReadEmpty()
     {
-        $reader = new Xml();
-        $dom    = $reader->read('');
+        $reader = new Multipart();
+        $file   = $reader->read('');
 
-        $this->assertNull($dom);
+        $this->assertNull($file);
     }
 }
