@@ -227,10 +227,10 @@ class File
     }
 
     /**
-     * @param array $file
+     * @param array|\ArrayAccess $file
      * @return \PSX\Data\Multipart\File
      */
-    public static function fromArray(array $file)
+    public static function fromArray($file)
     {
         $self = new self();
         $self->setName($file['name'] ?? null);
