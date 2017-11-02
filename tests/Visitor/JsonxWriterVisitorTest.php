@@ -81,6 +81,7 @@ XML;
  <json:boolean name="active">true</json:boolean>
  <json:boolean name="disabled">false</json:boolean>
  <json:number name="rating">12.45</json:number>
+ <json:null name="age"/>
  <json:string name="date">2014-01-01T12:34:47+01:00</json:string>
  <json:string name="href">http://foo.com</json:string>
  <json:object name="person">

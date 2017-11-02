@@ -35,7 +35,7 @@ class VisitorTestCase extends \PHPUnit_Framework_TestCase
 {
     protected function getRecord()
     {
-        return new Record('record', array(
+        return (object) [
             'id' => 1,
             'title' => 'foobar',
             'active' => true,
@@ -63,6 +63,6 @@ class VisitorTestCase extends \PHPUnit_Framework_TestCase
                     'title' => 'foo'
                 )),
             ),
-        ));
+        ];
     }
 }

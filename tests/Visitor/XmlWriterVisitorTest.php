@@ -117,6 +117,7 @@ XML;
  <active>true</active>
  <disabled>false</disabled>
  <rating>12.45</rating>
+ <age/>
  <date>2014-01-01T12:34:47+01:00</date>
  <href>http://foo.com</href>
  <person>

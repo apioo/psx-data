@@ -65,6 +65,7 @@ class RecordSerializeVisitorTest extends VisitorTestCase
         $record->setProperty('active', true);
         $record->setProperty('disabled', false);
         $record->setProperty('rating', 12.45);
+        $record->setProperty('age', null);
         $record->setProperty('date', '2014-01-01T12:34:47+01:00');
         $record->setProperty('href', 'http://foo.com');
         $record->setProperty('person', $person);

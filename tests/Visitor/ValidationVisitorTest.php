@@ -48,6 +48,7 @@ class ValidationVisitorTest extends VisitorTestCase
             '/active' => true,
             '/disabled' => false,
             '/rating' => 12.45,
+            '/age' => null,
             '/date' => new \DateTime('2014-01-01T12:34:47+0100'),
             '/href' => new Uri('http://foo.com'),
             '/person/title' => 'Foo',

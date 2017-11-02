@@ -56,6 +56,8 @@ class HtmlWriterVisitorTest extends VisitorTestCase
     <dd>false</dd>
     <dt>rating</dt>
     <dd>12.45</dd>
+    <dt>age</dt>
+    <dd/>
     <dt>date</dt>
     <dd>2014-01-01T12:34:47+01:00</dd>
     <dt>href</dt>

@@ -64,6 +64,7 @@ class ArraySerializeVisitorTest extends VisitorTestCase
         $record['active'] = true;
         $record['disabled'] = false;
         $record['rating'] = 12.45;
+        $record['age'] = null;
         $record['date'] = '2014-01-01T12:34:47+01:00';
         $record['href'] = 'http://foo.com';
         $record['person'] = $person;
