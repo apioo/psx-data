@@ -138,6 +138,8 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
             return DateTime::getFormat($value);
         } elseif (is_scalar($value)) {
             return $value;
+        } elseif (is_null($value)) {
+            return $value;
         } else {
             return (string) $value;
         }
