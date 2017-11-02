@@ -1,4 +1,8 @@
 
+### 2.1.1 (2017-11-03)
+
+* Handle null values
+
 ### 2.1.0 (2017-10-14)
 
 * Add multipart reader
