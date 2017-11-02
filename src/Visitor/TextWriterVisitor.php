@@ -112,6 +112,8 @@ class TextWriterVisitor extends VisitorAbstract
             return DateTime::getFormat($value);
         } elseif (is_bool($value)) {
             return $value ? 'true' : 'false';
+        } elseif (is_null($value)) {
+            return 'null';
         } else {
             $value = (string) $value;
             $value = str_replace(array("\r\n", "\n", "\r"), ' ', $value);
