@@ -36,17 +36,19 @@ use Traversable;
  */
 class GraphTraverser
 {
+    /**
+     * @param mixed $record
+     * @param \PSX\Data\VisitorInterface $visitor
+     */
     public function traverse($record, VisitorInterface $visitor)
     {
-        $record = self::reveal($record);
-
-        if (!self::isObject($record)) {
-            throw new InvalidArgumentException('Provided value must be an object type');
-        }
-
-        $this->traverseObject($record, $visitor);
+        $this->traverseValue(self::reveal($record), $visitor);
     }
 
+    /**
+     * @param object $object
+     * @param \PSX\Data\VisitorInterface $visitor
+     */
     protected function traverseObject($object, VisitorInterface $visitor)
     {
         $name = null;
@@ -76,24 +78,37 @@ class GraphTraverser
         $visitor->visitObjectEnd();
     }
 
+    /**
+     * @param array $values
+     * @param \PSX\Data\VisitorInterface $visitor
+     */
+    protected function traverseArray($values, VisitorInterface $visitor)
+    {
+        $visitor->visitArrayStart();
+
+        foreach ($values as $value) {
+            $value = self::reveal($value);
+
+            $visitor->visitArrayValueStart($value);
+
+            $this->traverseValue($value, $visitor);
+
+            $visitor->visitArrayValueEnd();
+        }
+
+        $visitor->visitArrayEnd();
+    }
+
+    /**
+     * @param mixed $value
+     * @param \PSX\Data\VisitorInterface $visitor
+     */
     protected function traverseValue($value, VisitorInterface $visitor)
     {
         if (self::isObject($value)) {
             $this->traverseObject($value, $visitor);
         } elseif (self::isArray($value)) {
-            $visitor->visitArrayStart();
-
-            foreach ($value as $val) {
-                $val = self::reveal($val);
-
-                $visitor->visitArrayValueStart($val);
-
-                $this->traverseValue($val, $visitor);
-
-                $visitor->visitArrayValueEnd();
-            }
-
-            $visitor->visitArrayEnd();
+            $this->traverseArray($value, $visitor);
         } else {
             $visitor->visitValue($value);
         }
@@ -121,11 +136,23 @@ class GraphTraverser
         return $object;
     }
 
+    /**
+     * Checks whether a value is an object type
+     * 
+     * @param mixed $value
+     * @return boolean
+     */
     public static function isObject($value)
     {
         return $value instanceof RecordInterface || $value instanceof \stdClass || (is_array($value) && CurveArray::isAssoc($value));
     }
 
+    /**
+     * Checks whether a vlaue is an array type
+     * 
+     * @param mixed $value
+     * @return boolean
+     */
     public static function isArray($value)
     {
         return is_array($value);
