@@ -148,7 +148,7 @@ class GraphTraverser
     }
 
     /**
-     * Checks whether a vlaue is an array type
+     * Checks whether a value is an array type
      * 
      * @param mixed $value
      * @return boolean
