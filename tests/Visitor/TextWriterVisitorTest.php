@@ -33,14 +33,34 @@ use PSX\Record\Record;
  */
 class TextWriterVisitorTest extends VisitorTestCase
 {
-    public function testTraverse()
+    public function testTraverseObject()
     {
         $visitor = new TextWriterVisitor();
 
         $graph = new GraphTraverser();
-        $graph->traverse($this->getRecord(), $visitor);
+        $graph->traverse($this->getObject(), $visitor);
 
-        $this->assertEquals($this->getExpected(), $visitor->getOutput());
+        $this->assertEquals($this->getExpectedObject(), $visitor->getOutput());
+    }
+
+    public function testTraverseArray()
+    {
+        $visitor = new TextWriterVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArray(), $visitor);
+
+        $this->assertEquals($this->getExpectedArray(), $visitor->getOutput());
+    }
+
+    public function testTraverseArrayNested()
+    {
+        $visitor = new TextWriterVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayNested(), $visitor);
+
+        $this->assertEquals($this->getExpectedArrayNested(), $visitor->getOutput());
     }
 
     public function testTraverseTextLong()
@@ -63,7 +83,7 @@ TEXT;
         $this->assertEquals($except, $visitor->getOutput());
     }
 
-    protected function getExpected()
+    protected function getExpectedObject()
     {
         return <<<TEXT
 Object(record){
@@ -99,6 +119,42 @@ Object(record){
         }
     ]
 }
+
+TEXT;
+    }
+
+    protected function getExpectedArray()
+    {
+        return <<<TEXT
+Array[
+    Object(record){
+        id = 1
+        title = foobar
+        active = true
+        disabled = false
+        rating = 12.45
+    }
+    Object(record){
+        id = 2
+        title = foo
+        active = false
+        disabled = false
+        rating = 12.45
+    }
+]
+
+TEXT;
+    }
+
+    protected function getExpectedArrayNested()
+    {
+        return <<<TEXT
+Array[
+    Array[
+        foo
+        bar
+    ]
+]
 
 TEXT;
     }

@@ -33,7 +33,7 @@ use PSX\Uri\Uri;
  */
 class VisitorTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected function getRecord()
+    protected function getObject()
     {
         return (object) [
             'id' => 1,
@@ -63,6 +63,33 @@ class VisitorTestCase extends \PHPUnit_Framework_TestCase
                     'title' => 'foo'
                 )),
             ),
+        ];
+    }
+
+    protected function getArray()
+    {
+        return [
+            [
+                'id' => 1,
+                'title' => 'foobar',
+                'active' => true,
+                'disabled' => false,
+                'rating' => 12.45,
+            ],
+            [
+                'id' => 2,
+                'title' => 'foo',
+                'active' => false,
+                'disabled' => false,
+                'rating' => 12.45,
+            ]
+        ];
+    }
+
+    protected function getArrayNested()
+    {
+        return [
+            ['foo', 'bar']
         ];
     }
 }

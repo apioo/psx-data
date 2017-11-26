@@ -33,7 +33,7 @@ use XMLWriter;
  */
 class JsonxWriterVisitorTest extends VisitorTestCase
 {
-    public function testTraverse()
+    public function testTraverseObject()
     {
         $writer = new XMLWriter();
         $writer->openMemory();
@@ -41,9 +41,35 @@ class JsonxWriterVisitorTest extends VisitorTestCase
         $writer->startDocument('1.0', 'UTF-8');
 
         $graph = new GraphTraverser();
-        $graph->traverse($this->getRecord(), new JsonxWriterVisitor($writer));
+        $graph->traverse($this->getObject(), new JsonxWriterVisitor($writer));
 
-        $this->assertXmlStringEqualsXmlString($this->getExpected(), $writer->outputMemory());
+        $this->assertXmlStringEqualsXmlString($this->getExpectedObject(), $writer->outputMemory());
+    }
+
+    public function testTraverseArray()
+    {
+        $writer = new XMLWriter();
+        $writer->openMemory();
+        $writer->setIndent(true);
+        $writer->startDocument('1.0', 'UTF-8');
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArray(), new JsonxWriterVisitor($writer));
+
+        $this->assertXmlStringEqualsXmlString($this->getExpectedArray(), $writer->outputMemory());
+    }
+
+    public function testTraverseArrayNested()
+    {
+        $writer = new XMLWriter();
+        $writer->openMemory();
+        $writer->setIndent(true);
+        $writer->startDocument('1.0', 'UTF-8');
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayNested(), new JsonxWriterVisitor($writer));
+
+        $this->assertXmlStringEqualsXmlString($this->getExpectedArrayNested(), $writer->outputMemory());
     }
 
     public function testTraverseNullValue()
@@ -71,7 +97,7 @@ XML;
         $this->assertXmlStringEqualsXmlString($expect, $writer->outputMemory());
     }
 
-    protected function getExpected()
+    protected function getExpectedObject()
     {
         return <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -108,6 +134,42 @@ XML;
   </json:object>
  </json:array>
 </json:object>
+XML;
+    }
+
+    protected function getExpectedArray()
+    {
+        return <<<XML
+<?xml version="1.0"?>
+<json:array xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+  <json:object>
+    <json:number name="id">1</json:number>
+    <json:string name="title">foobar</json:string>
+    <json:boolean name="active">true</json:boolean>
+    <json:boolean name="disabled">false</json:boolean>
+    <json:number name="rating">12.45</json:number>
+  </json:object>
+  <json:object>
+    <json:number name="id">2</json:number>
+    <json:string name="title">foo</json:string>
+    <json:boolean name="active">false</json:boolean>
+    <json:boolean name="disabled">false</json:boolean>
+    <json:number name="rating">12.45</json:number>
+  </json:object>
+</json:array>
+XML;
+    }
+
+    protected function getExpectedArrayNested()
+    {
+        return <<<XML
+<?xml version="1.0"?>
+<json:array xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+  <json:array>
+    <json:string>foo</json:string>
+    <json:string>bar</json:string>
+  </json:array>
+</json:array>
 XML;
     }
 }

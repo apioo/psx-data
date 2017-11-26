@@ -33,20 +33,49 @@ use PSX\DateTime\DateTime;
  */
 abstract class SerializeVisitorAbstract extends VisitorAbstract
 {
+    /**
+     * @var array
+     */
     protected $objectStack = array();
+
+    /**
+     * @var int
+     */
     protected $objectCount = -1;
 
-    protected $arrayStack  = array();
-    protected $arrayCount  = -1;
+    /**
+     * @var array
+     */
+    protected $arrayStack = array();
 
+    /**
+     * @var int
+     */
+    protected $arrayCount = -1;
+
+    /**
+     * @var object
+     */
     protected $lastObject;
+
+    /**
+     * @var array
+     */
     protected $lastArray;
 
+    /**
+     * @var array
+     */
     protected $stack = array();
 
     public function getObject()
     {
         return $this->lastObject;
+    }
+
+    public function getArray()
+    {
+        return $this->lastArray;
     }
 
     public function visitObjectStart($name)

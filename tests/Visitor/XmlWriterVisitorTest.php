@@ -34,7 +34,7 @@ use XMLWriter;
  */
 class XmlWriterVisitorTest extends VisitorTestCase
 {
-    public function testTraverse()
+    public function testTraverseObject()
     {
         $writer = new XMLWriter();
         $writer->openMemory();
@@ -42,9 +42,35 @@ class XmlWriterVisitorTest extends VisitorTestCase
         $writer->startDocument('1.0', 'UTF-8');
 
         $graph = new GraphTraverser();
-        $graph->traverse($this->getRecord(), new XmlWriterVisitor($writer));
+        $graph->traverse($this->getObject(), new XmlWriterVisitor($writer));
 
-        $this->assertXmlStringEqualsXmlString($this->getExpected(), $writer->outputMemory());
+        $this->assertXmlStringEqualsXmlString($this->getExpectedObject(), $writer->outputMemory());
+    }
+
+    public function testTraverseArray()
+    {
+        $writer = new XMLWriter();
+        $writer->openMemory();
+        $writer->setIndent(true);
+        $writer->startDocument('1.0', 'UTF-8');
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArray(), new XmlWriterVisitor($writer));
+
+        $this->assertXmlStringEqualsXmlString($this->getExpectedArray(), $writer->outputMemory());
+    }
+
+    public function testTraverseArrayNested()
+    {
+        $writer = new XMLWriter();
+        $writer->openMemory();
+        $writer->setIndent(true);
+        $writer->startDocument('1.0', 'UTF-8');
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayNested(), new XmlWriterVisitor($writer));
+
+        $this->assertXmlStringEqualsXmlString($this->getExpectedArrayNested(), $writer->outputMemory());
     }
 
     /**
@@ -107,7 +133,7 @@ XML;
         $this->assertXmlStringEqualsXmlString($expect, $writer->outputMemory());
     }
 
-    protected function getExpected()
+    protected function getExpectedObject()
     {
         return <<<XML
 <?xml version="1.0"?>
@@ -140,6 +166,39 @@ XML;
   <title>foo</title>
  </entry>
 </record>
+XML;
+    }
+
+    protected function getExpectedArray()
+    {
+        return <<<XML
+<?xml version="1.0"?>
+<collection>
+  <record>
+    <id>1</id>
+    <title>foobar</title>
+    <active>true</active>
+    <disabled>false</disabled>
+    <rating>12.45</rating>
+  </record>
+  <record>
+    <id>2</id>
+    <title>foo</title>
+    <active>false</active>
+    <disabled>false</disabled>
+    <rating>12.45</rating>
+  </record>
+</collection>
+XML;
+    }
+
+    protected function getExpectedArrayNested()
+    {
+        return <<<XML
+<?xml version="1.0"?>
+<collection>
+  <collection>foobar</collection>
+</collection>
 XML;
     }
 }

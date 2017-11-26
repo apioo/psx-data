@@ -33,14 +33,40 @@ use XMLWriter;
  */
 class XmlWriterVisitor extends VisitorAbstract
 {
+    /**
+     * @var \XMLWriter
+     */
     protected $writer;
+
+    /**
+     * @var string
+     */
     protected $namespace;
 
+    /**
+     * @var string
+     */
     protected $objectKey;
-    protected $arrayKey   = array();
-    protected $level      = 0;
+
+    /**
+     * @var array
+     */
+    protected $arrayKey = array();
+
+    /**
+     * @var integer
+     */
+    protected $level = 0;
+
+    /**
+     * @var boolean
+     */
     protected $arrayStart = false;
-    protected $arrayEnd   = false;
+
+    /**
+     * @var boolean
+     */
+    protected $arrayEnd = false;
 
     public function __construct(XMLWriter $writer, $namespace = null)
     {
@@ -94,21 +120,31 @@ class XmlWriterVisitor extends VisitorAbstract
 
     public function visitArrayStart()
     {
-        $this->arrayStart = true;
+        if ($this->level == 0) {
+            $this->writer->startElement('collection');
+        } else {
+            $this->arrayStart = true;
 
-        array_push($this->arrayKey, $this->objectKey);
+            array_push($this->arrayKey, $this->objectKey);
+        }
     }
 
     public function visitArrayEnd()
     {
-        $this->arrayEnd = true;
+        if ($this->level == 0) {
+            $this->writer->endElement();
+        } else {
+            $this->arrayEnd = true;
 
-        array_pop($this->arrayKey);
+            array_pop($this->arrayKey);
+        }
     }
 
     public function visitArrayValueStart($value)
     {
-        if (!$this->arrayStart) {
+        if ($this->level == 0) {
+            // noop
+        } elseif (!$this->arrayStart) {
             $this->writer->startElement(end($this->arrayKey));
         }
 
@@ -117,7 +153,11 @@ class XmlWriterVisitor extends VisitorAbstract
 
     public function visitArrayValueEnd()
     {
-        $this->writer->endElement();
+        if ($this->level == 0) {
+            // noop
+        } else {
+            $this->writer->endElement();
+        }
     }
 
     public function visitValue($value)

@@ -32,17 +32,37 @@ use PSX\Data\Visitor\HtmlWriterVisitor;
  */
 class HtmlWriterVisitorTest extends VisitorTestCase
 {
-    public function testTraverse()
+    public function testTraverseObject()
     {
         $visitor = new HtmlWriterVisitor();
 
         $graph = new GraphTraverser();
-        $graph->traverse($this->getRecord(), $visitor);
+        $graph->traverse($this->getObject(), $visitor);
 
-        $this->assertXmlStringEqualsXmlString($this->getExpected(), $visitor->getOutput());
+        $this->assertXmlStringEqualsXmlString($this->getExpectedObject(), $visitor->getOutput());
     }
 
-    protected function getExpected()
+    public function testTraverseArray()
+    {
+        $visitor = new HtmlWriterVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArray(), $visitor);
+
+        $this->assertXmlStringEqualsXmlString($this->getExpectedArray(), $visitor->getOutput());
+    }
+
+    public function testTraverseArrayNested()
+    {
+        $visitor = new HtmlWriterVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayNested(), $visitor);
+
+        $this->assertXmlStringEqualsXmlString($this->getExpectedArrayNested(), $visitor->getOutput());
+    }
+
+    protected function getExpectedObject()
     {
         return <<<HTML
 <dl data-name="record">
@@ -112,7 +132,58 @@ class HtmlWriterVisitorTest extends VisitorTestCase
         </ul>
     </dd>
 </dl>
+HTML;
+    }
 
+    protected function getExpectedArray()
+    {
+        return <<<HTML
+<?xml version="1.0"?>
+<ul>
+  <li>
+    <dl data-name="record">
+      <dt>id</dt>
+      <dd>1</dd>
+      <dt>title</dt>
+      <dd>foobar</dd>
+      <dt>active</dt>
+      <dd>true</dd>
+      <dt>disabled</dt>
+      <dd>false</dd>
+      <dt>rating</dt>
+      <dd>12.45</dd>
+    </dl>
+  </li>
+  <li>
+    <dl data-name="record">
+      <dt>id</dt>
+      <dd>2</dd>
+      <dt>title</dt>
+      <dd>foo</dd>
+      <dt>active</dt>
+      <dd>false</dd>
+      <dt>disabled</dt>
+      <dd>false</dd>
+      <dt>rating</dt>
+      <dd>12.45</dd>
+    </dl>
+  </li>
+</ul>
+HTML;
+    }
+
+    protected function getExpectedArrayNested()
+    {
+        return <<<HTML
+<?xml version="1.0"?>
+<ul>
+  <li>
+    <ul>
+      <li>foo</li>
+      <li>bar</li>
+    </ul>
+  </li>
+</ul>
 HTML;
     }
 }

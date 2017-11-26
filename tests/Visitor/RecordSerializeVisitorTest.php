@@ -33,17 +33,37 @@ use PSX\Record\Record;
  */
 class RecordSerializeVisitorTest extends VisitorTestCase
 {
-    public function testTraverse()
+    public function testTraverseObject()
     {
         $visitor = new RecordSerializeVisitor();
 
         $graph = new GraphTraverser();
-        $graph->traverse($this->getRecord(), $visitor);
+        $graph->traverse($this->getObject(), $visitor);
 
-        $this->assertEquals($this->getExpected(), $visitor->getObject());
+        $this->assertEquals($this->getExpectedObject(), $visitor->getObject());
     }
 
-    protected function getExpected()
+    public function testTraverseArray()
+    {
+        $visitor = new RecordSerializeVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArray(), $visitor);
+
+        $this->assertEquals($this->getExpectedArray(), $visitor->getArray());
+    }
+
+    public function testTraverseArrayNested()
+    {
+        $visitor = new RecordSerializeVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayNested(), $visitor);
+
+        $this->assertEquals($this->getExpectedArrayNested(), $visitor->getArray());
+    }
+
+    protected function getExpectedObject()
     {
         $person = new Record();
         $person->setProperty('title', 'Foo');
@@ -74,5 +94,31 @@ class RecordSerializeVisitorTest extends VisitorTestCase
         $record->setProperty('entry', $entry);
 
         return $record;
+    }
+
+    protected function getExpectedArray()
+    {
+        $record1 = new Record();
+        $record1->setProperty('id', 1);
+        $record1->setProperty('title', 'foobar');
+        $record1->setProperty('active', true);
+        $record1->setProperty('disabled', false);
+        $record1->setProperty('rating', 12.45);
+
+        $record2 = new Record();
+        $record2->setProperty('id', 2);
+        $record2->setProperty('title', 'foo');
+        $record2->setProperty('active', false);
+        $record2->setProperty('disabled', false);
+        $record2->setProperty('rating', 12.45);
+
+        return [$record1, $record2];
+    }
+
+    protected function getExpectedArrayNested()
+    {
+        return [
+            ['foo', 'bar']
+        ];
     }
 }

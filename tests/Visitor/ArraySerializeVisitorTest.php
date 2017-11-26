@@ -32,17 +32,37 @@ use PSX\Data\Visitor\ArraySerializeVisitor;
  */
 class ArraySerializeVisitorTest extends VisitorTestCase
 {
-    public function testTraverse()
+    public function testTraverseObject()
     {
         $visitor = new ArraySerializeVisitor();
 
         $graph = new GraphTraverser();
-        $graph->traverse($this->getRecord(), $visitor);
+        $graph->traverse($this->getObject(), $visitor);
 
-        $this->assertEquals($this->getExpected(), $visitor->getObject());
+        $this->assertEquals($this->getExpectedObject(), $visitor->getObject());
     }
 
-    protected function getExpected()
+    public function testTraverseArray()
+    {
+        $visitor = new ArraySerializeVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArray(), $visitor);
+
+        $this->assertEquals($this->getExpectedArray(), $visitor->getArray());
+    }
+
+    public function testTraverseArrayNested()
+    {
+        $visitor = new ArraySerializeVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayNested(), $visitor);
+
+        $this->assertEquals($this->getExpectedArrayNested(), $visitor->getArray());
+    }
+
+    protected function getExpectedObject()
     {
         $person = array();
         $person['title'] = 'Foo';
@@ -73,5 +93,29 @@ class ArraySerializeVisitorTest extends VisitorTestCase
         $record['entry'] = $entry;
 
         return $record;
+    }
+
+    protected function getExpectedArray()
+    {
+        $record1['id'] = 1;
+        $record1['title'] = 'foobar';
+        $record1['active'] = true;
+        $record1['disabled'] = false;
+        $record1['rating'] = 12.45;
+
+        $record2['id'] = 2;
+        $record2['title'] = 'foo';
+        $record2['active'] = false;
+        $record2['disabled'] = false;
+        $record2['rating'] = 12.45;
+
+        return [$record1, $record2];
+    }
+
+    protected function getExpectedArrayNested()
+    {
+        return [
+            ['foo', 'bar']
+        ];
     }
 }

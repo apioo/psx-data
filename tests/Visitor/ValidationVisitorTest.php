@@ -39,7 +39,7 @@ class ValidationVisitorTest extends VisitorTestCase
         $validator = new SpyValidator();
 
         $graph = new GraphTraverser();
-        $graph->traverse($this->getRecord(), new ValidationVisitor($validator));
+        $graph->traverse($this->getObject(), new ValidationVisitor($validator));
 
         $calls  = $validator->getCalls();
         $expect = [

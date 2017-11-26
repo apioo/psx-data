@@ -37,7 +37,14 @@ class JsonxWriterVisitor extends VisitorAbstract
     const XMLNS  = 'http://www.ibm.com/xmlns/prod/2009/jsonx';
     const PREFIX = 'json';
 
+    /**
+     * @var \XMLWriter
+     */
     protected $writer;
+
+    /**
+     * @var integer
+     */
     protected $level = 0;
 
     public function __construct(XMLWriter $writer)
@@ -76,10 +83,20 @@ class JsonxWriterVisitor extends VisitorAbstract
 
     public function visitArrayStart()
     {
+        if ($this->level == 0) {
+            $this->writer->startElementNS(self::PREFIX, 'array', self::XMLNS);
+        }
+
+        $this->level++;
     }
 
     public function visitArrayEnd()
     {
+        $this->level--;
+
+        if ($this->level == 0) {
+            $this->writer->endElement();
+        }
     }
 
     public function visitArrayValueStart($value)
