@@ -1,4 +1,8 @@
 
+### 2.1.2 (2017-11-26)
+
+* Graph traverser handle non object values
+
 ### 2.1.1 (2017-11-03)
 
 * Handle null values
