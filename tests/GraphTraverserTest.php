@@ -34,9 +34,9 @@ use PSX\Record\Record;
  */
 class GraphTraverserTest extends VisitorTestCase
 {
-    public function testTraverse()
+    public function testTraverseObject()
     {
-        $record  = $this->getRecord();
+        $record  = $this->getObject();
         $visitor = new StdClassSerializeVisitor();
         $graph   = new GraphTraverser();
 
@@ -83,15 +83,36 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testTraverseNoObject()
+    public function testTraverseArray()
     {
-        $record = $this->getRecord();
-        $graph  = new GraphTraverser();
+        $record  = $this->getArray();
+        $visitor = new StdClassSerializeVisitor();
+        $graph   = new GraphTraverser();
 
-        $graph->traverse('foo', new StdClassSerializeVisitor());
+        $graph->traverse($record, $visitor);
+
+        $expect = <<<JSON
+[
+    {
+        "id": 1,
+        "title": "foobar",
+        "active": true,
+        "disabled": false,
+        "rating": 12.45
+    },
+    {
+        "id": 2,
+        "title": "foo",
+        "active": false,
+        "disabled": false,
+        "rating": 12.45
+    }
+]
+JSON;
+
+        $actual = json_encode($visitor->getArray(), JSON_PRETTY_PRINT);
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
     public function testTraverseReveal()
