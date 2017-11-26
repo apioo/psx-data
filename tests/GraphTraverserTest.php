@@ -115,6 +115,74 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
+    /**
+     * @dataProvider isObjectProvider
+     */
+    public function testIsObject($expect, $data)
+    {
+        $this->assertSame($expect, GraphTraverser::isObject($data));
+    }
+
+    public function isObjectProvider()
+    {
+        return [
+            [true, new Record()],
+            [true, new \stdClass()],
+            [true, ['foo' => 'bar']],
+            [false, []],
+            [false, ['foo']],
+            [false, 'foo'],
+            [false, null],
+        ];
+    }
+
+    /**
+     * @dataProvider isArrayProvider
+     */
+    public function testIsArray($expect, $data)
+    {
+        $this->assertSame($expect, GraphTraverser::isArray($data));
+    }
+
+    public function isArrayProvider()
+    {
+        return [
+            [true, []],
+            [true, ['foo']],
+            [true, ['foo' => 'bar']],
+            [false, new \stdClass()],
+            [false, 'foo'],
+            [false, null],
+        ];
+    }
+
+    /**
+     * @dataProvider isEmptyProvider
+     */
+    public function testIsEmpty($expect, $data)
+    {
+        $this->assertSame($expect, GraphTraverser::isEmpty($data));
+    }
+
+    public function isEmptyProvider()
+    {
+        return [
+            [true, new Record()],
+            [true, new \stdClass()],
+            [true, []],
+            [true, ''],
+            [true, 0],
+            [true, 0.0],
+            [true, '0'],
+            [true, null],
+            [true, false],
+            [false, Record::fromArray(['foo' => 'bar'])],
+            [false, (object) ['foo' => 'bar']],
+            [false, ['foo' => 'bar']],
+            [false, 'foo'],
+        ];
+    }
+
     public function testTraverseReveal()
     {
         $graph   = new GraphTraverser();

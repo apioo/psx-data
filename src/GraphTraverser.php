@@ -157,4 +157,23 @@ class GraphTraverser
     {
         return is_array($value);
     }
+
+    /**
+     * Checks whether a value is empty
+     * 
+     * @param mixed $value
+     * @return boolean
+     */
+    public static function isEmpty($value)
+    {
+        if (empty($value)) {
+            return true;
+        } elseif ($value instanceof \stdClass) {
+            return count((array) $value) === 0;
+        } elseif ($value instanceof RecordInterface) {
+            return count($value->getProperties()) === 0;
+        }
+
+        return false;
+    }
 }
