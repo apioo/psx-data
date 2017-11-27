@@ -20,8 +20,10 @@
 
 namespace PSX\Data\Visitor;
 
+use PSX\Data\GraphTraverser;
 use PSX\Data\VisitorAbstract;
 use PSX\DateTime\DateTime;
+use PSX\Uri\Uri;
 use XMLWriter;
 
 /**
@@ -44,29 +46,9 @@ class XmlWriterVisitor extends VisitorAbstract
     protected $namespace;
 
     /**
-     * @var string
-     */
-    protected $objectKey;
-
-    /**
-     * @var array
-     */
-    protected $arrayKey = array();
-
-    /**
      * @var integer
      */
     protected $level = 0;
-
-    /**
-     * @var boolean
-     */
-    protected $arrayStart = false;
-
-    /**
-     * @var boolean
-     */
-    protected $arrayEnd = false;
 
     public function __construct(XMLWriter $writer, $namespace = null)
     {
@@ -78,6 +60,7 @@ class XmlWriterVisitor extends VisitorAbstract
     {
         if ($this->level == 0) {
             $this->writer->startElement($name);
+            $this->writer->writeAttribute('type', 'object');
 
             if ($this->namespace !== null) {
                 $this->writer->writeAttribute('xmlns', $this->namespace);
@@ -106,58 +89,43 @@ class XmlWriterVisitor extends VisitorAbstract
             $key = '_' . $key;
         }
 
-        $this->writer->startElement($this->objectKey = $key);
+        $this->writer->startElement($key);
+        $this->writeTypeAttribute($value);
     }
 
     public function visitObjectValueEnd()
     {
-        if (!$this->arrayEnd) {
-            $this->writer->endElement();
-        }
-
-        $this->arrayEnd = false;
+        $this->writer->endElement();
     }
 
     public function visitArrayStart()
     {
         if ($this->level == 0) {
             $this->writer->startElement('collection');
-        } else {
-            $this->arrayStart = true;
-
-            array_push($this->arrayKey, $this->objectKey);
+            $this->writer->writeAttribute('type', 'array');
         }
+
+        $this->level++;
     }
 
     public function visitArrayEnd()
     {
+        $this->level--;
+
         if ($this->level == 0) {
             $this->writer->endElement();
-        } else {
-            $this->arrayEnd = true;
-
-            array_pop($this->arrayKey);
         }
     }
 
     public function visitArrayValueStart($value)
     {
-        if ($this->level == 0) {
-            // noop
-        } elseif (!$this->arrayStart) {
-            $this->writer->startElement(end($this->arrayKey));
-        }
-
-        $this->arrayStart = false;
+        $this->writer->startElement('entry');
+        $this->writeTypeAttribute($value);
     }
 
     public function visitArrayValueEnd()
     {
-        if ($this->level == 0) {
-            // noop
-        } else {
-            $this->writer->endElement();
-        }
+        $this->writer->endElement();
     }
 
     public function visitValue($value)
@@ -173,6 +141,34 @@ class XmlWriterVisitor extends VisitorAbstract
             return $value ? 'true' : 'false';
         } else {
             return (string) $value;
+        }
+    }
+
+    protected function writeTypeAttribute($value)
+    {
+        $type = null;
+        if (is_string($value)) {
+            $type = 'string';
+        } elseif (is_int($value)) {
+            $type = 'integer';
+        } elseif (is_float($value)) {
+            $type = 'float';
+        } elseif (is_bool($value)) {
+            $type = 'boolean';
+        } elseif (GraphTraverser::isObject($value)) {
+            $type = 'object';
+        } elseif (GraphTraverser::isArray($value)) {
+            $type = 'array';
+        } elseif (is_null($value)) {
+            $type = 'null';
+        } elseif ($value instanceof \DateTime) {
+            $type = 'date-time';
+        } elseif ($value instanceof Uri) {
+            $type = 'uri';
+        }
+
+        if (!empty($type)) {
+            $this->writer->writeAttribute('type', $type);
         }
     }
 }

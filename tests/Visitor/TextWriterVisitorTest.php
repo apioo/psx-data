@@ -63,6 +63,16 @@ class TextWriterVisitorTest extends VisitorTestCase
         $this->assertEquals($this->getExpectedArrayNested(), $visitor->getOutput());
     }
 
+    public function testTraverseArrayScalar()
+    {
+        $visitor = new TextWriterVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayScalar(), $visitor);
+
+        $this->assertEquals($this->getExpectedArrayScalar(), $visitor->getOutput());
+    }
+
     public function testTraverseTextLong()
     {
         $visitor = new TextWriterVisitor();
@@ -154,6 +164,17 @@ Array[
         foo
         bar
     ]
+]
+
+TEXT;
+    }
+
+    protected function getExpectedArrayScalar()
+    {
+        return <<<TEXT
+Array[
+    foo
+    bar
 ]
 
 TEXT;

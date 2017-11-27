@@ -51,15 +51,15 @@ class EntryTest extends \PHPUnit_Framework_TestCase
         $expected = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <entry xmlns="http://www.w3.org/2005/Atom">
-	<title>Atom-Powered Robots Run Amok</title>
-	<id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
-	<updated>2003-12-13T18:30:02+00:00</updated>
-	<content type="application/xml">
-		<foo>
-			<title>bar</title>
-			<bar>foo</bar>
-		</foo>
-	</content>
+  <title>Atom-Powered Robots Run Amok</title>
+  <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+  <updated>2003-12-13T18:30:02+00:00</updated>
+  <content type="application/xml">
+    <foo type="object">
+      <title type="string">bar</title>
+      <bar type="string">foo</bar>
+    </foo>
+  </content>
 </entry>
 XML;
 

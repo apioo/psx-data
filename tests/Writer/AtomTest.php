@@ -161,7 +161,7 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <entry xmlns="http://www.w3.org/2005/Atom">
   <content type="application/xml">
-    <record />
+    <record type="object"/>
   </content>
 </entry>
 XML;
@@ -252,11 +252,11 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <entry xmlns="http://www.w3.org/2005/Atom">
   <content type="application/xml">
-    <record>
-      <id>1</id>
-      <author>foo</author>
-      <title>bar</title>
-      <content>foobar</content>
+    <record type="object">
+      <id type="integer">1</id>
+      <author type="string">foo</author>
+      <title type="string">bar</title>
+      <content type="string">foobar</content>
     </record>
   </content>
 </entry>

@@ -62,6 +62,16 @@ class ArraySerializeVisitorTest extends VisitorTestCase
         $this->assertEquals($this->getExpectedArrayNested(), $visitor->getArray());
     }
 
+    public function testTraverseArrayScalar()
+    {
+        $visitor = new ArraySerializeVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayScalar(), $visitor);
+
+        $this->assertEquals($this->getExpectedArrayScalar(), $visitor->getArray());
+    }
+
     protected function getExpectedObject()
     {
         $person = array();
@@ -117,5 +127,10 @@ class ArraySerializeVisitorTest extends VisitorTestCase
         return [
             ['foo', 'bar']
         ];
+    }
+
+    protected function getExpectedArrayScalar()
+    {
+        return ['foo', 'bar'];
     }
 }

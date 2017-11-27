@@ -39,13 +39,13 @@ class XmlTest extends WriterTestCase
         $actual = $writer->write($this->getRecord());
 
         $expect = <<<TEXT
-<?xml version="1.0" encoding="UTF-8"?>
-<record>
-  <id>1</id>
-  <author>foo</author>
-  <title>bar</title>
-  <content>foobar</content>
-  <date>2012-03-11T13:37:21Z</date>
+<?xml version="1.0"?>
+<record type="object">
+  <id type="integer">1</id>
+  <author type="string">foo</author>
+  <title type="string">bar</title>
+  <content type="string">foobar</content>
+  <date type="date-time">2012-03-11T13:37:21Z</date>
 </record>
 TEXT;
 
@@ -58,24 +58,26 @@ TEXT;
         $actual = $writer->write($this->getResultSet());
 
         $expect = <<<TEXT
-<?xml version="1.0" encoding="UTF-8"?>
-<collection>
-  <totalResults>2</totalResults>
-  <startIndex>0</startIndex>
-  <itemsPerPage>8</itemsPerPage>
-  <entry>
-    <id>1</id>
-    <author>foo</author>
-    <title>bar</title>
-    <content>foobar</content>
-    <date>2012-03-11T13:37:21Z</date>
-  </entry>
-  <entry>
-    <id>2</id>
-    <author>foo</author>
-    <title>bar</title>
-    <content>foobar</content>
-    <date>2012-03-11T13:37:21Z</date>
+<?xml version="1.0"?>
+<collection type="object">
+  <totalResults type="integer">2</totalResults>
+  <startIndex type="integer">0</startIndex>
+  <itemsPerPage type="integer">8</itemsPerPage>
+  <entry type="array">
+    <entry type="object">
+      <id type="integer">1</id>
+      <author type="string">foo</author>
+      <title type="string">bar</title>
+      <content type="string">foobar</content>
+      <date type="date-time">2012-03-11T13:37:21Z</date>
+    </entry>
+    <entry type="object">
+      <id type="integer">2</id>
+      <author type="string">foo</author>
+      <title type="string">bar</title>
+      <content type="string">foobar</content>
+      <date type="date-time">2012-03-11T13:37:21Z</date>
+    </entry>
   </entry>
 </collection>
 TEXT;
@@ -89,26 +91,26 @@ TEXT;
         $actual = $writer->write($this->getComplexRecord());
 
         $expect = <<<TEXT
-<?xml version="1.0" encoding="UTF-8"?>
-<activity>
-  <verb>post</verb>
-  <actor>
-    <id>tag:example.org,2011:martin</id>
-    <objectType>person</objectType>
-    <displayName>Martin Smith</displayName>
-    <url>http://example.org/martin</url>
+<?xml version="1.0"?>
+<activity type="object">
+  <verb type="string">post</verb>
+  <actor type="object">
+    <id type="string">tag:example.org,2011:martin</id>
+    <objectType type="string">person</objectType>
+    <displayName type="string">Martin Smith</displayName>
+    <url type="string">http://example.org/martin</url>
   </actor>
-  <object>
-    <id>tag:example.org,2011:abc123/xyz</id>
-    <url>http://example.org/blog/2011/02/entry</url>
+  <object type="object">
+    <id type="string">tag:example.org,2011:abc123/xyz</id>
+    <url type="string">http://example.org/blog/2011/02/entry</url>
   </object>
-  <target>
-    <id>tag:example.org,2011:abc123</id>
-    <objectType>blog</objectType>
-    <displayName>Martin's Blog</displayName>
-    <url>http://example.org/blog/</url>
+  <target type="object">
+    <id type="string">tag:example.org,2011:abc123</id>
+    <objectType type="string">blog</objectType>
+    <displayName type="string">Martin's Blog</displayName>
+    <url type="string">http://example.org/blog/</url>
   </target>
-  <published>2011-02-10T15:04:55Z</published>
+  <published type="date-time">2011-02-10T15:04:55Z</published>
 </activity>
 TEXT;
 
@@ -122,7 +124,7 @@ TEXT;
 
         $expect = <<<TEXT
 <?xml version="1.0" encoding="UTF-8"?>
-<record />
+<record type="object"/>
 TEXT;
 
         $this->assertXmlStringEqualsXmlString($expect, $actual);

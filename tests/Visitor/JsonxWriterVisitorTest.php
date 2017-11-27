@@ -72,6 +72,19 @@ class JsonxWriterVisitorTest extends VisitorTestCase
         $this->assertXmlStringEqualsXmlString($this->getExpectedArrayNested(), $writer->outputMemory());
     }
 
+    public function testTraverseArrayScalar()
+    {
+        $writer = new XMLWriter();
+        $writer->openMemory();
+        $writer->setIndent(true);
+        $writer->startDocument('1.0', 'UTF-8');
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayScalar(), new JsonxWriterVisitor($writer));
+
+        $this->assertXmlStringEqualsXmlString($this->getExpectedArrayScalar(), $writer->outputMemory());
+    }
+
     public function testTraverseNullValue()
     {
         $writer = new XMLWriter();
@@ -169,6 +182,17 @@ XML;
     <json:string>foo</json:string>
     <json:string>bar</json:string>
   </json:array>
+</json:array>
+XML;
+    }
+
+    protected function getExpectedArrayScalar()
+    {
+        return <<<XML
+<?xml version="1.0"?>
+<json:array xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+  <json:string>foo</json:string>
+  <json:string>bar</json:string>
 </json:array>
 XML;
     }

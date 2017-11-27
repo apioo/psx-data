@@ -62,6 +62,16 @@ class HtmlWriterVisitorTest extends VisitorTestCase
         $this->assertXmlStringEqualsXmlString($this->getExpectedArrayNested(), $visitor->getOutput());
     }
 
+    public function testTraverseArrayScalar()
+    {
+        $visitor = new HtmlWriterVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayScalar(), $visitor);
+
+        $this->assertXmlStringEqualsXmlString($this->getExpectedArrayScalar(), $visitor->getOutput());
+    }
+
     protected function getExpectedObject()
     {
         return <<<HTML
@@ -183,6 +193,17 @@ HTML;
       <li>bar</li>
     </ul>
   </li>
+</ul>
+HTML;
+    }
+
+    protected function getExpectedArrayScalar()
+    {
+        return <<<HTML
+<?xml version="1.0"?>
+<ul>
+  <li>foo</li>
+  <li>bar</li>
 </ul>
 HTML;
     }

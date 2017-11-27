@@ -92,4 +92,9 @@ class VisitorTestCase extends \PHPUnit_Framework_TestCase
             ['foo', 'bar']
         ];
     }
+
+    protected function getArrayScalar()
+    {
+        return ['foo', 'bar'];
+    }
 }

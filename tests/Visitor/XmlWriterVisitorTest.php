@@ -73,6 +73,19 @@ class XmlWriterVisitorTest extends VisitorTestCase
         $this->assertXmlStringEqualsXmlString($this->getExpectedArrayNested(), $writer->outputMemory());
     }
 
+    public function testTraverseArrayScalar()
+    {
+        $writer = new XMLWriter();
+        $writer->openMemory();
+        $writer->setIndent(true);
+        $writer->startDocument('1.0', 'UTF-8');
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayScalar(), new XmlWriterVisitor($writer));
+
+        $this->assertXmlStringEqualsXmlString($this->getExpectedArrayScalar(), $writer->outputMemory());
+    }
+
     /**
      * A XML element name can only contain alnum and _. All other characters are
      * replaced with an _
@@ -98,8 +111,8 @@ class XmlWriterVisitorTest extends VisitorTestCase
 
         $expect = <<<XML
 <?xml version="1.0"?>
-<record>
-  <________________________________________________0123456789_______ABCDEFGHIJKLMNOPQRSTUVWXYZ______abcdefghijklmnopqrstuvwxyz_____>foo</________________________________________________0123456789_______ABCDEFGHIJKLMNOPQRSTUVWXYZ______abcdefghijklmnopqrstuvwxyz_____>
+<record type="object">
+  <________________________________________________0123456789_______ABCDEFGHIJKLMNOPQRSTUVWXYZ______abcdefghijklmnopqrstuvwxyz_____ type="string">foo</________________________________________________0123456789_______ABCDEFGHIJKLMNOPQRSTUVWXYZ______abcdefghijklmnopqrstuvwxyz_____>
 </record>
 XML;
 
@@ -125,8 +138,8 @@ XML;
 
         $expect = <<<XML
 <?xml version="1.0"?>
-<record>
-  <_09foo>foo</_09foo>
+<record type="object">
+  <_09foo type="string">foo</_09foo>
 </record>
 XML;
 
@@ -137,34 +150,38 @@ XML;
     {
         return <<<XML
 <?xml version="1.0"?>
-<record>
- <id>1</id>
- <title>foobar</title>
- <active>true</active>
- <disabled>false</disabled>
- <rating>12.45</rating>
- <age/>
- <date>2014-01-01T12:34:47+01:00</date>
- <href>http://foo.com</href>
- <person>
-  <title>Foo</title>
- </person>
- <category>
-  <general>
-   <news>
-    <technic>Foo</technic>
-   </news>
-  </general>
- </category>
- <tags>bar</tags>
- <tags>foo</tags>
- <tags>test</tags>
- <entry>
-  <title>bar</title>
- </entry>
- <entry>
-  <title>foo</title>
- </entry>
+<record type="object">
+  <id type="integer">1</id>
+  <title type="string">foobar</title>
+  <active type="boolean">true</active>
+  <disabled type="boolean">false</disabled>
+  <rating type="float">12.45</rating>
+  <age type="null"/>
+  <date type="date-time">2014-01-01T12:34:47+01:00</date>
+  <href type="uri">http://foo.com</href>
+  <person type="object">
+    <title type="string">Foo</title>
+  </person>
+  <category type="object">
+    <general type="object">
+      <news type="object">
+        <technic type="string">Foo</technic>
+      </news>
+    </general>
+  </category>
+  <tags type="array">
+    <entry type="string">bar</entry>
+    <entry type="string">foo</entry>
+    <entry type="string">test</entry>
+  </tags>
+  <entry type="array">
+    <entry type="object">
+      <title type="string">bar</title>
+    </entry>
+    <entry type="object">
+      <title type="string">foo</title>
+    </entry>
+  </entry>
 </record>
 XML;
     }
@@ -173,21 +190,21 @@ XML;
     {
         return <<<XML
 <?xml version="1.0"?>
-<collection>
-  <record>
-    <id>1</id>
-    <title>foobar</title>
-    <active>true</active>
-    <disabled>false</disabled>
-    <rating>12.45</rating>
-  </record>
-  <record>
-    <id>2</id>
-    <title>foo</title>
-    <active>false</active>
-    <disabled>false</disabled>
-    <rating>12.45</rating>
-  </record>
+<collection type="array">
+  <entry type="object">
+    <id type="integer">1</id>
+    <title type="string">foobar</title>
+    <active type="boolean">true</active>
+    <disabled type="boolean">false</disabled>
+    <rating type="float">12.45</rating>
+  </entry>
+  <entry type="object">
+    <id type="integer">2</id>
+    <title type="string">foo</title>
+    <active type="boolean">false</active>
+    <disabled type="boolean">false</disabled>
+    <rating type="float">12.45</rating>
+  </entry>
 </collection>
 XML;
     }
@@ -196,8 +213,22 @@ XML;
     {
         return <<<XML
 <?xml version="1.0"?>
-<collection>
-  <collection>foobar</collection>
+<collection type="array">
+  <entry type="array">
+    <entry type="string">foo</entry>
+    <entry type="string">bar</entry>
+  </entry>
+</collection>
+XML;
+    }
+
+    protected function getExpectedArrayScalar()
+    {
+        return <<<XML
+<?xml version="1.0"?>
+<collection type="array">
+  <entry type="string">foo</entry>
+  <entry type="string">bar</entry>
 </collection>
 XML;
     }

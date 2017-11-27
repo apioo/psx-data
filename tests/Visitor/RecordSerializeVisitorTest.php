@@ -63,6 +63,16 @@ class RecordSerializeVisitorTest extends VisitorTestCase
         $this->assertEquals($this->getExpectedArrayNested(), $visitor->getArray());
     }
 
+    public function testTraverseArrayScalar()
+    {
+        $visitor = new RecordSerializeVisitor();
+
+        $graph = new GraphTraverser();
+        $graph->traverse($this->getArrayScalar(), $visitor);
+
+        $this->assertEquals($this->getExpectedArrayScalar(), $visitor->getArray());
+    }
+
     protected function getExpectedObject()
     {
         $person = new Record();
@@ -120,5 +130,10 @@ class RecordSerializeVisitorTest extends VisitorTestCase
         return [
             ['foo', 'bar']
         ];
+    }
+
+    protected function getExpectedArrayScalar()
+    {
+        return ['foo', 'bar'];
     }
 }

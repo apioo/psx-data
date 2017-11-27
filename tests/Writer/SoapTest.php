@@ -42,16 +42,16 @@ class SoapTest extends WriterTestCase
         $actual = $writer->write($this->getRecord());
 
         $expect = <<<TEXT
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-	<getResponse xmlns="http://foo.bar">
-	  <id>1</id>
-	  <author>foo</author>
-	  <title>bar</title>
-	  <content>foobar</content>
-	  <date>2012-03-11T13:37:21Z</date>
-	</getResponse>
+    <getResponse xmlns="http://foo.bar" type="object">
+      <id type="integer">1</id>
+      <author type="string">foo</author>
+      <title type="string">bar</title>
+      <content type="string">foobar</content>
+      <date type="date-time">2012-03-11T13:37:21Z</date>
+    </getResponse>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -68,28 +68,30 @@ TEXT;
         $actual = $writer->write($this->getResultSet());
 
         $expect = <<<TEXT
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-	<getResponse xmlns="http://foo.bar">
-	  <totalResults>2</totalResults>
-	  <startIndex>0</startIndex>
-	  <itemsPerPage>8</itemsPerPage>
-	  <entry>
-	    <id>1</id>
-	    <author>foo</author>
-	    <title>bar</title>
-	    <content>foobar</content>
-	    <date>2012-03-11T13:37:21Z</date>
-	  </entry>
-	  <entry>
-	    <id>2</id>
-	    <author>foo</author>
-	    <title>bar</title>
-	    <content>foobar</content>
-	    <date>2012-03-11T13:37:21Z</date>
-	  </entry>
-	</getResponse>
+    <getResponse xmlns="http://foo.bar" type="object">
+      <totalResults type="integer">2</totalResults>
+      <startIndex type="integer">0</startIndex>
+      <itemsPerPage type="integer">8</itemsPerPage>
+      <entry type="array">
+        <entry type="object">
+          <id type="integer">1</id>
+          <author type="string">foo</author>
+          <title type="string">bar</title>
+          <content type="string">foobar</content>
+          <date type="date-time">2012-03-11T13:37:21Z</date>
+        </entry>
+        <entry type="object">
+          <id type="integer">2</id>
+          <author type="string">foo</author>
+          <title type="string">bar</title>
+          <content type="string">foobar</content>
+          <date type="date-time">2012-03-11T13:37:21Z</date>
+        </entry>
+      </entry>
+    </getResponse>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -106,29 +108,29 @@ TEXT;
         $actual = $writer->write($this->getComplexRecord());
 
         $expect = <<<TEXT
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-	<getResponse xmlns="http://foo.bar">
-	  <verb>post</verb>
-	  <actor>
-	    <id>tag:example.org,2011:martin</id>
-	    <objectType>person</objectType>
-	    <displayName>Martin Smith</displayName>
-	    <url>http://example.org/martin</url>
-	  </actor>
-	  <object>
-	    <id>tag:example.org,2011:abc123/xyz</id>
-	    <url>http://example.org/blog/2011/02/entry</url>
-	  </object>
-	  <target>
-	    <id>tag:example.org,2011:abc123</id>
-	    <objectType>blog</objectType>
-	    <displayName>Martin's Blog</displayName>
-	    <url>http://example.org/blog/</url>
-	  </target>
-	  <published>2011-02-10T15:04:55Z</published>
-	</getResponse>
+    <getResponse xmlns="http://foo.bar" type="object">
+      <verb type="string">post</verb>
+      <actor type="object">
+        <id type="string">tag:example.org,2011:martin</id>
+        <objectType type="string">person</objectType>
+        <displayName type="string">Martin Smith</displayName>
+        <url type="string">http://example.org/martin</url>
+      </actor>
+      <object type="object">
+        <id type="string">tag:example.org,2011:abc123/xyz</id>
+        <url type="string">http://example.org/blog/2011/02/entry</url>
+      </object>
+      <target type="object">
+        <id type="string">tag:example.org,2011:abc123</id>
+        <objectType type="string">blog</objectType>
+        <displayName type="string">Martin's Blog</displayName>
+        <url type="string">http://example.org/blog/</url>
+      </target>
+      <published type="date-time">2011-02-10T15:04:55Z</published>
+    </getResponse>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -145,7 +147,7 @@ TEXT;
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <Response xmlns="http://foo.bar"/>
+    <Response xmlns="http://foo.bar" type="object"/>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -183,22 +185,22 @@ TEXT;
         $actual = $writer->write($record);
 
         $expect = <<<TEXT
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-	<soap:Fault>
-	  <faultcode>soap:Server</faultcode>
-	  <faultstring>Foobar</faultstring>
-	  <detail>
-	    <error xmlns="http://foo.bar">
-	      <success>false</success>
-	      <title>An error occured</title>
-	      <message>Foobar</message>
-	      <trace>Foo</trace>
-	      <context>Bar</context>
-	    </error>
-	  </detail>
-	</soap:Fault>
+    <soap:Fault>
+      <faultcode>soap:Server</faultcode>
+      <faultstring>Foobar</faultstring>
+      <detail>
+        <error xmlns="http://foo.bar" type="object">
+          <success type="boolean">false</success>
+          <title type="string">An error occured</title>
+          <message type="string">Foobar</message>
+          <trace type="string">Foo</trace>
+          <context type="string">Bar</context>
+        </error>
+      </detail>
+    </soap:Fault>
   </soap:Body>
 </soap:Envelope>
 TEXT;
