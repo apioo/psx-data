@@ -33,7 +33,7 @@ use PSX\Http\MediaType;
  */
 class XmlTest extends WriterTestCase
 {
-    public function testWrite()
+    public function testWriteRecord()
     {
         $writer = new Xml();
         $actual = $writer->write($this->getRecord());
@@ -52,10 +52,10 @@ TEXT;
         $this->assertXmlStringEqualsXmlString($expect, $actual);
     }
 
-    public function testWriteResultSet()
+    public function testWriteCollection()
     {
         $writer = new Xml();
-        $actual = $writer->write($this->getResultSet());
+        $actual = $writer->write($this->getCollection());
 
         $expect = <<<TEXT
 <?xml version="1.0"?>
@@ -88,7 +88,7 @@ TEXT;
     public function testWriteComplex()
     {
         $writer = new Xml();
-        $actual = $writer->write($this->getComplexRecord());
+        $actual = $writer->write($this->getComplex());
 
         $expect = <<<TEXT
 <?xml version="1.0"?>
@@ -120,7 +120,7 @@ TEXT;
     public function testWriteEmpty()
     {
         $writer = new Xml();
-        $actual = $writer->write($this->getEmptyRecord());
+        $actual = $writer->write($this->getEmpty());
 
         $expect = <<<TEXT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -128,6 +128,60 @@ TEXT;
 TEXT;
 
         $this->assertXmlStringEqualsXmlString($expect, $actual);
+    }
+
+    public function testWriteArray()
+    {
+        $writer = new Xml();
+        $actual = $writer->write($this->getArray());
+
+        $expect = <<<TEXT
+<?xml version="1.0" encoding="UTF-8"?>
+<collection type="array">
+ <entry type="object">
+  <id type="integer">1</id>
+  <author type="string">foo</author>
+  <title type="string">bar</title>
+  <content type="string">foobar</content>
+  <date type="date-time">2012-03-11T13:37:21Z</date>
+ </entry>
+ <entry type="object">
+  <id type="integer">2</id>
+  <author type="string">foo</author>
+  <title type="string">bar</title>
+  <content type="string">foobar</content>
+  <date type="date-time">2012-03-11T13:37:21Z</date>
+ </entry>
+</collection>
+TEXT;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    public function testWriteArrayScalar()
+    {
+        $writer = new Xml();
+        $actual = $writer->write($this->getArrayScalar());
+
+        $expect = <<<TEXT
+<?xml version="1.0" encoding="UTF-8"?>
+<collection type="array">
+ <entry type="string">foo</entry>
+ <entry type="string">bar</entry>
+</collection>
+TEXT;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Value must be an array or object
+     */
+    public function testWriteScalar()
+    {
+        $writer = new Xml();
+        $writer->write($this->getScalar());
     }
 
     public function testIsContentTypeSupported()

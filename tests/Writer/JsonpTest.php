@@ -33,7 +33,7 @@ use PSX\Http\MediaType;
  */
 class JsonpTest extends WriterTestCase
 {
-    public function testWrite()
+    public function testWriteRecord()
     {
         $writer = new Jsonp();
         $writer->setCallbackName('foo');
@@ -52,11 +52,11 @@ TEXT;
         $this->assertJsonp($expect, $actual);
     }
 
-    public function testWriteResultSet()
+    public function testWriteCollection()
     {
         $writer = new Jsonp();
         $writer->setCallbackName('foo');
-        $actual = $writer->write($this->getResultSet());
+        $actual = $writer->write($this->getCollection());
 
         $expect = <<<TEXT
 foo({
@@ -89,7 +89,7 @@ TEXT;
     {
         $writer = new Jsonp();
         $writer->setCallbackName('foo');
-        $actual = $writer->write($this->getComplexRecord());
+        $actual = $writer->write($this->getComplex());
 
         $expect = <<<TEXT
 foo({
@@ -121,13 +121,65 @@ TEXT;
     {
         $writer = new Jsonp();
         $writer->setCallbackName('foo');
-        $actual = $writer->write($this->getEmptyRecord());
+        $actual = $writer->write($this->getEmpty());
 
         $expect = <<<TEXT
 foo({})
 TEXT;
 
         $this->assertJsonp($expect, $actual);
+    }
+
+    public function testWriteArray()
+    {
+        $writer = new Jsonp();
+        $writer->setCallbackName('foo');
+        $actual = $writer->write($this->getArray());
+
+        $expect = <<<TEXT
+foo([
+    {
+        "id": 1,
+        "author": "foo",
+        "title": "bar",
+        "content": "foobar",
+        "date": "2012-03-11T13:37:21Z"
+    },
+    {
+        "id": 2,
+        "author": "foo",
+        "title": "bar",
+        "content": "foobar",
+        "date": "2012-03-11T13:37:21Z"
+    }
+])
+TEXT;
+
+        $this->assertJsonp($expect, $actual);
+    }
+
+    public function testWriteArrayScalar()
+    {
+        $writer = new Jsonp();
+        $writer->setCallbackName('foo');
+        $actual = $writer->write($this->getArrayScalar());
+
+        $expect = <<<TEXT
+foo(["foo", "bar"])
+TEXT;
+
+        $this->assertJsonp($expect, $actual);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Value must be an array or object
+     */
+    public function testWriteScalar()
+    {
+        $writer = new Jsonp();
+        $writer->setCallbackName('foo');
+        $writer->write($this->getScalar());
     }
 
     /**
@@ -208,6 +260,6 @@ TEXT;
         preg_match('/^foo\((.*)\)$/s', $expect, $matchesExpect);
         preg_match('/^foo\((.*)\)$/s', $actual, $matchesActual);
 
-        $this->assertJsonStringEqualsJsonString($matchesExpect[1], $matchesActual[1]);
+        $this->assertJsonStringEqualsJsonString($matchesExpect[1], $matchesActual[1], $actual);
     }
 }

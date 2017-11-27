@@ -33,47 +33,47 @@ use PSX\Http\MediaType;
  */
 class JsonTest extends WriterTestCase
 {
-    public function testWrite()
+    public function testWriteRecord()
     {
         $writer = new Json();
         $actual = $writer->write($this->getRecord());
 
         $expect = <<<TEXT
 {
-	"id":1,
-	"author":"foo",
-	"title":"bar",
-	"content":"foobar",
-	"date":"2012-03-11T13:37:21Z"
+  "id":1,
+  "author":"foo",
+  "title":"bar",
+  "content":"foobar",
+  "date":"2012-03-11T13:37:21Z"
 }
 TEXT;
 
         $this->assertJsonStringEqualsJsonString($expect, $actual);
     }
 
-    public function testWriteResultSet()
+    public function testWriteCollection()
     {
         $writer = new Json();
-        $actual = $writer->write($this->getResultSet());
+        $actual = $writer->write($this->getCollection());
 
         $expect = <<<TEXT
 {
-	"totalResults":2,
-	"startIndex":0,
-	"itemsPerPage":8,
-	"entry":[{
-		"id":1,
-		"author":"foo",
-		"title":"bar",
-		"content":"foobar",
-		"date":"2012-03-11T13:37:21Z"
-	},{
-		"id":2,
-		"author":"foo",
-		"title":"bar",
-		"content":"foobar",
-		"date":"2012-03-11T13:37:21Z"
-	}]
+  "totalResults":2,
+  "startIndex":0,
+  "itemsPerPage":8,
+  "entry":[{
+    "id":1,
+    "author":"foo",
+    "title":"bar",
+    "content":"foobar",
+    "date":"2012-03-11T13:37:21Z"
+  },{
+    "id":2,
+    "author":"foo",
+    "title":"bar",
+    "content":"foobar",
+    "date":"2012-03-11T13:37:21Z"
+  }]
 }
 TEXT;
 
@@ -83,28 +83,28 @@ TEXT;
     public function testWriteComplex()
     {
         $writer = new Json();
-        $actual = $writer->write($this->getComplexRecord());
+        $actual = $writer->write($this->getComplex());
 
         $expect = <<<TEXT
 {
-	"published":"2011-02-10T15:04:55Z",
-	"actor":{
-		"displayName":"Martin Smith",
-		"id":"tag:example.org,2011:martin",
-		"objectType":"person",
-		"url":"http:\/\/example.org\/martin"
-	},
-	"object":{
-		"id":"tag:example.org,2011:abc123\/xyz",
-		"url":"http:\/\/example.org\/blog\/2011\/02\/entry"
-	},
-	"target":{
-		"displayName":"Martin's Blog",
-		"id":"tag:example.org,2011:abc123",
-		"objectType":"blog",
-		"url":"http:\/\/example.org\/blog\/"
-	},
-	"verb":"post"
+  "published":"2011-02-10T15:04:55Z",
+  "actor":{
+    "displayName":"Martin Smith",
+    "id":"tag:example.org,2011:martin",
+    "objectType":"person",
+    "url":"http:\/\/example.org\/martin"
+  },
+  "object":{
+    "id":"tag:example.org,2011:abc123\/xyz",
+    "url":"http:\/\/example.org\/blog\/2011\/02\/entry"
+  },
+  "target":{
+    "displayName":"Martin's Blog",
+    "id":"tag:example.org,2011:abc123",
+    "objectType":"blog",
+    "url":"http:\/\/example.org\/blog\/"
+  },
+  "verb":"post"
 }
 TEXT;
 
@@ -114,13 +114,65 @@ TEXT;
     public function testWriteEmpty()
     {
         $writer = new Json();
-        $actual = $writer->write($this->getEmptyRecord());
+        $actual = $writer->write($this->getEmpty());
 
         $expect = <<<TEXT
 {}
 TEXT;
 
         $this->assertJsonStringEqualsJsonString($expect, $actual);
+    }
+
+    public function testWriteArray()
+    {
+        $writer = new Json();
+        $actual = $writer->write($this->getArray());
+
+        $expect = <<<TEXT
+[
+    {
+        "id": 1,
+        "author": "foo",
+        "title": "bar",
+        "content": "foobar",
+        "date": "2012-03-11T13:37:21Z"
+    },
+    {
+        "id": 2,
+        "author": "foo",
+        "title": "bar",
+        "content": "foobar",
+        "date": "2012-03-11T13:37:21Z"
+    }
+]
+TEXT;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
+    public function testWriteArrayScalar()
+    {
+        $writer = new Json();
+        $actual = $writer->write($this->getArrayScalar());
+
+        $expect = <<<TEXT
+[
+    "foo",
+    "bar"
+]
+TEXT;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Value must be an array or object
+     */
+    public function testWriteScalar()
+    {
+        $writer = new Json();
+        $writer->write($this->getScalar());
     }
 
     public function testIsContentTypeSupported()

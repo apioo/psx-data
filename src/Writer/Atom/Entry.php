@@ -22,9 +22,9 @@ namespace PSX\Data\Writer\Atom;
 
 use DateTime;
 use InvalidArgumentException;
+use PSX\Data\GraphTraverser;
 use PSX\Data\Writer\Xml;
 use PSX\Http\MediaType;
-use PSX\Record\RecordInterface;
 use XMLWriter;
 
 /**
@@ -94,7 +94,7 @@ class Entry
                             $mediaType = new MediaType($type);
 
                             if (MediaType\Xml::isMediaType($mediaType)) {
-                                if ($content instanceof RecordInterface) {
+                                if (GraphTraverser::isObject($content) || GraphTraverser::isArray($content)) {
                                     $writer = new Xml($this->writer);
                                     $writer->write($content);
                                 } else {

@@ -42,7 +42,15 @@ class Form implements WriterInterface
         $graph   = new GraphTraverser();
         $graph->traverse($data, $visitor);
 
-        return http_build_query($visitor->getObject(), '', '&');
+        if (GraphTraverser::isObject($data)) {
+            $value = $visitor->getObject();
+        } elseif (GraphTraverser::isArray($data)) {
+            $value = $visitor->getArray();
+        } else {
+            throw new \InvalidArgumentException('Value must be an array or object');
+        }
+
+        return http_build_query($value, '', '&');
     }
 
     public function isContentTypeSupported(MediaType $contentType)

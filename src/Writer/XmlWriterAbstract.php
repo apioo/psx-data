@@ -58,8 +58,12 @@ abstract class XmlWriterAbstract implements WriterInterface
             $writer->startDocument('1.0', 'UTF-8');
         }
 
-        $graph = new GraphTraverser();
-        $graph->traverse($data, $this->getVisitor($writer));
+        if (GraphTraverser::isObject($data) || GraphTraverser::isArray($data)) {
+            $graph = new GraphTraverser();
+            $graph->traverse($data, $this->getVisitor($writer));
+        } else {
+            throw new \InvalidArgumentException('Value must be an array or object');
+        }
 
         if (!$hasWriter) {
             $writer->endDocument();

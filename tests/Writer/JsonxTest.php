@@ -33,7 +33,7 @@ use PSX\Http\MediaType;
  */
 class JsonxTest extends WriterTestCase
 {
-    public function testWrite()
+    public function testWriteRecord()
     {
         $writer = new Jsonx();
         $actual = $writer->write($this->getRecord());
@@ -52,10 +52,10 @@ TEXT;
         $this->assertXmlStringEqualsXmlString($expect, $actual);
     }
 
-    public function testWriteResultSet()
+    public function testWriteCollection()
     {
         $writer = new Jsonx();
-        $actual = $writer->write($this->getResultSet());
+        $actual = $writer->write($this->getCollection());
 
         $expect = <<<TEXT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -88,7 +88,7 @@ TEXT;
     public function testWriteComplex()
     {
         $writer = new Jsonx();
-        $actual = $writer->write($this->getComplexRecord());
+        $actual = $writer->write($this->getComplex());
 
         $expect = <<<TEXT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -120,7 +120,7 @@ TEXT;
     public function testWriteEmpty()
     {
         $writer = new Jsonx();
-        $actual = $writer->write($this->getEmptyRecord());
+        $actual = $writer->write($this->getEmpty());
 
         $expect = <<<TEXT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -128,6 +128,60 @@ TEXT;
 TEXT;
 
         $this->assertXmlStringEqualsXmlString($expect, $actual);
+    }
+
+    public function testWriteArray()
+    {
+        $writer = new Jsonx();
+        $actual = $writer->write($this->getArray());
+
+        $expect = <<<TEXT
+<?xml version="1.0" encoding="UTF-8"?>
+<json:array xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+ <json:object>
+  <json:number name="id">1</json:number>
+  <json:string name="author">foo</json:string>
+  <json:string name="title">bar</json:string>
+  <json:string name="content">foobar</json:string>
+  <json:string name="date">2012-03-11T13:37:21Z</json:string>
+ </json:object>
+ <json:object>
+  <json:number name="id">2</json:number>
+  <json:string name="author">foo</json:string>
+  <json:string name="title">bar</json:string>
+  <json:string name="content">foobar</json:string>
+  <json:string name="date">2012-03-11T13:37:21Z</json:string>
+ </json:object>
+</json:array>
+TEXT;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    public function testWriteArrayScalar()
+    {
+        $writer = new Jsonx();
+        $actual = $writer->write($this->getArrayScalar());
+
+        $expect = <<<TEXT
+<?xml version="1.0" encoding="UTF-8"?>
+<json:array xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+ <json:string>foo</json:string>
+ <json:string>bar</json:string>
+</json:array>
+TEXT;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Value must be an array or object
+     */
+    public function testWriteScalar()
+    {
+        $writer = new Jsonx();
+        $writer->write($this->getScalar());
     }
 
     public function testIsContentTypeSupported()

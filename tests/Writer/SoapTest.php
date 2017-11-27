@@ -34,7 +34,7 @@ use PSX\Model\Common\Error;
  */
 class SoapTest extends WriterTestCase
 {
-    public function testWrite()
+    public function testWriteRecord()
     {
         $writer = new Soap('http://foo.bar');
         $writer->setRequestMethod('GET');
@@ -45,13 +45,13 @@ class SoapTest extends WriterTestCase
 <?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <getResponse xmlns="http://foo.bar" type="object">
+    <record xmlns="http://foo.bar" type="object">
       <id type="integer">1</id>
       <author type="string">foo</author>
       <title type="string">bar</title>
       <content type="string">foobar</content>
       <date type="date-time">2012-03-11T13:37:21Z</date>
-    </getResponse>
+    </record>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -60,18 +60,18 @@ TEXT;
         $this->assertEquals('get', $writer->getRequestMethod());
     }
 
-    public function testWriteResultSet()
+    public function testWriteCollection()
     {
         $writer = new Soap('http://foo.bar');
         $writer->setRequestMethod('GET');
 
-        $actual = $writer->write($this->getResultSet());
+        $actual = $writer->write($this->getCollection());
 
         $expect = <<<TEXT
 <?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <getResponse xmlns="http://foo.bar" type="object">
+    <collection xmlns="http://foo.bar" type="object">
       <totalResults type="integer">2</totalResults>
       <startIndex type="integer">0</startIndex>
       <itemsPerPage type="integer">8</itemsPerPage>
@@ -91,7 +91,7 @@ TEXT;
           <date type="date-time">2012-03-11T13:37:21Z</date>
         </entry>
       </entry>
-    </getResponse>
+    </collection>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -105,13 +105,13 @@ TEXT;
         $writer = new Soap('http://foo.bar');
         $writer->setRequestMethod('GET');
 
-        $actual = $writer->write($this->getComplexRecord());
+        $actual = $writer->write($this->getComplex());
 
         $expect = <<<TEXT
 <?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <getResponse xmlns="http://foo.bar" type="object">
+    <activity xmlns="http://foo.bar" type="object">
       <verb type="string">post</verb>
       <actor type="object">
         <id type="string">tag:example.org,2011:martin</id>
@@ -130,7 +130,7 @@ TEXT;
         <url type="string">http://example.org/blog/</url>
       </target>
       <published type="date-time">2011-02-10T15:04:55Z</published>
-    </getResponse>
+    </activity>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -141,18 +141,85 @@ TEXT;
     public function testWriteEmpty()
     {
         $writer = new Soap('http://foo.bar');
-        $actual = $writer->write($this->getEmptyRecord());
+        $actual = $writer->write($this->getEmpty());
 
         $expect = <<<TEXT
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <Response xmlns="http://foo.bar" type="object"/>
+    <record xmlns="http://foo.bar" type="object"/>
   </soap:Body>
 </soap:Envelope>
 TEXT;
 
         $this->assertXmlStringEqualsXmlString($expect, $actual);
+    }
+
+    public function testWriteArray()
+    {
+        $writer = new Soap('http://foo.bar');
+        $actual = $writer->write($this->getArray());
+
+        $expect = <<<TEXT
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+ <soap:Body>
+  <collection type="array">
+   <entry type="object">
+    <id type="integer">1</id>
+    <author type="string">foo</author>
+    <title type="string">bar</title>
+    <content type="string">foobar</content>
+    <date type="date-time">2012-03-11T13:37:21Z</date>
+   </entry>
+   <entry type="object">
+    <id type="integer">2</id>
+    <author type="string">foo</author>
+    <title type="string">bar</title>
+    <content type="string">foobar</content>
+    <date type="date-time">2012-03-11T13:37:21Z</date>
+   </entry>
+  </collection>
+ </soap:Body>
+</soap:Envelope>
+TEXT;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    public function testWriteArrayScalar()
+    {
+        $writer = new Soap('http://foo.bar');
+        $actual = $writer->write($this->getArrayScalar());
+
+        $expect = <<<TEXT
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+ <soap:Body>
+  <collection type="array">
+   <entry type="string">foo</entry>
+   <entry type="string">bar</entry>
+  </collection>
+ </soap:Body>
+</soap:Envelope>
+TEXT;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    public function testWriteScalar()
+    {
+        $writer = new Soap('http://foo.bar');
+        $actual = $writer->write($this->getScalar());
+
+        $expect = <<<TEXT
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+ <soap:Body>foobar</soap:Body>
+</soap:Envelope>
+TEXT;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
 
     public function testIsContentTypeSupported()

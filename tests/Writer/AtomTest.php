@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Writer;
 
+use PSX\Data\Tests\WriterTestCase;
 use PSX\Data\Writer\Atom;
 use PSX\DateTime\DateTime;
 use PSX\Http\MediaType;
@@ -30,7 +31,6 @@ use PSX\Model\Atom\Generator;
 use PSX\Model\Atom\Link;
 use PSX\Model\Atom\Person;
 use PSX\Model\Atom\Text;
-use PSX\Record\Record;
 
 /**
  * AtomTest
@@ -39,7 +39,7 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class AtomTest extends \PHPUnit_Framework_TestCase
+class AtomTest extends WriterTestCase
 {
     public function testWriteFeed()
     {
@@ -152,23 +152,6 @@ XML;
         $this->assertXmlStringEqualsXmlString($expect, $actual);
     }
 
-    public function testWriteEmpty()
-    {
-        $writer = new Atom();
-        $actual = $writer->write(new Record('record', []));
-
-        $expect = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<entry xmlns="http://www.w3.org/2005/Atom">
-  <content type="application/xml">
-    <record type="object"/>
-  </content>
-</entry>
-XML;
-
-        $this->assertXmlStringEqualsXmlString($expect, $actual);
-    }
-
     protected function getAtomRecord()
     {
         $atom = new AtomRecord();
@@ -239,29 +222,181 @@ XML;
 
     public function testWriteRecord()
     {
-        $record = new Record();
-        $record->id = 1;
-        $record->author = 'foo';
-        $record->title = 'bar';
-        $record->content = 'foobar';
-
         $writer = new Atom();
-        $actual = $writer->write($record);
+        $actual = $writer->write($this->getRecord());
+
+        $expect = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <content type="application/xml">
+  <record type="object">
+   <id type="integer">1</id>
+   <author type="string">foo</author>
+   <title type="string">bar</title>
+   <content type="string">foobar</content>
+   <date type="date-time">2012-03-11T13:37:21Z</date>
+  </record>
+ </content>
+</entry>
+XML;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    public function testWriteCollection()
+    {
+        $writer = new Atom();
+        $actual = $writer->write($this->getCollection());
+
+        $expect = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <content type="application/xml">
+  <collection type="object">
+   <totalResults type="integer">2</totalResults>
+   <startIndex type="integer">0</startIndex>
+   <itemsPerPage type="integer">8</itemsPerPage>
+   <entry type="array">
+    <entry type="object">
+     <id type="integer">1</id>
+     <author type="string">foo</author>
+     <title type="string">bar</title>
+     <content type="string">foobar</content>
+     <date type="date-time">2012-03-11T13:37:21Z</date>
+    </entry>
+    <entry type="object">
+     <id type="integer">2</id>
+     <author type="string">foo</author>
+     <title type="string">bar</title>
+     <content type="string">foobar</content>
+     <date type="date-time">2012-03-11T13:37:21Z</date>
+    </entry>
+   </entry>
+  </collection>
+ </content>
+</entry>
+XML;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    public function testWriteComplex()
+    {
+        $writer = new Atom();
+        $actual = $writer->write($this->getComplex());
+
+        $expect = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <content type="application/xml">
+  <activity type="object">
+   <verb type="string">post</verb>
+   <actor type="object">
+    <id type="string">tag:example.org,2011:martin</id>
+    <objectType type="string">person</objectType>
+    <displayName type="string">Martin Smith</displayName>
+    <url type="string">http://example.org/martin</url>
+   </actor>
+   <object type="object">
+    <id type="string">tag:example.org,2011:abc123/xyz</id>
+    <url type="string">http://example.org/blog/2011/02/entry</url>
+   </object>
+   <target type="object">
+    <id type="string">tag:example.org,2011:abc123</id>
+    <objectType type="string">blog</objectType>
+    <displayName type="string">Martin's Blog</displayName>
+    <url type="string">http://example.org/blog/</url>
+   </target>
+   <published type="date-time">2011-02-10T15:04:55Z</published>
+  </activity>
+ </content>
+</entry>
+XML;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    public function testWriteEmpty()
+    {
+        $writer = new Atom();
+        $actual = $writer->write($this->getEmpty());
 
         $expect = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <entry xmlns="http://www.w3.org/2005/Atom">
   <content type="application/xml">
-    <record type="object">
-      <id type="integer">1</id>
-      <author type="string">foo</author>
-      <title type="string">bar</title>
-      <content type="string">foobar</content>
-    </record>
+    <record type="object"/>
   </content>
 </entry>
 XML;
 
         $this->assertXmlStringEqualsXmlString($expect, $actual);
+    }
+
+    public function testWriteArray()
+    {
+        $writer = new Atom();
+        $actual = $writer->write($this->getArray());
+
+        $expect = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <content type="application/xml">
+  <collection type="array">
+   <entry type="object">
+    <id type="integer">1</id>
+    <author type="string">foo</author>
+    <title type="string">bar</title>
+    <content type="string">foobar</content>
+    <date type="date-time">2012-03-11T13:37:21Z</date>
+   </entry>
+   <entry type="object">
+    <id type="integer">2</id>
+    <author type="string">foo</author>
+    <title type="string">bar</title>
+    <content type="string">foobar</content>
+    <date type="date-time">2012-03-11T13:37:21Z</date>
+   </entry>
+  </collection>
+ </content>
+</entry>
+XML;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    public function testWriteArrayScalar()
+    {
+        $writer = new Atom();
+        $actual = $writer->write($this->getArrayScalar());
+
+        $expect = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <content type="application/xml">
+  <collection type="array">
+   <entry type="string">foo</entry>
+   <entry type="string">bar</entry>
+  </collection>
+ </content>
+</entry>
+XML;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
+    }
+
+    public function testWriteScalar()
+    {
+        $writer = new Atom();
+        $actual = $writer->write($this->getScalar());
+
+        $expect = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <content type="application/xml">foobar</content>
+</entry>
+XML;
+
+        $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
 }

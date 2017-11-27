@@ -33,7 +33,7 @@ use PSX\Http\MediaType;
  */
 class FormTest extends WriterTestCase
 {
-    public function testWrite()
+    public function testWriteRecord()
     {
         $writer = new Form();
         $actual = $writer->write($this->getRecord());
@@ -45,10 +45,10 @@ TEXT;
         $this->assertEquals($expect, $actual);
     }
 
-    public function testWriteResultSet()
+    public function testWriteCollection()
     {
         $writer = new Form();
-        $actual = $writer->write($this->getResultSet());
+        $actual = $writer->write($this->getCollection());
 
         $expect = <<<TEXT
 totalResults=2&startIndex=0&itemsPerPage=8&entry%5B0%5D%5Bid%5D=1&entry%5B0%5D%5Bauthor%5D=foo&entry%5B0%5D%5Btitle%5D=bar&entry%5B0%5D%5Bcontent%5D=foobar&entry%5B0%5D%5Bdate%5D=2012-03-11T13%3A37%3A21Z&entry%5B1%5D%5Bid%5D=2&entry%5B1%5D%5Bauthor%5D=foo&entry%5B1%5D%5Btitle%5D=bar&entry%5B1%5D%5Bcontent%5D=foobar&entry%5B1%5D%5Bdate%5D=2012-03-11T13%3A37%3A21Z
@@ -60,12 +60,46 @@ TEXT;
     public function testWriteEmpty()
     {
         $writer = new Form();
-        $actual = $writer->write($this->getEmptyRecord());
+        $actual = $writer->write($this->getEmpty());
 
         $expect = <<<TEXT
 TEXT;
 
         $this->assertEquals($expect, $actual);
+    }
+
+    public function testWriteArray()
+    {
+        $writer = new Form();
+        $actual = $writer->write($this->getArray());
+
+        $expect = <<<TEXT
+0%5Bid%5D=1&0%5Bauthor%5D=foo&0%5Btitle%5D=bar&0%5Bcontent%5D=foobar&0%5Bdate%5D=2012-03-11T13%3A37%3A21Z&1%5Bid%5D=2&1%5Bauthor%5D=foo&1%5Btitle%5D=bar&1%5Bcontent%5D=foobar&1%5Bdate%5D=2012-03-11T13%3A37%3A21Z
+TEXT;
+
+        $this->assertEquals($expect, $actual, $actual);
+    }
+
+    public function testWriteArrayScalar()
+    {
+        $writer = new Form();
+        $actual = $writer->write($this->getArrayScalar());
+
+        $expect = <<<TEXT
+0=foo&1=bar
+TEXT;
+
+        $this->assertEquals($expect, $actual, $actual);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Value must be an array or object
+     */
+    public function testWriteScalar()
+    {
+        $writer = new Form();
+        $writer->write($this->getScalar());
     }
 
     public function testIsContentTypeSupported()

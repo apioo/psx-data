@@ -87,9 +87,8 @@ class Soap extends Xml
         } else {
             $xmlWriter->startElement('soap:Body');
 
-            $record = Record::from($data, $this->requestMethod . 'Response');
-            $graph  = new GraphTraverser();
-            $graph->traverse($record, new Visitor\XmlWriterVisitor($xmlWriter, $this->namespace));
+            $graph = new GraphTraverser();
+            $graph->traverse($data, new Visitor\XmlWriterVisitor($xmlWriter, $this->namespace));
 
             $xmlWriter->endElement();
         }

@@ -43,7 +43,15 @@ class Json implements WriterInterface
         $graph   = new GraphTraverser();
         $graph->traverse($data, $visitor);
 
-        return Parser::encode($visitor->getObject(), JSON_PRETTY_PRINT);
+        if (GraphTraverser::isObject($data)) {
+            $value = $visitor->getObject();
+        } elseif (GraphTraverser::isArray($data)) {
+            $value = $visitor->getArray();
+        } else {
+            throw new \InvalidArgumentException('Value must be an array or object');
+        }
+
+        return Parser::encode($value, JSON_PRETTY_PRINT);
     }
 
     public function isContentTypeSupported(MediaType $contentType)
