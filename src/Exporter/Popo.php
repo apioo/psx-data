@@ -48,6 +48,8 @@ class Popo implements ExporterInterface
     {
         if (GraphTraverser::isObject($data)) {
             return $data;
+        } elseif (GraphTraverser::isArray($data)) {
+            return $data;
         } elseif (is_object($data)) {
             return $this->dumper->dump($data);
         } else {
