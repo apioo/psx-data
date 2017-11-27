@@ -44,7 +44,7 @@ abstract class WriterTestCase extends \PHPUnit_Framework_TestCase
         return $record;
     }
 
-    public function getResultSet()
+    public function getCollection()
     {
         $entries = array();
 
@@ -75,7 +75,7 @@ abstract class WriterTestCase extends \PHPUnit_Framework_TestCase
         return $record;
     }
 
-    public function getComplexRecord()
+    public function getComplex()
     {
         $actor = new Record();
         $actor->id = 'tag:example.org,2011:martin';
@@ -103,11 +103,55 @@ abstract class WriterTestCase extends \PHPUnit_Framework_TestCase
         return $activity;
     }
 
-    public function getEmptyRecord()
+    public function getEmpty()
     {
         return new Record('record', array());
     }
 
-    abstract public function testWrite();
-    abstract public function testWriteResultSet();
+    public function getArray()
+    {
+        $entries = array();
+
+        $record = new Record();
+        $record->id = 1;
+        $record->author = 'foo';
+        $record->title = 'bar';
+        $record->content = 'foobar';
+        $record->date = new DateTime('2012-03-11 13:37:21');
+
+        $entries[] = $record;
+
+        $record = new Record();
+        $record->id = 2;
+        $record->author = 'foo';
+        $record->title = 'bar';
+        $record->content = 'foobar';
+        $record->date = new DateTime('2012-03-11 13:37:21');
+
+        $entries[] = $record;
+
+        return $entries;
+    }
+
+    public function getArrayScalar()
+    {
+        return ['foo', 'bar'];
+    }
+
+    public function getScalar()
+    {
+        return 'foobar';
+    }
+
+    abstract public function testWriteRecord();
+
+    abstract public function testWriteCollection();
+
+    abstract public function testWriteEmpty();
+
+    abstract public function testWriteArray();
+
+    abstract public function testWriteArrayScalar();
+
+    abstract public function testWriteScalar();
 }
