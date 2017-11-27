@@ -1,4 +1,9 @@
 
+### 2.2.1 (2017-11-27)
+
+* Added test cases
+* Improved xml writer
+
 ### 2.1.2 (2017-11-26)
 
 * Graph traverser handle non object values
