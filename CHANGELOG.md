@@ -1,4 +1,8 @@
 
+### 2.3.0 (2018-02-13)
+
+* Update http dependency
+
 ### 2.2.1 (2017-11-27)
 
 * Added test cases
