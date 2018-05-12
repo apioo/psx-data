@@ -214,7 +214,8 @@ class News
 }
 ```
 
-All available annotations are located in the psx/schema project.
+All available annotations are located in the [psx/schema](https://github.com/apioo/psx-schema)
+project.
 
 ## Transformations
 
