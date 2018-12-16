@@ -35,7 +35,12 @@ class Accessor
     public static function get($source, $path, array $filters = array())
     {
         $pointer = new Pointer('/' . ltrim($path, '/'));
-        $value   = $pointer->evaluate($source);
+
+        try {
+            $value = $pointer->evaluate($source);
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
 
         foreach ($filters as $filter) {
             $return  = null;
