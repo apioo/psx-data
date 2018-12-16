@@ -273,7 +273,7 @@ JSON;
         "2016-02-10T19:00:00Z"
     ],
     "null_array": {
-        "0": ""
+        "0": null
     },
     "array_array": [
         [

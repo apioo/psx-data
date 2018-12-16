@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Reader;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Reader\Json;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Data\Reader\Json;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class JsonTest extends \PHPUnit_Framework_TestCase
+class JsonTest extends TestCase
 {
     public function testRead()
     {

@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Writer\Atom;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Writer\Atom\Entry;
 use PSX\Record\Record;
 
@@ -31,7 +32,7 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class EntryTest extends \PHPUnit_Framework_TestCase
+class EntryTest extends TestCase
 {
     public function testSetContentXmlRecord()
     {
@@ -241,9 +242,5 @@ XML;
 XML;
 
         $this->assertXmlStringEqualsXmlString($expected, $actual);
-    }
-
-    public function testTextConstructXhtml()
-    {
     }
 }

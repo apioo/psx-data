@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Writer\Rss;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Writer\Rss\Writer;
 
 /**
@@ -30,7 +31,7 @@ use PSX\Data\Writer\Rss\Writer;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class WriterTest extends \PHPUnit_Framework_TestCase
+class WriterTest extends TestCase
 {
     public function testWriter()
     {

@@ -20,8 +20,8 @@
 
 namespace PSX\Data\Tests\Transformer;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Transformer\XmlValidator;
-use PSX\Rss;
 
 /**
  * XmlValidatorTest
@@ -30,7 +30,7 @@ use PSX\Rss;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class XmlValidatorTest extends \PHPUnit_Framework_TestCase
+class XmlValidatorTest extends TestCase
 {
     public function testTransform()
     {

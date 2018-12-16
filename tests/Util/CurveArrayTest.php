@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Util\CurveArray;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Data\Util\CurveArray;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class CurveArrayTest extends \PHPUnit_Framework_TestCase
+class CurveArrayTest extends TestCase
 {
     protected $nestArray;
     protected $flattenArray;

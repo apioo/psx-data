@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Writer;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Writer\Rss;
 use PSX\Http\MediaType;
 use PSX\Model\Rss\Item;
@@ -34,7 +35,7 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class RssTest extends \PHPUnit_Framework_TestCase
+class RssTest extends TestCase
 {
     public function testWriteFeed()
     {

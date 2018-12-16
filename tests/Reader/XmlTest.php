@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Reader;
 
 use DOMDocument;
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Reader\Xml;
 
 /**
@@ -30,7 +31,7 @@ use PSX\Data\Reader\Xml;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link	http://phpsx.org
  */
-class XmlTest extends \PHPUnit_Framework_TestCase
+class XmlTest extends TestCase
 {
     public function testRead()
     {

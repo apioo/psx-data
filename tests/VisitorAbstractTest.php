@@ -20,7 +20,9 @@
 
 namespace PSX\Data\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\VisitorAbstract;
+use PSX\Data\VisitorInterface;
 
 /**
  * VisitorAbstractTest
@@ -29,7 +31,7 @@ use PSX\Data\VisitorAbstract;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class VisitorAbstractTest extends \PHPUnit_Framework_TestCase
+class VisitorAbstractTest extends TestCase
 {
     public function testVisitor()
     {
@@ -48,6 +50,8 @@ class VisitorAbstractTest extends \PHPUnit_Framework_TestCase
         $visitor->visitArrayValueStart('foo');
         $visitor->visitArrayValueEnd();
         $visitor->visitValue('foo');
+
+        $this->assertInstanceOf(VisitorInterface::class, $visitor);
     }
 }
 

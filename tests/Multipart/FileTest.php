@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Multipart;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Multipart\File;
 use PSX\Record\Record;
 
@@ -30,7 +31,7 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends TestCase
 {
     public function testFromArray()
     {

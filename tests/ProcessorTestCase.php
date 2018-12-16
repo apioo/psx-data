@@ -21,10 +21,10 @@
 namespace PSX\Data\Tests;
 
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Configuration;
 use PSX\Data\Processor;
 use PSX\Schema\SchemaManager;
-use PSX\Schema\Visitor\OutgoingVisitor;
 
 /**
  * ProcessorTestCase
@@ -33,7 +33,7 @@ use PSX\Schema\Visitor\OutgoingVisitor;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-abstract class ProcessorTestCase extends \PHPUnit_Framework_TestCase
+abstract class ProcessorTestCase extends TestCase
 {
     /**
      * @var \PSX\Data\Processor

@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Transformer;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Transformer\Soap;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Data\Transformer\Soap;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class SoapTest extends \PHPUnit_Framework_TestCase
+class SoapTest extends TestCase
 {
     public function testTransform()
     {

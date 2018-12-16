@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Exporter;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Exporter\Popo;
 use PSX\Record\Record;
 
@@ -31,7 +32,7 @@ use PSX\Record\Record;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PopoTest extends \PHPUnit_Framework_TestCase
+class PopoTest extends TestCase
 {
     /**
      * @dataProvider exportProvider

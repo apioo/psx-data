@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Transformer;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Transformer\Atom;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Data\Transformer\Atom;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class AtomTest extends \PHPUnit_Framework_TestCase
+class AtomTest extends TestCase
 {
     public function testTransform()
     {

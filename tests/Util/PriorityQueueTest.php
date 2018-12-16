@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Util\PriorityQueue;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Data\Util\PriorityQueue;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class PriorityQueueTest extends \PHPUnit_Framework_TestCase
+class PriorityQueueTest extends TestCase
 {
     public function testQueue()
     {

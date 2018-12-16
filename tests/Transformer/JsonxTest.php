@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Transformer;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Transformer\Jsonx;
 use PSX\Rss;
 
@@ -30,7 +31,7 @@ use PSX\Rss;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class JsonxTest extends \PHPUnit_Framework_TestCase
+class JsonxTest extends TestCase
 {
     public function testTransform()
     {

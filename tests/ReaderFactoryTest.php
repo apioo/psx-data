@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Reader;
 use PSX\Data\ReaderFactory;
 
@@ -30,7 +31,7 @@ use PSX\Data\ReaderFactory;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ReaderFactoryTest extends \PHPUnit_Framework_TestCase
+class ReaderFactoryTest extends TestCase
 {
     /**
      * @var \PSX\Data\ReaderFactory

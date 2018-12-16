@@ -20,7 +20,7 @@
 
 namespace PSX\Data\Tests\Reader;
 
-use PSX\Data\Reader\Json;
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Reader\Multipart;
 
 /**
@@ -30,7 +30,7 @@ use PSX\Data\Reader\Multipart;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class MultipartTest extends \PHPUnit_Framework_TestCase
+class MultipartTest extends TestCase
 {
     public function testRead()
     {

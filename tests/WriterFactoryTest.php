@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Writer;
 use PSX\Data\WriterFactory;
 use PSX\Data\WriterInterface;
@@ -31,7 +32,7 @@ use PSX\Data\WriterInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class WriterFactoryTest extends \PHPUnit_Framework_TestCase
+class WriterFactoryTest extends TestCase
 {
     /**
      * @var \PSX\Data\WriterFactory

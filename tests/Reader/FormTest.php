@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Reader;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Reader\Form;
 
 /**
@@ -29,7 +30,7 @@ use PSX\Data\Reader\Form;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class FormTest extends \PHPUnit_Framework_TestCase
+class FormTest extends TestCase
 {
     public function testRead()
     {

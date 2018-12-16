@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Visitor;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use PSX\Record\Record;
 use PSX\Uri\Uri;
 
@@ -31,7 +32,7 @@ use PSX\Uri\Uri;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class VisitorTestCase extends \PHPUnit_Framework_TestCase
+class VisitorTestCase extends TestCase
 {
     protected function getObject()
     {

@@ -20,8 +20,8 @@
 
 namespace PSX\Data\Tests\Transformer;
 
+use PHPUnit\Framework\TestCase;
 use PSX\Data\Transformer\XmlArray;
-use PSX\Rss;
 
 /**
  * XmlArrayTest
@@ -30,7 +30,7 @@ use PSX\Rss;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class XmlArrayTest extends \PHPUnit_Framework_TestCase
+class XmlArrayTest extends TestCase
 {
     public function testTransform()
     {
