@@ -1,4 +1,8 @@
 
+### 2.3.1 (2018-12-16)
+
+* Upgrade PHPUnit to 6.0
+
 ### 2.3.0 (2018-02-13)
 
 * Update http dependency
