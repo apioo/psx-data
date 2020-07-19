@@ -125,21 +125,19 @@ class AccessorTest extends TestCase
         $this->assertNull(Accessor::get($source, '/bar/bar'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage /foo has an invalid length min 4 and max 8 signs
-     */
     public function testFilterInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('/foo has an invalid length min 4 and max 8 signs');
+
         Accessor::get(['foo' => 'bar'], '/foo', [new Filter\Length(4, 8)]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage /foo contains an invalid value
-     */
     public function testFilterInvalidClosure()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('/foo contains an invalid value');
+
         Accessor::get(['foo' => 'bar'], '/foo', [function(){
             return false;
         }]);

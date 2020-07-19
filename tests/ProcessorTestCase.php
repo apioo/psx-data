@@ -40,7 +40,7 @@ abstract class ProcessorTestCase extends TestCase
      */
     protected $processor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $reader = new SimpleAnnotationReader();
         $reader->addNamespace('PSX\\Schema\\Parser\\Popo\\Annotation');

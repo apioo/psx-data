@@ -58,12 +58,11 @@ class PopoTest extends TestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Data must be an object
-     */
     public function testExportInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Data must be an object');
+
         $exporter = $this->getExporter();
         $exporter->export('foo');
     }

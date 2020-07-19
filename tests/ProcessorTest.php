@@ -41,19 +41,6 @@ class ProcessorTest extends ProcessorTestCase
         $this->assertEquals('foo', $entry->getTitle());
     }
 
-    /**
-     * @expectedException \PSX\Schema\ValidationException
-     */
-    public function testReadError()
-    {
-        $schema = $this->processor
-            ->getConfiguration()
-            ->getSchemaManager()
-            ->getSchema(Entry::class);
-
-        $this->processor->read($schema, Payload::json('{"title": "foo", "bar": "foo"}'));
-    }
-
     public function testParse()
     {
         $data = $this->processor->parse(Payload::json('{"title": "foo"}'));

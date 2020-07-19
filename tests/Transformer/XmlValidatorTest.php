@@ -56,12 +56,11 @@ INPUT;
         $this->assertEquals($expect, $data);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Element '{http://phpsx.org}test': Missing child element(s). Expected is ( {http://phpsx.org}bar ).
-     */
     public function testInvalidData()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Element \'{http://phpsx.org}test\': Missing child element(s). Expected is ( {http://phpsx.org}bar ).');
+
         $body = <<<INPUT
 <test xmlns="http://phpsx.org">
 	<foo>bar</foo>

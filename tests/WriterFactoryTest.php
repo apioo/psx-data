@@ -39,7 +39,7 @@ class WriterFactoryTest extends TestCase
      */
     protected $writerFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->writerFactory = new WriterFactory();
         $this->writerFactory->addWriter(new Writer\Json(), 48);

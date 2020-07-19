@@ -150,11 +150,10 @@ INPUT;
         $this->assertEquals($expect, $data);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNoFeedElement()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $body = <<<INPUT
 <?xml version="1.0" encoding="UTF-8"?>
 <foo />
@@ -167,11 +166,10 @@ INPUT;
         $transformer->transform($dom);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidData()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $transformer = new Atom();
         $transformer->transform(array());
     }

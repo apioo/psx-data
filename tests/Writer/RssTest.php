@@ -102,7 +102,7 @@ TEXT;
         $rss->setGenerator('Weblog Editor 2.0');
         $rss->setManagingEditor('editor@example.com');
         $rss->setWebMaster('webmaster@example.com');
-        $rss->addItem($this->getItemRecord());
+        $rss->setItem([$this->getItemRecord()]);
 
         return $rss;
     }
@@ -134,11 +134,10 @@ TEXT;
         $this->assertEquals('application/rss+xml', $writer->getContentType());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidData()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $writer = new Rss();
         $writer->write(new Record());
     }

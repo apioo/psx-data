@@ -35,7 +35,7 @@ class CurveArrayTest extends TestCase
     protected $nestArray;
     protected $flattenArray;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->nestArray = new \stdClass();
         $this->nestArray->id = null;
@@ -94,11 +94,10 @@ class CurveArrayTest extends TestCase
         )));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testFlattenInvalidData()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         CurveArray::flatten('foo');
     }
 

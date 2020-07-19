@@ -108,11 +108,10 @@ INPUT;
         $this->assertEquals($expect, $data);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidData()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $transformer = new XmlArray();
         $transformer->transform(array());
     }

@@ -174,12 +174,11 @@ TEXT;
         $this->assertXmlStringEqualsXmlString($expect, $actual, $actual);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Value must be an array or object
-     */
     public function testWriteScalar()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value must be an array or object');
+
         $writer = new Jsonx();
         $writer->write($this->getScalar());
     }

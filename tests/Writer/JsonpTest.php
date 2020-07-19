@@ -171,12 +171,11 @@ TEXT;
         $this->assertJsonp($expect, $actual);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Value must be an array or object
-     */
     public function testWriteScalar()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value must be an array or object');
+
         $writer = new Jsonp();
         $writer->setCallbackName('foo');
         $writer->write($this->getScalar());

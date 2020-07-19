@@ -31,12 +31,12 @@ namespace PSX\Data\Tests\Processor\Model;
 class Person
 {
     /**
-     * @Type("string")
+     * @var string
      */
     protected $name;
 
     /**
-     * @Type("string")
+     * @var string
      */
     protected $uri;
 

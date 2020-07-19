@@ -38,7 +38,7 @@ class ReaderFactoryTest extends TestCase
      */
     protected $readerFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->readerFactory = new ReaderFactory();
         $this->readerFactory->addReader(new Reader\Json());

@@ -110,20 +110,18 @@ INPUT;
         $this->assertEquals($expect, $data);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidData()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $transformer = new Jsonx();
         $transformer->transform(array());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidElementName()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $body = '<json:foo xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx" />';
 
         $dom = new \DOMDocument();

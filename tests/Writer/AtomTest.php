@@ -154,51 +154,131 @@ XML;
 
     protected function getAtomRecord()
     {
+        $subTitle = new Text();
+        $subTitle->setContent('A <em>lot</em> of effort went into making this effortless');
+        $subTitle->setType('html');
+
+        $link1 = new Link();
+        $link1->setHref('http://example.org/');
+        $link1->setRel('alternate');
+        $link1->setType('text/html');
+        $link1->setHreflang('en');
+
+        $link2 = new Link();
+        $link2->setHref('http://example.org/feed.atom');
+        $link2->setRel('self');
+        $link2->setType('application/atom+xml');
+
+        $generator = new Generator();
+        $generator->setText('Example Toolkit');
+        $generator->setUri('http://www.example.com/');
+        $generator->setVersion('1.0');
+
+        $author = new Person();
+        $author->setName('Mark Pilgrim');
+        $author->setUri('http://example.org/');
+        $author->setEmail('f8dy@example.com');
+
+        $contributor = new Person();
+        $contributor->setName('Sam Ruby');
+
+        $category = new Category();
+        $category->setTerm('news');
+
         $atom = new AtomRecord();
         $atom->setTitle('dive into mark');
-        $atom->setSubTitle(new Text('A <em>lot</em> of effort went into making this effortless', 'html'));
+        $atom->setSubTitle($subTitle);
         $atom->setUpdated(new DateTime('2005-07-31T12:29:29Z'));
         $atom->setId('tag:example.org,2003:3');
-        $atom->addLink(new Link('http://example.org/', 'alternate', 'text/html', 'en'));
-        $atom->addLink(new Link('http://example.org/feed.atom', 'self', 'application/atom+xml'));
+        $atom->setLink([$link1, $link2]);
         $atom->setRights('Copyright (c) 2003, Mark Pilgrim');
-        $atom->setGenerator(new Generator('Example Toolkit', 'http://www.example.com/', '1.0'));
-        $atom->addAuthor(new Person('Mark Pilgrim', 'http://example.org/', 'f8dy@example.com'));
-        $atom->addContributor(new Person('Sam Ruby'));
-        $atom->addCategory(new Category('news'));
+        $atom->setGenerator($generator);
+        $atom->setAuthor([$author]);
+        $atom->setContributor([$contributor]);
+        $atom->setCategory([$category]);
         $atom->setIcon('http://localhost.com/icon.png');
         $atom->setLogo('http://localhost.com/logo.png');
-        $atom->addEntry($this->getEntryRecord());
+        $atom->setEntry([$this->getEntryRecord()]);
 
         return $atom;
     }
 
     protected function getEntryRecord()
     {
+        $link1 = new Link();
+        $link1->setHref('http://example.org/2005/04/02/atom');
+        $link1->setRel('alternate');
+        $link1->setType('text/html');
+
+        $link2 = new Link();
+        $link2->setHref('http://example.org/audio/ph34r_my_podcast.mp3');
+        $link2->setRel('enclosure');
+        $link2->setType('audio/mpeg');
+        $link2->setLength(1337);
+
+        $author = new Person();
+        $author->setName('Mark Pilgrim');
+        $author->setUri('http://example.org/');
+        $author->setEmail('f8dy@example.com');
+
+        $contributor1 = new Person();
+        $contributor1->setName('Sam Ruby');
+
+        $contributor2 = new Person();
+        $contributor2->setName('Joe Gregorio');
+
+        $category = new Category();
+        $category->setTerm('news');
+
+        $content = new Text();
+        $content->setContent('<div xmlns="http://www.w3.org/1999/xhtml"><p><i>[Update: The Atom draft is finished.]</i></p></div>');
+        $content->setType('xhtml');
+
+        $summary = new Text();
+        $summary->setContent('foobar');
+        $summary->setType('text');
+
         $entry = new Entry();
         $entry->setTitle('Atom draft-07 snapshot');
-        $entry->addLink(new Link('http://example.org/2005/04/02/atom', 'alternate', 'text/html'));
-        $entry->addLink(new Link('http://example.org/audio/ph34r_my_podcast.mp3', 'enclosure', 'audio/mpeg', null, null, 1337));
+        $entry->setLink([$link1, $link2]);
         $entry->setId('tag:example.org,2003:3.2397');
         $entry->setUpdated(new DateTime('2005-07-31T12:29:29'));
         $entry->setPublished(new DateTime('2003-12-13T08:29:29-04:00'));
-        $entry->addAuthor(new Person('Mark Pilgrim', 'http://example.org/', 'f8dy@example.com'));
-        $entry->addContributor(new Person('Sam Ruby'));
-        $entry->addContributor(new Person('Joe Gregorio'));
-        $entry->addCategory(new Category('news'));
-        $entry->setContent(new Text('<div xmlns="http://www.w3.org/1999/xhtml"><p><i>[Update: The Atom draft is finished.]</i></p></div>', 'xhtml'));
-        $entry->setSummary(new Text('foobar', 'text'));
+        $entry->setAuthor([$author]);
+        $entry->setContributor([$contributor1, $contributor2]);
+        $entry->setCategory([$category]);
+        $entry->setContent($content);
+        $entry->setSummary($summary);
         $entry->setRights('Copyright (c) 2003, Mark Pilgrim');
+
+        $subTitle = new Text();
+        $subTitle->setContent('A <em>lot</em> of effort went into making this effortless');
+        $subTitle->setType('html');
+
+        $link1 = new Link();
+        $link1->setHref('http://example.org/');
+        $link1->setRel('alternate');
+        $link1->setType('text/html');
+        $link1->setHreflang('en');
+
+        $link2 = new Link();
+        $link2->setHref('http://example.org/feed.atom');
+        $link2->setRel('self');
+        $link2->setType('application/atom+xml');
+
+        $generator = new Generator();
+        $generator->setText('Example Toolkit');
+        $generator->setUri('http://www.example.com/');
+        $generator->setVersion('1.0');
 
         $atom = new AtomRecord();
         $atom->setTitle('dive into mark');
-        $atom->setSubTitle(new Text('A <em>lot</em> of effort went into making this effortless', 'html'));
+        $atom->setSubTitle($subTitle);
         $atom->setUpdated(new DateTime('2005-07-31T12:29:29Z'));
         $atom->setId('tag:example.org,2003:3');
-        $atom->addLink(new Link('http://example.org/', 'alternate', 'text/html', 'en'));
-        $atom->addLink(new Link('http://example.org/feed.atom', 'self', 'application/atom+xml'));
+        $atom->setLink([$link1, $link2]);
         $atom->setRights('Copyright (c) 2003, Mark Pilgrim');
-        $atom->setGenerator(new Generator('Example Toolkit', 'http://www.example.com/', '1.0'));
+        $atom->setGenerator($generator);
 
         $entry->setSource($atom);
 

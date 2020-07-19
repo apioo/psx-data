@@ -236,42 +236,4 @@ TEXT;
 
         $this->assertEquals('text/xml', $writer->getContentType());
     }
-
-    public function testWriteExceptionRecord()
-    {
-        $record = new Error();
-        $record->setSuccess(false);
-        $record->setTitle('An error occured');
-        $record->setMessage('Foobar');
-        $record->setTrace('Foo');
-        $record->setContext('Bar');
-
-        $writer = new Soap('http://foo.bar');
-        $writer->setRequestMethod('GET');
-
-        $actual = $writer->write($record);
-
-        $expect = <<<TEXT
-<?xml version="1.0"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <soap:Fault>
-      <faultcode>soap:Server</faultcode>
-      <faultstring>Foobar</faultstring>
-      <detail>
-        <error xmlns="http://foo.bar" type="object">
-          <success type="boolean">false</success>
-          <title type="string">An error occured</title>
-          <message type="string">Foobar</message>
-          <trace type="string">Foo</trace>
-          <context type="string">Bar</context>
-        </error>
-      </detail>
-    </soap:Fault>
-  </soap:Body>
-</soap:Envelope>
-TEXT;
-
-        $this->assertXmlStringEqualsXmlString($expect, $actual);
-    }
 }

@@ -66,11 +66,10 @@ INPUT;
         $this->assertEquals($expect, $data);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testNoEnvelope()
     {
+        $this->expectException(\RuntimeException::class);
+
         $body = <<<INPUT
 <test xmlns="http://phpsx.org/2014/data">
 	<foo>bar</foo>
@@ -111,11 +110,10 @@ INPUT;
         $this->assertEquals($expect, $data);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testBodyWrongNamespace()
     {
+        $this->expectException(\RuntimeException::class);
+
         $body = <<<INPUT
 <soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">
 	<soap:Body>
@@ -130,11 +128,10 @@ INPUT;
         $transformer->transform($dom);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidData()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $transformer = new Soap('http://phpsx.org/2014/data');
         $transformer->transform(array());
     }

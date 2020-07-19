@@ -165,12 +165,11 @@ TEXT;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Value must be an array or object
-     */
     public function testWriteScalar()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value must be an array or object');
+
         $writer = new Json();
         $writer->write($this->getScalar());
     }

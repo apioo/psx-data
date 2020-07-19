@@ -31,13 +31,12 @@ namespace PSX\Data\Tests\Processor\Model;
 class Comment
 {
     /**
-     * @Type("string")
+     * @var string
      */
     protected $title;
 
     /**
-     * @Type("string")
-     * @Format("date-time")
+     * @var \DateTime
      */
     protected $date;
 
