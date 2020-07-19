@@ -24,7 +24,6 @@ use PSX\Data\GraphTraverser;
 use PSX\Data\Visitor;
 use PSX\Http\MediaType;
 use PSX\Model\Common\Error;
-use PSX\Record\Record;
 use XMLWriter;
 
 /**

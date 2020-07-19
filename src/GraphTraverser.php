@@ -21,7 +21,6 @@
 namespace PSX\Data;
 
 use ArrayObject;
-use InvalidArgumentException;
 use JsonSerializable;
 use PSX\Data\Util\CurveArray;
 use PSX\Record\RecordInterface;

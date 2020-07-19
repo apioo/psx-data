@@ -99,7 +99,7 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
 
     public function visitObjectValueEnd()
     {
-        list($key, $value) = array_pop($this->stack);
+        [$key, $value] = array_pop($this->stack);
 
         $this->addObjectValue($key, $this->getValue($value), $this->objectStack[$this->objectCount]);
     }
@@ -125,7 +125,7 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
 
     public function visitArrayValueEnd()
     {
-        list($value) = array_pop($this->stack);
+        [$value] = array_pop($this->stack);
 
         $this->addArrayValue($this->getValue($value), $this->arrayStack[$this->arrayCount]);
     }
