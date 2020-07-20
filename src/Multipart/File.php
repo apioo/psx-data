@@ -28,37 +28,36 @@ namespace PSX\Data\Multipart;
  * @link    http://phpsx.org
  * @Title("file")
  * @Description("File upload provided through a multipart/form-data post")
- * @AdditionalProperties(false)
  */
 class File
 {
     /**
+     * @var string
      * @Key("name")
-     * @Type("string")
      */
     public $name;
 
     /**
+     * @var string
      * @Key("type")
-     * @Type("string")
      */
     public $type;
 
     /**
+     * @var integer
      * @Key("size")
-     * @Type("integer")
      */
     public $size;
 
     /**
+     * @var string
      * @Key("tmp_name")
-     * @Type("string")
      */
     public $tmpName;
 
     /**
+     * @var integer
      * @Key("error")
-     * @Type("integer")
      */
     public $error;
 
