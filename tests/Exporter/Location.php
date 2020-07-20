@@ -2,6 +2,8 @@
 
 namespace PSX\Data\Tests\Exporter;
 
+use PSX\Schema\Annotation as JS;
+
 /**
  * @JS\Title("location")
  * @JS\Description("Location of the person")
