@@ -35,21 +35,21 @@ class CurveArray
      * Converts a flat array into a nested object using a separator
      *
      * @param array $data
-     * @param string $seperator
+     * @param string $separator
      * @return \stdClass
      */
-    public static function nest(array $data, $seperator = '_')
+    public static function nest(array $data, $separator = '_')
     {
         if (self::isAssoc($data)) {
             $result = new \stdClass();
 
             foreach ($data as $key => $value) {
-                if (($pos = strpos($key, $seperator)) !== false) {
+                if (($pos = strpos($key, $separator)) !== false) {
                     $subKey = substr($key, 0, $pos);
                     $name   = substr($key, $pos + 1);
 
                     if (!isset($result->{$subKey})) {
-                        $result->{$subKey} = self::nest(self::getParts($data, $subKey . $seperator), $seperator);
+                        $result->{$subKey} = self::nest(self::getParts($data, $subKey . $separator), $separator);
                     }
                 } else {
                     $result->{$key} = $value;
@@ -61,7 +61,7 @@ class CurveArray
             $result = [];
 
             foreach ($data as $value) {
-                $result[] = self::nest($value, $seperator);
+                $result[] = self::nest($value, $separator);
             }
 
             return $result;
@@ -74,12 +74,12 @@ class CurveArray
      * not be used
      *
      * @param array $data
-     * @param string $seperator
+     * @param string $separator
      * @param string $prefix
      * @param array $result
      * @return array
      */
-    public static function flatten($data, $seperator = '_', $prefix = null, array &$result = null)
+    public static function flatten($data, $separator = '_', $prefix = null, array &$result = null)
     {
         if ($result === null) {
             $result = array();
@@ -93,7 +93,7 @@ class CurveArray
 
         foreach ($data as $key => $value) {
             if ($value instanceof \stdClass || is_array($value)) {
-                self::flatten($value, $seperator, $prefix . $key . $seperator, $result);
+                self::flatten($value, $separator, $prefix . $key . $separator, $result);
             } else {
                 $result[$prefix . $key] = $value;
             }
