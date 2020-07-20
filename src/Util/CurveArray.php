@@ -32,7 +32,7 @@ use InvalidArgumentException;
 class CurveArray
 {
     /**
-     * Converts a flat array into a nested object using a seperator
+     * Converts a flat array into a nested object using a separator
      *
      * @param array $data
      * @param string $seperator
@@ -69,7 +69,7 @@ class CurveArray
     }
 
     /**
-     * Converts a nested array into a flat using a seperator. The prefix and
+     * Converts a nested array into a flat using a separator. The prefix and
      * result parameter are used internally for performance reason and should
      * not be used
      *
