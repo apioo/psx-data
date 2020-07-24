@@ -3,7 +3,7 @@
  * PSX is a open source PHP framework to develop RESTful APIs.
  * For the current version and informations visit <http://phpsx.org>
  *
- * Copyright 2010-2017 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright 2010-2020 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ use PSX\Data\GraphTraverser;
 use PSX\Data\Visitor;
 use PSX\Http\MediaType;
 use PSX\Model\Common\Error;
-use PSX\Record\Record;
 use XMLWriter;
 
 /**
@@ -38,13 +37,7 @@ class Soap extends Xml
 {
     protected static $mime = 'application/soap+xml';
 
-    protected $namespace;
     protected $requestMethod;
-
-    public function __construct($namespace)
-    {
-        $this->namespace = $namespace;
-    }
 
     public function setRequestMethod($requestMethod)
     {
@@ -77,7 +70,7 @@ class Soap extends Xml
                 $xmlWriter->startElement('detail');
 
                 $graph = new GraphTraverser();
-                $graph->traverse($data, new Visitor\XmlWriterVisitor($xmlWriter, $this->namespace));
+                $graph->traverse($data, new Visitor\JsonxWriterVisitor($xmlWriter));
 
                 $xmlWriter->endElement();
             }
@@ -88,7 +81,7 @@ class Soap extends Xml
             $xmlWriter->startElement('soap:Body');
 
             $graph = new GraphTraverser();
-            $graph->traverse($data, new Visitor\XmlWriterVisitor($xmlWriter, $this->namespace));
+            $graph->traverse($data, new Visitor\JsonxWriterVisitor($xmlWriter));
 
             $xmlWriter->endElement();
         }

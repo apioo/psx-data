@@ -3,7 +3,7 @@
  * PSX is a open source PHP framework to develop RESTful APIs.
  * For the current version and informations visit <http://phpsx.org>
  *
- * Copyright 2010-2017 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright 2010-2020 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,19 +39,6 @@ class ProcessorTest extends ProcessorTestCase
 
         $this->assertInstanceOf(Entry::class, $entry);
         $this->assertEquals('foo', $entry->getTitle());
-    }
-
-    /**
-     * @expectedException \PSX\Schema\ValidationException
-     */
-    public function testReadError()
-    {
-        $schema = $this->processor
-            ->getConfiguration()
-            ->getSchemaManager()
-            ->getSchema(Entry::class);
-
-        $this->processor->read($schema, Payload::json('{"title": "foo", "bar": "foo"}'));
     }
 
     public function testParse()

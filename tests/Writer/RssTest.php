@@ -3,7 +3,7 @@
  * PSX is a open source PHP framework to develop RESTful APIs.
  * For the current version and informations visit <http://phpsx.org>
  *
- * Copyright 2010-2017 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright 2010-2020 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ TEXT;
         $rss->setGenerator('Weblog Editor 2.0');
         $rss->setManagingEditor('editor@example.com');
         $rss->setWebMaster('webmaster@example.com');
-        $rss->addItem($this->getItemRecord());
+        $rss->setItem([$this->getItemRecord()]);
 
         return $rss;
     }
@@ -134,11 +134,10 @@ TEXT;
         $this->assertEquals('application/rss+xml', $writer->getContentType());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidData()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $writer = new Rss();
         $writer->write(new Record());
     }

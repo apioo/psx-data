@@ -3,7 +3,7 @@
  * PSX is a open source PHP framework to develop RESTful APIs.
  * For the current version and informations visit <http://phpsx.org>
  *
- * Copyright 2010-2015 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright 2010-2020 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,11 +43,6 @@ class Configuration
     protected $schemaManager;
 
     /**
-     * @var string
-     */
-    protected $namespace;
-
-    /**
      * @var \PSX\Data\ReaderFactory
      */
     protected $readerFactory;
@@ -57,11 +52,10 @@ class Configuration
      */
     protected $writerFactory;
 
-    public function __construct(AnnotationReader $reader, SchemaManagerInterface $schemaManager, $namespace, ReaderFactory $readerFactory, WriterFactory $writerFactory)
+    public function __construct(AnnotationReader $reader, SchemaManagerInterface $schemaManager, ReaderFactory $readerFactory, WriterFactory $writerFactory)
     {
         $this->annotationReader = $reader;
         $this->schemaManager    = $schemaManager;
-        $this->namespace        = $namespace;
         $this->readerFactory    = $readerFactory;
         $this->writerFactory    = $writerFactory;
     }
@@ -80,14 +74,6 @@ class Configuration
     public function getSchemaManager()
     {
         return $this->schemaManager;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNamespace()
-    {
-        return $this->namespace;
     }
 
     /**
@@ -122,14 +108,13 @@ class Configuration
         return $this->writerFactory;
     }
 
-    public static function createDefault(AnnotationReader $reader, SchemaManagerInterface $schemaManager, $namespace = null)
+    public static function createDefault(AnnotationReader $reader, SchemaManagerInterface $schemaManager)
     {
         return new self(
             $reader, 
             $schemaManager, 
-            $namespace,
             self::createDefaultReaderFactory(),
-            self::createDefaultWriterFactory($namespace)
+            self::createDefaultWriterFactory()
         );
     }
 
@@ -144,7 +129,7 @@ class Configuration
         return $readerFactory;
     }
 
-    protected static function createDefaultWriterFactory($soapNamespace = null)
+    protected static function createDefaultWriterFactory()
     {
         $writerFactory = new WriterFactory();
         $writerFactory->addWriter(new Writer\Json(), 48);
@@ -152,7 +137,7 @@ class Configuration
         $writerFactory->addWriter(new Writer\Form(), 24);
         $writerFactory->addWriter(new Writer\Jsonp(), 16);
         $writerFactory->addWriter(new Writer\Jsonx(), 15);
-        $writerFactory->addWriter(new Writer\Soap(!empty($soapNamespace) ? $soapNamespace : 'http://phpsx.org/2014/data'), 8);
+        $writerFactory->addWriter(new Writer\Soap(), 8);
         $writerFactory->addWriter(new Writer\Xml(), 0);
 
         return $writerFactory;

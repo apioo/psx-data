@@ -2,7 +2,7 @@
 
 namespace PSX\Data\Tests\Exporter;
 
-use PSX\Schema\Parser\Popo\Annotation as JS;
+use PSX\Schema\Annotation as JS;
 
 /**
  * @JS\Title("location")
@@ -13,13 +13,13 @@ use PSX\Schema\Parser\Popo\Annotation as JS;
 class Location
 {
     /**
+     * @var float
      * @JS\Key("lat")
-     * @JS\Type("number")
      */
     public $lat;
     /**
+     * @var float
      * @JS\Key("long")
-     * @JS\Type("number")
      */
     public $long;
 

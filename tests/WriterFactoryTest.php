@@ -3,7 +3,7 @@
  * PSX is a open source PHP framework to develop RESTful APIs.
  * For the current version and informations visit <http://phpsx.org>
  *
- * Copyright 2010-2017 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright 2010-2020 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,14 +39,14 @@ class WriterFactoryTest extends TestCase
      */
     protected $writerFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->writerFactory = new WriterFactory();
         $this->writerFactory->addWriter(new Writer\Json(), 48);
         $this->writerFactory->addWriter(new Writer\Atom(), 32);
         $this->writerFactory->addWriter(new Writer\Form(), 24);
         $this->writerFactory->addWriter(new Writer\Jsonp(), 16);
-        $this->writerFactory->addWriter(new Writer\Soap('http://phpsx.org/2014/data'), 8);
+        $this->writerFactory->addWriter(new Writer\Soap(), 8);
         $this->writerFactory->addWriter(new Writer\Xml(), 0);
     }
 

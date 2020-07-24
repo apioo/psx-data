@@ -3,7 +3,7 @@
  * PSX is a open source PHP framework to develop RESTful APIs.
  * For the current version and informations visit <http://phpsx.org>
  *
- * Copyright 2010-2017 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright 2010-2020 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,20 +110,18 @@ INPUT;
         $this->assertEquals($expect, $data);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidData()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $transformer = new Jsonx();
         $transformer->transform(array());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidElementName()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $body = '<json:foo xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx" />';
 
         $dom = new \DOMDocument();

@@ -3,7 +3,7 @@
  * PSX is a open source PHP framework to develop RESTful APIs.
  * For the current version and informations visit <http://phpsx.org>
  *
- * Copyright 2010-2017 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright 2010-2020 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,11 +105,10 @@ INPUT;
         $this->assertEquals($expect, $data);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNoRssElement()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $body = <<<INPUT
 <?xml version="1.0" encoding="UTF-8"?>
 <foo />
@@ -122,11 +121,10 @@ INPUT;
         $transformer->transform($dom);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNoChannelElement()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $body = <<<INPUT
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -140,11 +138,10 @@ INPUT;
         $transformer->transform($dom);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidData()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $transformer = new Rss();
         $transformer->transform(array());
     }

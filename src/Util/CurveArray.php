@@ -3,7 +3,7 @@
  * PSX is a open source PHP framework to develop RESTful APIs.
  * For the current version and informations visit <http://phpsx.org>
  *
- * Copyright 2010-2017 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright 2010-2020 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,24 +32,24 @@ use InvalidArgumentException;
 class CurveArray
 {
     /**
-     * Converts a flat array into a nested object using a seperator
+     * Converts a flat array into a nested object using a separator
      *
      * @param array $data
-     * @param string $seperator
+     * @param string $separator
      * @return \stdClass
      */
-    public static function nest(array $data, $seperator = '_')
+    public static function nest(array $data, $separator = '_')
     {
         if (self::isAssoc($data)) {
             $result = new \stdClass();
 
             foreach ($data as $key => $value) {
-                if (($pos = strpos($key, $seperator)) !== false) {
+                if (($pos = strpos($key, $separator)) !== false) {
                     $subKey = substr($key, 0, $pos);
                     $name   = substr($key, $pos + 1);
 
                     if (!isset($result->{$subKey})) {
-                        $result->{$subKey} = self::nest(self::getParts($data, $subKey . $seperator), $seperator);
+                        $result->{$subKey} = self::nest(self::getParts($data, $subKey . $separator), $separator);
                     }
                 } else {
                     $result->{$key} = $value;
@@ -61,7 +61,7 @@ class CurveArray
             $result = [];
 
             foreach ($data as $value) {
-                $result[] = self::nest($value, $seperator);
+                $result[] = self::nest($value, $separator);
             }
 
             return $result;
@@ -69,17 +69,17 @@ class CurveArray
     }
 
     /**
-     * Converts a nested array into a flat using a seperator. The prefix and
+     * Converts a nested array into a flat using a separator. The prefix and
      * result parameter are used internally for performance reason and should
      * not be used
      *
      * @param array $data
-     * @param string $seperator
+     * @param string $separator
      * @param string $prefix
      * @param array $result
      * @return array
      */
-    public static function flatten($data, $seperator = '_', $prefix = null, array &$result = null)
+    public static function flatten($data, $separator = '_', $prefix = null, array &$result = null)
     {
         if ($result === null) {
             $result = array();
@@ -93,7 +93,7 @@ class CurveArray
 
         foreach ($data as $key => $value) {
             if ($value instanceof \stdClass || is_array($value)) {
-                self::flatten($value, $seperator, $prefix . $key . $seperator, $result);
+                self::flatten($value, $separator, $prefix . $key . $separator, $result);
             } else {
                 $result[$prefix . $key] = $value;
             }
