@@ -37,13 +37,7 @@ class Soap extends Xml
 {
     protected static $mime = 'application/soap+xml';
 
-    protected $namespace;
     protected $requestMethod;
-
-    public function __construct($namespace)
-    {
-        $this->namespace = $namespace;
-    }
 
     public function setRequestMethod($requestMethod)
     {
@@ -76,7 +70,7 @@ class Soap extends Xml
                 $xmlWriter->startElement('detail');
 
                 $graph = new GraphTraverser();
-                $graph->traverse($data, new Visitor\XmlWriterVisitor($xmlWriter, $this->namespace));
+                $graph->traverse($data, new Visitor\JsonxWriterVisitor($xmlWriter));
 
                 $xmlWriter->endElement();
             }
@@ -87,7 +81,7 @@ class Soap extends Xml
             $xmlWriter->startElement('soap:Body');
 
             $graph = new GraphTraverser();
-            $graph->traverse($data, new Visitor\XmlWriterVisitor($xmlWriter, $this->namespace));
+            $graph->traverse($data, new Visitor\JsonxWriterVisitor($xmlWriter));
 
             $xmlWriter->endElement();
         }

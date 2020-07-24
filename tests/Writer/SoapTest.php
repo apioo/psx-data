@@ -36,7 +36,7 @@ class SoapTest extends WriterTestCase
 {
     public function testWriteRecord()
     {
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
         $writer->setRequestMethod('GET');
 
         $actual = $writer->write($this->getRecord());
@@ -45,13 +45,13 @@ class SoapTest extends WriterTestCase
 <?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <record xmlns="http://foo.bar" type="object">
-      <id type="integer">1</id>
-      <author type="string">foo</author>
-      <title type="string">bar</title>
-      <content type="string">foobar</content>
-      <date type="date-time">2012-03-11T13:37:21Z</date>
-    </record>
+    <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+      <json:number name="id">1</json:number>
+      <json:string name="author">foo</json:string>
+      <json:string name="title">bar</json:string>
+      <json:string name="content">foobar</json:string>
+      <json:string name="date">2012-03-11T13:37:21Z</json:string>
+    </json:object>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -62,7 +62,7 @@ TEXT;
 
     public function testWriteCollection()
     {
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
         $writer->setRequestMethod('GET');
 
         $actual = $writer->write($this->getCollection());
@@ -71,27 +71,27 @@ TEXT;
 <?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <collection xmlns="http://foo.bar" type="object">
-      <totalResults type="integer">2</totalResults>
-      <startIndex type="integer">0</startIndex>
-      <itemsPerPage type="integer">8</itemsPerPage>
-      <entry type="array">
-        <entry type="object">
-          <id type="integer">1</id>
-          <author type="string">foo</author>
-          <title type="string">bar</title>
-          <content type="string">foobar</content>
-          <date type="date-time">2012-03-11T13:37:21Z</date>
-        </entry>
-        <entry type="object">
-          <id type="integer">2</id>
-          <author type="string">foo</author>
-          <title type="string">bar</title>
-          <content type="string">foobar</content>
-          <date type="date-time">2012-03-11T13:37:21Z</date>
-        </entry>
-      </entry>
-    </collection>
+    <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+      <json:number name="totalResults">2</json:number>
+      <json:number name="startIndex">0</json:number>
+      <json:number name="itemsPerPage">8</json:number>
+      <json:array name="entry">
+        <json:object>
+          <json:number name="id">1</json:number>
+          <json:string name="author">foo</json:string>
+          <json:string name="title">bar</json:string>
+          <json:string name="content">foobar</json:string>
+          <json:string name="date">2012-03-11T13:37:21Z</json:string>
+        </json:object>
+        <json:object>
+          <json:number name="id">2</json:number>
+          <json:string name="author">foo</json:string>
+          <json:string name="title">bar</json:string>
+          <json:string name="content">foobar</json:string>
+          <json:string name="date">2012-03-11T13:37:21Z</json:string>
+        </json:object>
+      </json:array>
+    </json:object>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -102,7 +102,7 @@ TEXT;
 
     public function testWriteComplex()
     {
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
         $writer->setRequestMethod('GET');
 
         $actual = $writer->write($this->getComplex());
@@ -111,26 +111,26 @@ TEXT;
 <?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <activity xmlns="http://foo.bar" type="object">
-      <verb type="string">post</verb>
-      <actor type="object">
-        <id type="string">tag:example.org,2011:martin</id>
-        <objectType type="string">person</objectType>
-        <displayName type="string">Martin Smith</displayName>
-        <url type="string">http://example.org/martin</url>
-      </actor>
-      <object type="object">
-        <id type="string">tag:example.org,2011:abc123/xyz</id>
-        <url type="string">http://example.org/blog/2011/02/entry</url>
-      </object>
-      <target type="object">
-        <id type="string">tag:example.org,2011:abc123</id>
-        <objectType type="string">blog</objectType>
-        <displayName type="string">Martin's Blog</displayName>
-        <url type="string">http://example.org/blog/</url>
-      </target>
-      <published type="date-time">2011-02-10T15:04:55Z</published>
-    </activity>
+    <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+      <json:string name="verb">post</json:string>
+      <json:object name="actor">
+        <json:string name="id">tag:example.org,2011:martin</json:string>
+        <json:string name="objectType">person</json:string>
+        <json:string name="displayName">Martin Smith</json:string>
+        <json:string name="url">http://example.org/martin</json:string>
+      </json:object>
+      <json:object name="object">
+        <json:string name="id">tag:example.org,2011:abc123/xyz</json:string>
+        <json:string name="url">http://example.org/blog/2011/02/entry</json:string>
+      </json:object>
+      <json:object name="target">
+        <json:string name="id">tag:example.org,2011:abc123</json:string>
+        <json:string name="objectType">blog</json:string>
+        <json:string name="displayName">Martin's Blog</json:string>
+        <json:string name="url">http://example.org/blog/</json:string>
+      </json:object>
+      <json:string name="published">2011-02-10T15:04:55Z</json:string>
+    </json:object>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -140,14 +140,14 @@ TEXT;
 
     public function testWriteEmpty()
     {
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
         $actual = $writer->write($this->getEmpty());
 
         $expect = <<<TEXT
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <record xmlns="http://foo.bar" type="object"/>
+    <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx"/>
   </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -157,29 +157,29 @@ TEXT;
 
     public function testWriteArray()
     {
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
         $actual = $writer->write($this->getArray());
 
         $expect = <<<TEXT
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <collection type="array">
-   <entry type="object">
-    <id type="integer">1</id>
-    <author type="string">foo</author>
-    <title type="string">bar</title>
-    <content type="string">foobar</content>
-    <date type="date-time">2012-03-11T13:37:21Z</date>
-   </entry>
-   <entry type="object">
-    <id type="integer">2</id>
-    <author type="string">foo</author>
-    <title type="string">bar</title>
-    <content type="string">foobar</content>
-    <date type="date-time">2012-03-11T13:37:21Z</date>
-   </entry>
-  </collection>
+  <json:array xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+   <json:object>
+    <json:number name="id">1</json:number>
+    <json:string name="author">foo</json:string>
+    <json:string name="title">bar</json:string>
+    <json:string name="content">foobar</json:string>
+    <json:string name="date">2012-03-11T13:37:21Z</json:string>
+   </json:object>
+   <json:object>
+    <json:number name="id">2</json:number>
+    <json:string name="author">foo</json:string>
+    <json:string name="title">bar</json:string>
+    <json:string name="content">foobar</json:string>
+    <json:string name="date">2012-03-11T13:37:21Z</json:string>
+   </json:object>
+  </json:array>
  </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -189,17 +189,17 @@ TEXT;
 
     public function testWriteArrayScalar()
     {
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
         $actual = $writer->write($this->getArrayScalar());
 
         $expect = <<<TEXT
 <?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
  <soap:Body>
-  <collection type="array">
-   <entry type="string">foo</entry>
-   <entry type="string">bar</entry>
-  </collection>
+  <json:array xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+   <json:string>foo</json:string>
+   <json:string>bar</json:string>
+  </json:array>
  </soap:Body>
 </soap:Envelope>
 TEXT;
@@ -209,7 +209,7 @@ TEXT;
 
     public function testWriteScalar()
     {
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
         $actual = $writer->write($this->getScalar());
 
         $expect = <<<TEXT
@@ -224,7 +224,7 @@ TEXT;
 
     public function testIsContentTypeSupported()
     {
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
 
         $this->assertTrue($writer->isContentTypeSupported(new MediaType('application/soap+xml')));
         $this->assertFalse($writer->isContentTypeSupported(new MediaType('text/html')));
@@ -232,7 +232,7 @@ TEXT;
 
     public function testGetContentType()
     {
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
 
         $this->assertEquals('text/xml', $writer->getContentType());
     }
@@ -246,7 +246,7 @@ TEXT;
         $record->setTrace('Foo');
         $record->setContext('Bar');
 
-        $writer = new Soap('http://foo.bar');
+        $writer = new Soap();
         $writer->setRequestMethod('GET');
 
         $actual = $writer->write($record);
@@ -259,13 +259,13 @@ TEXT;
       <faultcode>soap:Server</faultcode>
       <faultstring>Foobar</faultstring>
       <detail>
-        <error xmlns="http://foo.bar" type="object">
-          <success type="boolean">false</success>
-          <title type="string">An error occured</title>
-          <message type="string">Foobar</message>
-          <trace type="string">Foo</trace>
-          <context type="string">Bar</context>
-        </error>
+        <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
+          <json:boolean name="success">false</json:boolean>
+          <json:string name="title">An error occured</json:string>
+          <json:string name="message">Foobar</json:string>
+          <json:string name="trace">Foo</json:string>
+          <json:string name="context">Bar</json:string>
+        </json:object>
       </detail>
     </soap:Fault>
   </soap:Body>

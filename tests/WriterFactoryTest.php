@@ -46,7 +46,7 @@ class WriterFactoryTest extends TestCase
         $this->writerFactory->addWriter(new Writer\Atom(), 32);
         $this->writerFactory->addWriter(new Writer\Form(), 24);
         $this->writerFactory->addWriter(new Writer\Jsonp(), 16);
-        $this->writerFactory->addWriter(new Writer\Soap('http://phpsx.org/2014/data'), 8);
+        $this->writerFactory->addWriter(new Writer\Soap(), 8);
         $this->writerFactory->addWriter(new Writer\Xml(), 0);
     }
 
