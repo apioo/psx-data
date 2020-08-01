@@ -235,7 +235,7 @@ class Processor
         } elseif ($mime->getName() == 'application/rss+xml') {
             return new Transformer\Rss();
         } elseif ($mime->getName() == 'application/soap+xml') {
-            return new Transformer\Soap($this->config->getNamespace());
+            return new Transformer\Soap();
         } elseif (in_array($mime->getName(), MediaType\Xml::getMediaTypes()) ||
             substr($mime->getSubType(), -4) == '+xml' ||
             substr($mime->getSubType(), -4) == '/xml') {

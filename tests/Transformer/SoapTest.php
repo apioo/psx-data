@@ -52,7 +52,8 @@ INPUT;
         $dom = new \DOMDocument();
         $dom->loadXML($body);
 
-        $transformer = new Soap('http://phpsx.org/2014/data');
+        $transformer = new Soap();
+        $transformer->setNamespace('http://phpsx.org/2014/data');
 
         $expect = new \stdClass();
         $expect->foo = 'bar';

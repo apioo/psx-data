@@ -36,11 +36,6 @@ class Soap extends XmlArray
 {
     const ENVELOPE_NS = 'http://schemas.xmlsoap.org/soap/envelope/';
 
-    public function __construct($namespace)
-    {
-        $this->namespace = $namespace;
-    }
-
     public function transform($data)
     {
         if (!$data instanceof DOMDocument) {
