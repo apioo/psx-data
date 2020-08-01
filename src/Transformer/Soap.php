@@ -65,9 +65,15 @@ class Soap extends XmlArray
     protected function findFirstElement(DOMElement $element)
     {
         foreach ($element->childNodes as $childNode) {
-            if ($childNode->nodeType == XML_ELEMENT_NODE && $childNode->namespaceURI == $this->namespace) {
-                return $childNode;
+            if ($childNode->nodeType !== XML_ELEMENT_NODE) {
+                continue;
             }
+
+            if ($this->namespace !== null && $childNode->namespaceURI != $this->namespace) {
+                continue;
+            }
+
+            return $childNode;
         }
 
         return null;
