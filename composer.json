@@ -18,7 +18,7 @@
     "psx/json": "^1.0",
     "psx/model": "^3.0",
     "psx/record": "^1.0",
-    "psx/schema": "^3.0-RC4",
+    "psx/schema": "^3.0",
     "psx/validate": "^1.0",
     "doctrine/annotations": "^1.3"
   },
