@@ -1,7 +1,5 @@
-PSX Data
-===
 
-## About
+# Data
 
 Data processing library which helps to read and write data to and from POPOs
 in different formats.
@@ -58,72 +56,33 @@ $out = $processor->write(Payload::json($model));
 // model classes
 class News
 {
+    private ?int $id = null;
+    private ?string $title = null;
+    protected ?Author $author = null;
     /**
-     * @Type("integer")
+     * @var array<Comment>|null
      */
-    protected $id;
-
-    /**
-     * @Type("string")
-     */
-    protected $title;
-
-    /**
-     * @Ref("Acme\Author")
-     */
-    protected $author;
-
-    /**
-     * @Type("array")
-     * @Items(@Ref("Acme\Comment"))
-     */
-    protected $comments;
-
-    /**
-     * @Type("string")
-     * @Format("date-time")
-     */
-    protected $date;
+    private ?array $comments = null;
+     #[Format('date-time')]
+    private ?string $date;
 
     // getter/setter implementations removed for readability
 }
 
 class Author
 {
-    /**
-     * @Type("integer")
-     */
-    protected $id;
-
-    /**
-     * @Type("string")
-     */
-    protected $name;
-
-    /**
-     * @Type("string")
-     */
-    protected $email;
+    private ?int $id = null;
+    private ?string $name = null;
+    private ?string $email = null;
 
     // getter/setter implementations removed for readability
 }
 
 class Comment
 {
-    /**
-     * @Type("integer")
-     */
-    protected $id;
-
-    /**
-     * @Ref("Acme\Author")
-     */
-    protected $author;
-
-    /**
-     * @Type("string")
-     */
-    protected $text;
+    private ?int $id = null;
+    private ?Author $author = null;
+    private ?string $text = null;
 
     // getter/setter implementations removed for readability
 }
@@ -178,44 +137,29 @@ $configuration->getWriterFactory()->addWriter(new Acme\Writer(), 64);
 
 ## Constraints
 
-It is also possible to add specific constraints to your model class. All
-constraints are based on the JsonSchema specification. In the following some
-examples:
+It is also possible to add specific constraints to your model class. In the following some examples:
 
 ```php
+#[Required(['title'])]
 class News
 {
-    /**
-     * @Type("string")
-     * @Pattern("[A-z]")
-     * @Required
-     */
-    protected $title;
+    #[Pattern('[A-z]')]
+    private ?string $title = null;
 
-    /**
-     * @Type("string")
-     * @MinLength(3)
-     * @MaxLength(255)
-     */
-    protected $text;
+     #[MinLength(3)]
+     #[MaxLength(255)]
+    private ?string $text = null;
 
-    /**
-     * @Type("string")
-     * @Enum({"active", "deleted"})
-     */
-    protected $status;
+    #[\PSX\Schema\Attribute\Enum(['active', 'deleted'])]
+    private ?string $status = null;
 
-    /**
-     * @Type("integer")
-     * @Minimum(0)
-     * @Maximum(5)
-     */
-    protected $rating;
+    #[Minimum(0)]
+    #[Maximum(5)]
+    private ?int $rating = null;
 }
 ```
 
-All available annotations are located in the [psx/schema](https://github.com/apioo/psx-schema)
-project.
+All available attributes are located at the [psx/schema](https://github.com/apioo/psx-schema) project.
 
 ## Transformations
 
@@ -240,15 +184,14 @@ $model = $processor->read(News::class, $payload);
 
 ## Exporter
 
-If you write data you can set as payload an arbitrary object. We use a exporter
+If you write data you can set as payload an arbitrary object. We use an exporter
 class to return the actual data representation of that object. By default the
-exporter reads also the psx/schema annotations so you can use the same model for
+exporter reads also the psx/schema attributes so you can use the same model for
 incoming and outgoing data. But it is also possible to use different classes.
-I.e. you could create model classes using the psx/schema annotations only for
+I.e. you could create model classes using the psx/schema attributes only for
 incoming data and for outgoing data you could use the JMS exporter in case you
 have already objects which have these annotations.
 
 If you have another way how to extract data of an object (i.e. a toArray
 method which returns the available fields of the object) you can easily write
 a custom exporter.
-
