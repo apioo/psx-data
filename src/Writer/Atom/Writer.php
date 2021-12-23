@@ -37,7 +37,7 @@ class Writer
 
     private XMLWriter $writer;
 
-    public function __construct($title, $id, DateTime $updated, XMLWriter $writer = null, $root = 'feed', $xmlns = null)
+    public function __construct(string $title, string $id, DateTime $updated, ?XMLWriter $writer = null, ?string $root = 'feed', ?string $xmlns = null)
     {
         $this->writer = $writer ?? new XMLWriter();
 
