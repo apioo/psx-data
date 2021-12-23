@@ -20,6 +20,7 @@
 
 namespace PSX\Data;
 
+use PSX\Json\Exception\PointerException;
 use PSX\Json\Pointer;
 use PSX\Validate\FilterInterface;
 
@@ -38,7 +39,7 @@ class Accessor
 
         try {
             $value = $pointer->evaluate($source);
-        } catch (\InvalidArgumentException $e) {
+        } catch (PointerException $e) {
             return null;
         }
 

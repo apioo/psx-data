@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Writer;
 
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\GraphTraverser;
 use PSX\Data\Visitor;
 use PSX\Data\WriterInterface;
@@ -35,32 +36,32 @@ use PSX\Json\Parser;
  */
 class Json implements WriterInterface
 {
-    protected static $mime = 'application/json';
+    protected const MIME = 'application/json';
 
-    public function write($data)
+    public function write(mixed $data): string
     {
         $visitor = new Visitor\StdClassSerializeVisitor();
-        $graph   = new GraphTraverser();
-        $graph->traverse($data, $visitor);
+
+        (new GraphTraverser())->traverse($data, $visitor);
 
         if (GraphTraverser::isObject($data)) {
             $value = $visitor->getObject();
         } elseif (GraphTraverser::isArray($data)) {
             $value = $visitor->getArray();
         } else {
-            throw new \InvalidArgumentException('Value must be an array or object');
+            throw new InvalidDataException('Value must be an array or object');
         }
 
         return Parser::encode($value, JSON_PRETTY_PRINT);
     }
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
         return MediaType\Json::isMediaType($contentType);
     }
 
-    public function getContentType()
+    public function getContentType(): string
     {
-        return self::$mime;
+        return self::MIME;
     }
 }

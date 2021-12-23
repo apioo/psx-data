@@ -33,7 +33,7 @@ use PSX\Http\MediaType;
  */
 class Form extends ReaderAbstract
 {
-    public function read($data)
+    public function read(string $data): mixed
     {
         $form = array();
 
@@ -46,7 +46,7 @@ class Form extends ReaderAbstract
         }
     }
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
         return $contentType->getName() == 'application/x-www-form-urlencoded';
     }

@@ -31,11 +31,11 @@ use PSX\Http\MediaType;
  */
 class Jsonp extends Json
 {
-    protected static $mime = 'application/javascript';
+    protected const MIME = 'application/javascript';
 
-    protected $callbackName;
+    private ?string $callbackName = null;
 
-    public function write($data)
+    public function write(mixed $data): string
     {
         $callbackName = $this->getCallbackName();
 
@@ -46,22 +46,22 @@ class Jsonp extends Json
         }
     }
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
-        return $contentType->getName() == self::$mime;
+        return $contentType->getName() == self::MIME;
     }
 
-    public function getContentType()
+    public function getContentType(): string
     {
-        return self::$mime;
+        return self::MIME;
     }
 
-    public function getCallbackName()
+    public function getCallbackName(): ?string
     {
         return $this->callbackName;
     }
 
-    public function setCallbackName($callbackName)
+    public function setCallbackName(string $callbackName): void
     {
         if (preg_match('/^([A-Za-z0-9._]{3,64})$/', $callbackName)) {
             $this->callbackName = $callbackName;

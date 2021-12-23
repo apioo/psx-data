@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Writer;
 
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Tests\WriterTestCase;
 use PSX\Data\Writer\Jsonp;
 use PSX\Http\MediaType;
@@ -173,7 +174,7 @@ TEXT;
 
     public function testWriteScalar()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
         $this->expectExceptionMessage('Value must be an array or object');
 
         $writer = new Jsonp();

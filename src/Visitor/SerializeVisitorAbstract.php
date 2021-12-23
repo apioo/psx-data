@@ -33,52 +33,25 @@ use PSX\DateTime\DateTime;
  */
 abstract class SerializeVisitorAbstract extends VisitorAbstract
 {
-    /**
-     * @var array
-     */
-    protected $objectStack = array();
+    private array $objectStack = [];
+    private int $objectCount = -1;
+    private array $arrayStack = [];
+    private int $arrayCount = -1;
+    private object $lastObject;
+    private array $lastArray;
+    private array $stack = [];
 
-    /**
-     * @var int
-     */
-    protected $objectCount = -1;
-
-    /**
-     * @var array
-     */
-    protected $arrayStack = array();
-
-    /**
-     * @var int
-     */
-    protected $arrayCount = -1;
-
-    /**
-     * @var object
-     */
-    protected $lastObject;
-
-    /**
-     * @var array
-     */
-    protected $lastArray;
-
-    /**
-     * @var array
-     */
-    protected $stack = array();
-
-    public function getObject()
+    public function getObject(): object
     {
         return $this->lastObject;
     }
 
-    public function getArray()
+    public function getArray(): array
     {
         return $this->lastArray;
     }
 
-    public function visitObjectStart($name)
+    public function visitObjectStart(string $name)
     {
         $this->objectStack[] = $this->newObject();
 
@@ -92,7 +65,7 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
         $this->objectCount--;
     }
 
-    public function visitObjectValueStart($key, $value)
+    public function visitObjectValueStart(string $key, mixed $value)
     {
         $this->stack[] = [$key, $value];
     }
@@ -131,50 +104,42 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
     }
 
     /**
-     * Returns an new object instance
-     *
-     * @return mixed
+     * Returns a new object instance
      */
-    abstract protected function newObject();
+    abstract protected function newObject(): object;
 
     /**
-     * Adds an key value pair to the object
-     *
-     * @param string $key
-     * @param mixed $value
-     * @param mixed $object
+     * Adds a key value pair to the object
      */
-    abstract protected function addObjectValue($key, $value, &$object);
+    abstract protected function addObjectValue(string $key, mixed $value, mixed &$object);
 
     /**
-     * Returns an new array instance
-     *
-     * @return mixed
+     * Returns n new array instance
      */
-    abstract protected function newArray();
+    abstract protected function newArray(): array;
 
     /**
-     * Adds an value to an array
+     * Adds a value to an array
      *
      * @param mixed $value
      * @param mixed $array
      */
-    abstract protected function addArrayValue($value, &$array);
+    abstract protected function addArrayValue(string $value, mixed &$array);
 
-    protected function newValue($value)
+    protected function newValue(mixed $value): mixed
     {
         if ($value instanceof \DateTime) {
             return DateTime::getFormat($value);
         } elseif (is_scalar($value)) {
             return $value;
         } elseif (is_null($value)) {
-            return $value;
+            return null;
         } else {
             return (string) $value;
         }
     }
 
-    protected function getValue($value)
+    protected function getValue(mixed $value): mixed
     {
         if (GraphTraverser::isObject($value)) {
             return $this->lastObject;

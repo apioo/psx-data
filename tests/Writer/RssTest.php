@@ -22,6 +22,7 @@ namespace PSX\Data\Tests\Writer;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Writer\Rss;
 use PSX\Http\MediaType;
 use PSX\Model\Rss\Item;
@@ -136,7 +137,7 @@ TEXT;
 
     public function testInvalidData()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
 
         $writer = new Rss();
         $writer->write(new Record());

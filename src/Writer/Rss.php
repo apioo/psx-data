@@ -22,6 +22,7 @@ namespace PSX\Data\Writer;
 
 use DateTime;
 use InvalidArgumentException;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\WriterInterface;
 use PSX\Exception;
 use PSX\Http\MediaType;
@@ -36,9 +37,9 @@ use PSX\Model\Rss as Model;
  */
 class Rss implements WriterInterface
 {
-    protected static $mime = 'application/rss+xml';
+    protected const MIME = 'application/rss+xml';
 
-    public function write($data)
+    public function write(mixed $data): string
     {
         if ($data instanceof Model\Rss) {
             $writer = new Rss\Writer($data->getTitle(), $data->getLink(), $data->getDescription());
@@ -62,21 +63,21 @@ class Rss implements WriterInterface
 
             return $writer->toString();
         } else {
-            throw new InvalidArgumentException('Record must be an PSX\Rss or PSX\Rss\Item record');
+            throw new InvalidDataException('Record must be an PSX\Rss or PSX\Rss\Item record');
         }
     }
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
-        return $contentType->getName() == self::$mime;
+        return $contentType->getName() == self::MIME;
     }
 
-    public function getContentType()
+    public function getContentType(): string
     {
-        return self::$mime;
+        return self::MIME;
     }
 
-    protected function buildChannel(Model\Rss $rss, Rss\Writer $writer)
+    protected function buildChannel(Model\Rss $rss, Rss\Writer $writer): void
     {
         $language = $rss->getLanguage();
         if (!empty($language)) {
@@ -143,19 +144,9 @@ class Rss implements WriterInterface
         if (!empty($rating)) {
             $writer->setRating($rating);
         }
-
-        $skipHours = $rss->getSkipHours();
-        if (!empty($skipHours)) {
-            $writer->setSkipHours($skipHours);
-        }
-
-        $skipDays = $rss->getSkipDays();
-        if (!empty($skipDays)) {
-            $writer->setSkipDays($skipDays);
-        }
     }
 
-    protected function buildItem(Model\Item $item, Rss\Item $writer)
+    protected function buildItem(Model\Item $item, Rss\Item $writer): void
     {
         $title = $item->getTitle();
         if (!empty($title)) {

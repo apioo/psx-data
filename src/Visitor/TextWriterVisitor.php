@@ -32,25 +32,24 @@ use PSX\DateTime\DateTime;
  */
 class TextWriterVisitor extends VisitorAbstract
 {
-    const IN_OBJECT = 0x1;
-    const IN_ARRAY  = 0x2;
+    public const IN_OBJECT = 0x1;
+    public const IN_ARRAY  = 0x2;
 
-    protected $output;
-
-    protected $nested = -1;
-    protected $types  = array();
+    private string $output;
+    private int $nested = -1;
+    private array $types = array();
 
     public function __construct()
     {
         $this->output = '';
     }
 
-    public function getOutput()
+    public function getOutput(): string
     {
         return $this->output;
     }
 
-    public function visitObjectStart($name)
+    public function visitObjectStart(string $name)
     {
         $this->writeLn('Object(' . $name . '){', $this->nested != -1 && $this->types[$this->nested] == self::IN_ARRAY);
 
@@ -66,7 +65,7 @@ class TextWriterVisitor extends VisitorAbstract
         $this->writeLn('}');
     }
 
-    public function visitObjectValueStart($key, $value)
+    public function visitObjectValueStart(string $key, mixed $value)
     {
         $this->write($key . ' = ');
     }
@@ -87,17 +86,17 @@ class TextWriterVisitor extends VisitorAbstract
         $this->writeLn(']');
     }
 
-    public function visitValue($value)
+    public function visitValue(mixed $value)
     {
         $this->writeLn($this->getValue($value), $this->types[$this->nested] == self::IN_ARRAY);
     }
 
-    protected function writeLn($message, $padding = true)
+    protected function writeLn(string $message, bool $padding = true)
     {
         $this->write($message . PHP_EOL, $padding);
     }
 
-    protected function write($message, $padding = true)
+    protected function write(string $message, bool $padding = true)
     {
         if ($padding) {
             $this->output.= str_repeat(' ', ($this->nested + 1) * 4);
@@ -106,7 +105,7 @@ class TextWriterVisitor extends VisitorAbstract
         $this->output.= $message;
     }
 
-    protected function getValue($value)
+    protected function getValue(mixed $value): string
     {
         if ($value instanceof \DateTime) {
             return DateTime::getFormat($value);

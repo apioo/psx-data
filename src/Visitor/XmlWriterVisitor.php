@@ -35,24 +35,13 @@ use XMLWriter;
  */
 class XmlWriterVisitor extends VisitorAbstract
 {
-    /**
-     * @var \XMLWriter
-     */
-    protected $writer;
+    private XMLWriter $writer;
+    private ?string $namespace;
+    private int $level = 0;
 
-    /**
-     * @var string
-     */
-    protected $namespace;
-
-    /**
-     * @var integer
-     */
-    protected $level = 0;
-
-    public function __construct(XMLWriter $writer, $namespace = null)
+    public function __construct(XMLWriter $writer, ?string $namespace = null)
     {
-        $this->writer    = $writer;
+        $this->writer = $writer;
         $this->namespace = $namespace;
     }
 
@@ -84,7 +73,7 @@ class XmlWriterVisitor extends VisitorAbstract
         // replace all non alnum characters
         $key = preg_replace('/[^A-Za-z0-9]/', '_', $key);
 
-        // element names can not start with an digit
+        // element names can not start with a digit
         if (isset($key[0]) && ctype_digit($key[0])) {
             $key = '_' . $key;
         }

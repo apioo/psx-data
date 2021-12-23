@@ -32,19 +32,19 @@ use PSX\DateTime\DateTime;
  */
 class HtmlWriterVisitor extends VisitorAbstract
 {
-    protected $output;
+    private string $output;
 
     public function __construct()
     {
         $this->output = '';
     }
 
-    public function getOutput()
+    public function getOutput(): string
     {
         return $this->output;
     }
 
-    public function visitObjectStart($name)
+    public function visitObjectStart(string $name)
     {
         $this->write('<dl data-name="' . htmlspecialchars($name) . '">');
     }
@@ -54,7 +54,7 @@ class HtmlWriterVisitor extends VisitorAbstract
         $this->write('</dl>');
     }
 
-    public function visitObjectValueStart($key, $value)
+    public function visitObjectValueStart(string $key, mixed $value)
     {
         $this->write('<dt>' . htmlspecialchars($key) . '</dt><dd>');
     }
@@ -74,7 +74,7 @@ class HtmlWriterVisitor extends VisitorAbstract
         $this->write('</ul>');
     }
 
-    public function visitArrayValueStart($value)
+    public function visitArrayValueStart(mixed $value)
     {
         $this->write('<li>');
     }
@@ -84,17 +84,17 @@ class HtmlWriterVisitor extends VisitorAbstract
         $this->write('</li>');
     }
 
-    public function visitValue($value)
+    public function visitValue(mixed $value)
     {
         $this->write($this->getValue($value));
     }
 
-    protected function write($message)
+    protected function write(string $message)
     {
         $this->output.= $message;
     }
 
-    protected function getValue($value)
+    protected function getValue(mixed $value): string
     {
         if ($value instanceof \DateTime) {
             return DateTime::getFormat($value);

@@ -67,7 +67,7 @@ abstract class WriterTestCase extends TestCase
 
         $entries[] = $record;
 
-        $record = new Record('collection');
+        $record = new Record();
         $record->totalResults = 2;
         $record->startIndex = 0;
         $record->itemsPerPage = 8;
@@ -94,7 +94,7 @@ abstract class WriterTestCase extends TestCase
         $target->displayName = 'Martin\'s Blog';
         $target->url = 'http://example.org/blog/';
 
-        $activity = new Record('activity');
+        $activity = new Record();
         $activity->verb = 'post';
         $activity->actor = $actor;
         $activity->object = $object;
@@ -106,7 +106,7 @@ abstract class WriterTestCase extends TestCase
 
     public function getEmpty()
     {
-        return new Record('record', array());
+        return new Record([]);
     }
 
     public function getArray()

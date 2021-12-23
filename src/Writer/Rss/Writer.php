@@ -32,13 +32,13 @@ use XMLWriter;
  */
 class Writer
 {
-    public static $mime = 'application/rss+xml';
+    public const MIME = 'application/rss+xml';
 
-    protected $writer;
+    private XMLWriter $writer;
 
-    public function __construct($title, $link, $description, XMLWriter $writer = null)
+    public function __construct($title, $link, $description, ?XMLWriter $writer = null)
     {
-        $this->writer = $writer === null ? new XMLWriter() : $writer;
+        $this->writer = $writer ?? new XMLWriter();
 
         if ($writer === null) {
             $this->writer->openMemory();
@@ -211,6 +211,6 @@ class Writer
 
     public static function link($title, $href)
     {
-        return '<link rel="alternate" type="' . self::$mime . '" title="' . htmlspecialchars($title) . '" href="' . htmlspecialchars($href) . '" />';
+        return '<link rel="alternate" type="' . self::MIME . '" title="' . htmlspecialchars($title) . '" href="' . htmlspecialchars($href) . '" />';
     }
 }

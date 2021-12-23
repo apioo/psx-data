@@ -36,11 +36,11 @@ use XMLWriter;
  */
 class Entry
 {
-    protected $writer;
+    private XMLWriter $writer;
 
-    public function __construct(XMLWriter $writer = null)
+    public function __construct(?XMLWriter $writer = null)
     {
-        $this->writer = $writer === null ? new XMLWriter() : $writer;
+        $this->writer = $writer ?? new XMLWriter();
 
         if ($writer === null) {
             $this->writer->openMemory();
@@ -51,7 +51,7 @@ class Entry
         $this->writer->startElement('entry');
 
         if ($writer === null) {
-            $this->writer->writeAttribute('xmlns', Writer::$xmlns);
+            $this->writer->writeAttribute('xmlns', Writer::XMLNS);
         }
     }
 

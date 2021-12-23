@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Transformer;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Transformer\XmlArray;
 
 /**
@@ -110,7 +111,7 @@ INPUT;
 
     public function testInvalidData()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
 
         $transformer = new XmlArray();
         $transformer->transform(array());

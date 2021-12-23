@@ -20,9 +20,13 @@
 
 namespace PSX\Data;
 
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\MediaType;
+use PSX\Record\RecordInterface;
+use PSX\Schema\Exception\ValidationException;
 use PSX\Schema\Parser;
+use PSX\Schema\ParserInterface;
 use PSX\Schema\SchemaInterface;
 use PSX\Schema\SchemaTraverser;
 use PSX\Schema\Visitor\TypeVisitor;
@@ -49,35 +53,20 @@ use PSX\Schema\VisitorInterface as SchemaVisitorInterface;
  */
 class Processor
 {
-    /**
-     * @var \PSX\Data\Configuration
-     */
-    protected $config;
-
-    /**
-     * @var \PSX\Schema\ParserInterface
-     */
-    protected $parser;
-
-    /**
-     * @var \PSX\Data\ExporterInterface
-     */
-    protected $exporter;
-
-    /**
-     * @var \PSX\Schema\SchemaTraverser
-     */
-    protected $traverser;
+    private Configuration $config;
+    private ParserInterface $parser;
+    private ExporterInterface $exporter;
+    private SchemaTraverser $traverser;
 
     public function __construct(Configuration $config)
     {
-        $this->config    = $config;
-        $this->parser    = new Parser\Popo($this->config->getAnnotationReader());
-        $this->exporter  = new Exporter\Popo($this->config->getAnnotationReader());
+        $this->config = $config;
+        $this->parser = new Parser\Popo();
+        $this->exporter = new Exporter\Popo();
         $this->traverser = new SchemaTraverser();
     }
 
-    public function getConfiguration()
+    public function getConfiguration(): Configuration
     {
         return $this->config;
     }
@@ -88,14 +77,11 @@ class Processor
      * explicit specified. Then we validate the data according to the provided
      * schema
      *
-     * @param string $schema
-     * @param \PSX\Data\Payload $payload
-     * @param \PSX\Schema\VisitorInterface $visitor
-     * @return mixed
-     * @throws \PSX\Data\InvalidDataException
-     * @throws \PSX\Http\Exception\UnsupportedMediaTypeException
+     * @throws InvalidDataException
+     * @throws StatusCode\UnsupportedMediaTypeException
+     * @throws ValidationException
      */
-    public function read($schema, Payload $payload, SchemaVisitorInterface $visitor = null)
+    public function read(mixed $schema, Payload $payload, ?SchemaVisitorInterface $visitor = null): mixed
     {
         $data   = $this->parse($payload);
         $schema = $this->getSchema($schema);
@@ -114,11 +100,9 @@ class Processor
     /**
      * Parses the payload and returns the data in a normalized format
      *
-     * @param \PSX\Data\Payload $payload
-     * @return \stdClass
      * @throws StatusCode\UnsupportedMediaTypeException
      */
-    public function parse(Payload $payload)
+    public function parse(Payload $payload): \stdClass
     {
         $reader = $this->getReader($payload->getContentType(), $payload->getRwType(), $payload->getRwSupported());
         $data   = $reader->read($payload->getData());
@@ -141,12 +125,9 @@ class Processor
      * string. The writer depends on the content type of the payload or on the
      * writer type if explicit specified
      *
-     * @param \PSX\Data\Payload $payload
-     * @return string
-     * @throws \PSX\Data\InvalidDataException
-     * @throws \PSX\Http\Exception\NotAcceptableException
+     * @throws StatusCode\NotAcceptableException
      */
-    public function write(Payload $payload)
+    public function write(Payload $payload): string
     {
         $data   = $payload->getData();
         $data   = $this->transform($data);
@@ -157,11 +138,8 @@ class Processor
 
     /**
      * Returns the data of the payload in a normalized format
-     *
-     * @param mixed $payload
-     * @return \stdClass
      */
-    public function transform($data)
+    public function transform(mixed $data): array|\stdClass|RecordInterface
     {
         return $this->exporter->export($data);
     }
@@ -170,13 +148,8 @@ class Processor
      * Returns a fitting reader for the given content type or throws an
      * unsupported media exception. It is also possible to explicit select a
      * reader by providing the class name as reader type.
-     *
-     * @param string $contentType
-     * @param string $readerType
-     * @param array $supportedReader
-     * @return \PSX\Data\ReaderInterface
      */
-    public function getReader($contentType, $readerType = null, array $supportedReader = null)
+    public function getReader(string $contentType, ?string $readerType = null, ?array $supportedReader = null): ReaderInterface
     {
         if ($readerType === null) {
             $reader = $this->config->getReaderFactory()->getReaderByContentType($contentType, $supportedReader);
@@ -199,13 +172,8 @@ class Processor
      * Returns a fitting writer for the given content type or throws an not
      * acceptable exception. It is also possible to explicit select a writer by
      * providing the class name as writer type.
-     *
-     * @param string $contentType
-     * @param string $writerType
-     * @param array $supportedWriter
-     * @return \PSX\Data\WriterInterface
      */
-    public function getWriter($contentType, $writerType = null, array $supportedWriter = null)
+    public function getWriter(string $contentType, ?string $writerType = null, ?array $supportedWriter = null): WriterInterface
     {
         if ($writerType === null) {
             $writer = $this->config->getWriterFactory()->getWriterByContentType($contentType, $supportedWriter);
@@ -224,7 +192,7 @@ class Processor
         return $writer;
     }
 
-    protected function getDefaultTransformer($contentType)
+    protected function getDefaultTransformer(string $contentType): ?TransformerInterface
     {
         $mime = new MediaType($contentType);
 
@@ -245,7 +213,7 @@ class Processor
         return null;
     }
 
-    protected function getSchema($schema)
+    protected function getSchema(mixed $schema): SchemaInterface
     {
         if (is_string($schema)) {
             return $this->config->getSchemaManager()->getSchema($schema);

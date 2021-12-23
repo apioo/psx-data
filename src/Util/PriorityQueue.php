@@ -34,7 +34,7 @@ use SplPriorityQueue;
  */
 class PriorityQueue implements IteratorAggregate, Countable
 {
-    protected $queue;
+    private SplPriorityQueue $queue;
 
     public function __construct()
     {

@@ -37,12 +37,8 @@ class Transformer
 {
     /**
      * Transforms an arbitrary data structure into a record graph
-     *
-     * @param mixed $data
-     * @param \PSX\Record\RecordInterface $root
-     * @return \PSX\Record\RecordInterface
      */
-    public static function toRecord($data, RecordInterface $root = null)
+    public static function toRecord(mixed $data, RecordInterface $root = null): RecordInterface
     {
         $visitor   = new RecordSerializeVisitor($root);
         $traverser = new GraphTraverser();
@@ -53,28 +49,10 @@ class Transformer
 
     /**
      * Transforms an arbitrary data structure into a stdClass graph
-     *
-     * @param mixed $data
-     * @return \stdClass
      */
-    public static function toStdClass($data)
+    public static function toStdClass(mixed $data): \stdClass
     {
         $visitor   = new StdClassSerializeVisitor();
-        $traverser = new GraphTraverser();
-        $traverser->traverse($data, $visitor);
-
-        return $visitor->getObject();
-    }
-
-    /**
-     * Transforms an arbitrary data structure into a stdClass graph
-     *
-     * @param mixed $data
-     * @return array
-     */
-    public static function toArray($data)
-    {
-        $visitor   = new ArraySerializeVisitor();
         $traverser = new GraphTraverser();
         $traverser->traverse($data, $visitor);
 

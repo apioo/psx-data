@@ -21,6 +21,7 @@
 namespace PSX\Data\Writer;
 
 use PSX\Data\Visitor;
+use PSX\Data\VisitorInterface;
 use PSX\Http\MediaType;
 use XMLWriter;
 
@@ -33,19 +34,19 @@ use XMLWriter;
  */
 class Jsonx extends XmlWriterAbstract
 {
-    protected static $mime = 'application/jsonx+xml';
+    protected const MIME = 'application/jsonx+xml';
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
-        return $contentType->getName() == self::$mime;
+        return $contentType->getName() == self::MIME;
     }
 
-    public function getContentType()
+    public function getContentType(): string
     {
-        return self::$mime;
+        return self::MIME;
     }
 
-    protected function getVisitor(XMLWriter $writer)
+    protected function getVisitor(XMLWriter $writer): VisitorInterface
     {
         return new Visitor\JsonxWriterVisitor($writer);
     }

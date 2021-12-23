@@ -20,6 +20,7 @@
 
 namespace PSX\Data;
 
+use PSX\Data\Reader\Form;
 use PSX\Http\MediaType;
 
 /**
@@ -31,25 +32,18 @@ use PSX\Http\MediaType;
  */
 interface ReaderInterface
 {
-    const FORM = 'PSX\Data\Reader\Form';
-    const JSON = 'PSX\Data\Reader\Json';
-    const MULTIPART = 'PSX\Data\Reader\Multipart';
-    const XML = 'PSX\Data\Reader\Xml';
+    public const FORM = Reader\Form::class;
+    public const JSON = Reader\Json::class;
+    public const MULTIPART = Reader\Multipart::class;
+    public const XML = Reader\Xml::class;
 
     /**
-     * Transforms the $request into an parseable form this can be an array
-     * or DOMDocument etc.
-     *
-     * @param string $data
-     * @return mixed
+     * Transforms the $request into a parseable form this can be an array or DOMDocument etc.
      */
-    public function read($data);
+    public function read(string $data): mixed;
 
     /**
      * Returns whether the content type is supported by this reader
-     *
-     * @param \PSX\Http\MediaType $contentType
-     * @return boolean
      */
-    public function isContentTypeSupported(MediaType $contentType);
+    public function isContentTypeSupported(MediaType $contentType): bool;
 }

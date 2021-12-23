@@ -33,26 +33,16 @@ use PSX\Http\MediaType;
  */
 class Multipart extends ReaderAbstract
 {
-    /**
-     * @var array
-     */
-    protected $files;
+    private array $files;
+    private array $post;
 
-    /**
-     * @var array
-     */
-    protected $post;
-
-    /**
-     * @param array|null $files
-     */
-    public function __construct(array $files = null, array $post = null)
+    public function __construct(?array $files = null, ?array $post = null)
     {
         $this->files = $files === null ? $_FILES : $files;
         $this->post  = $post  === null ? $_POST  : $post;
     }
 
-    public function read($data)
+    public function read(string $data): mixed
     {
         // we dont support the array syntax
         $files = [];
@@ -72,7 +62,7 @@ class Multipart extends ReaderAbstract
         }
     }
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
         return $contentType->getName() == 'multipart/form-data';
     }

@@ -32,14 +32,14 @@ use XMLWriter;
  */
 class Writer
 {
-    public static $mime  = 'application/atom+xml';
-    public static $xmlns = 'http://www.w3.org/2005/Atom';
+    public const MIME = 'application/atom+xml';
+    public const XMLNS = 'http://www.w3.org/2005/Atom';
 
-    protected $writer;
+    private XMLWriter $writer;
 
     public function __construct($title, $id, DateTime $updated, XMLWriter $writer = null, $root = 'feed', $xmlns = null)
     {
-        $this->writer = $writer === null ? new XMLWriter() : $writer;
+        $this->writer = $writer ?? new XMLWriter();
 
         if ($writer === null) {
             $this->writer->openMemory();
@@ -50,7 +50,7 @@ class Writer
         $this->writer->startElement($root);
 
         if ($xmlns === null) {
-            $this->writer->writeAttribute('xmlns', self::$xmlns);
+            $this->writer->writeAttribute('xmlns', self::XMLNS);
         }
 
         $this->setTitle($title);
@@ -246,6 +246,6 @@ class Writer
 
     public static function link($title, $href)
     {
-        return '<link rel="alternate" type="' . self::$mime . '" title="' . htmlspecialchars($title) . '" href="' . htmlspecialchars($href) . '" />';
+        return '<link rel="alternate" type="' . self::MIME . '" title="' . htmlspecialchars($title) . '" href="' . htmlspecialchars($href) . '" />';
     }
 }

@@ -35,17 +35,13 @@ class CallbackTest extends TestCase
     public function testTransform()
     {
         $transformer = new Callback(function ($data) {
-
-            return array(
-                'foo' => md5($data)
-            );
-
+            return (object) ['foo' => md5($data)];
         });
 
         $data = 'some data format';
 
         $result = $transformer->transform($data);
 
-        $this->assertEquals(array('foo' => '791a818e1f5aef6ae38ada7b7317c69a'), $result);
+        $this->assertEquals((object) ['foo' => '791a818e1f5aef6ae38ada7b7317c69a'], $result);
     }
 }

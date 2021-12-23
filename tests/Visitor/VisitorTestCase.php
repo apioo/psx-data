@@ -45,22 +45,22 @@ class VisitorTestCase extends TestCase
             'age' => null,
             'date' => new DateTime('2014-01-01T12:34:47+01:00'),
             'href' => new Uri('http://foo.com'),
-            'person' => new Record('person', array(
+            'person' => new Record(array(
                 'title' => 'Foo',
             )),
-            'category' => new Record('category', array(
-                'general' => new Record('category', array(
-                    'news' => new Record('category', array(
+            'category' => new Record(array(
+                'general' => new Record(array(
+                    'news' => new Record(array(
                         'technic' => 'Foo',
                     )),
                 )),
             )),
             'tags' => array('bar', 'foo', 'test'),
             'entry' => array(
-                new Record('entry', array(
+                new Record(array(
                     'title' => 'bar'
                 )),
-                new Record('entry', array(
+                new Record(array(
                     'title' => 'foo'
                 )),
             ),

@@ -22,6 +22,7 @@ namespace PSX\Data\Tests\Exporter;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Exporter\Popo;
 use PSX\Record\Record;
 
@@ -60,7 +61,7 @@ class PopoTest extends TestCase
 
     public function testExportInvalid()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
         $this->expectExceptionMessage('Data must be an object');
 
         $exporter = $this->getExporter();
@@ -69,9 +70,6 @@ class PopoTest extends TestCase
 
     private function getExporter()
     {
-        $reader   = new AnnotationReader();
-        $exporter = new Popo($reader);
-
-        return $exporter;
+        return new Popo();
     }
 }

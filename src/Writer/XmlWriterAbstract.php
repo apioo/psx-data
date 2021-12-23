@@ -20,7 +20,9 @@
 
 namespace PSX\Data\Writer;
 
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\GraphTraverser;
+use PSX\Data\VisitorInterface;
 use PSX\Data\WriterInterface;
 use XMLWriter;
 
@@ -33,21 +35,19 @@ use XMLWriter;
  */
 abstract class XmlWriterAbstract implements WriterInterface
 {
-    protected $writer;
+    protected ?XMLWriter $writer;
 
     /**
      * If an writer is given the result gets written to the XMLWriter and the
      * write method returns null. Otherwise the write method returns the xml as
      * string
-     *
-     * @param XMLWriter $writer
      */
-    public function __construct(XMLWriter $writer = null)
+    public function __construct(?XMLWriter $writer = null)
     {
         $this->writer = $writer;
     }
 
-    public function write($data)
+    public function write(mixed $data): string
     {
         $hasWriter = $this->writer !== null;
         $writer    = $this->writer ?: new XMLWriter();
@@ -62,7 +62,7 @@ abstract class XmlWriterAbstract implements WriterInterface
             $graph = new GraphTraverser();
             $graph->traverse($data, $this->getVisitor($writer));
         } else {
-            throw new \InvalidArgumentException('Value must be an array or object');
+            throw new InvalidDataException('Value must be an array or object');
         }
 
         if (!$hasWriter) {
@@ -70,13 +70,9 @@ abstract class XmlWriterAbstract implements WriterInterface
 
             return $writer->outputMemory();
         } else {
-            return null;
+            return '';
         }
     }
 
-    /**
-     * @param \XMLWriter $writer
-     * @return \PSX\Data\VisitorInterface
-     */
-    abstract protected function getVisitor(XMLWriter $writer);
+    abstract protected function getVisitor(XMLWriter $writer): VisitorInterface;
 }

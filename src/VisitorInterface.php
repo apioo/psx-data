@@ -31,10 +31,8 @@ interface VisitorInterface
 {
     /**
      * Visited if an object begins
-     *
-     * @param string $name
      */
-    public function visitObjectStart($name);
+    public function visitObjectStart(string $name);
 
     /**
      * Visited if an object ends
@@ -43,11 +41,8 @@ interface VisitorInterface
 
     /**
      * Visited for each object key value pair
-     *
-     * @param string $key
-     * @param mixed $value
      */
-    public function visitObjectValueStart($key, $value);
+    public function visitObjectValueStart(string $key, mixed $value);
 
     /**
      * Visited if an object value ends
@@ -66,10 +61,8 @@ interface VisitorInterface
 
     /**
      * Visited for each array value
-     *
-     * @param mixed $value
      */
-    public function visitArrayValueStart($value);
+    public function visitArrayValueStart(mixed $value);
 
     /**
      * Visited if an array value ends
@@ -78,8 +71,6 @@ interface VisitorInterface
 
     /**
      * Visited for each value in the tree which is not an object or array
-     *
-     * @param mixed $value
      */
-    public function visitValue($value);
+    public function visitValue(mixed $value);
 }

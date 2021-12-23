@@ -32,14 +32,14 @@ use PSX\Record\RecordInterface;
  */
 class RecordSerializeVisitor extends SerializeVisitorAbstract
 {
-    protected $root;
+    private ?RecordInterface $root;
 
-    public function __construct(RecordInterface $root = null)
+    public function __construct(?RecordInterface $root = null)
     {
         $this->root = $root;
     }
 
-    protected function newObject()
+    protected function newObject(): object
     {
         if ($this->root !== null && count($this->objectStack) == 0) {
             return $this->root;
@@ -48,17 +48,17 @@ class RecordSerializeVisitor extends SerializeVisitorAbstract
         }
     }
 
-    protected function addObjectValue($key, $value, &$object)
+    protected function addObjectValue(string $key, mixed $value, mixed &$object)
     {
         $object->setProperty($key, $value);
     }
 
-    protected function newArray()
+    protected function newArray(): array
     {
-        return array();
+        return [];
     }
 
-    protected function addArrayValue($value, &$array)
+    protected function addArrayValue(mixed $value, mixed &$array)
     {
         $array[] = $value;
     }

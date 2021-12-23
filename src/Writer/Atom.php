@@ -21,7 +21,6 @@
 namespace PSX\Data\Writer;
 
 use DateTime;
-use PSX\Exception;
 use PSX\Http\MediaType;
 use PSX\Model\Atom as Model;
 
@@ -34,9 +33,9 @@ use PSX\Model\Atom as Model;
  */
 class Atom extends Xml
 {
-    protected static $mime = 'application/atom+xml';
+    protected const MIME = 'application/atom+xml';
 
-    public function write($data)
+    public function write(mixed $data): string
     {
         if ($data instanceof Model\Atom) {
             $writer = new Atom\Writer($data->getTitle(), $data->getId(), $data->getUpdated());
@@ -67,17 +66,17 @@ class Atom extends Xml
         }
     }
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
-        return $contentType->getName() == self::$mime;
+        return $contentType->getName() == self::MIME;
     }
 
-    public function getContentType()
+    public function getContentType(): string
     {
-        return self::$mime;
+        return self::MIME;
     }
 
-    protected function buildFeed(Model\Atom $atom, Atom\Writer $writer)
+    private function buildFeed(Model\Atom $atom, Atom\Writer $writer): void
     {
         $subTitle = $atom->getSubTitle();
         if (!empty($subTitle)) {
@@ -133,7 +132,7 @@ class Atom extends Xml
         }
     }
 
-    protected function buildEntry(Model\Entry $entry, Atom\Entry $writer)
+    private function buildEntry(Model\Entry $entry, Atom\Entry $writer): void
     {
         $id = $entry->getId();
         if (!empty($id)) {

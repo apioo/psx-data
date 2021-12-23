@@ -20,6 +20,8 @@
 
 namespace PSX\Data;
 
+use PSX\Data\Exception\InvalidDataException;
+
 /**
  * The transformer can format the response of a reader so that it can be used
  * by an importer
@@ -33,8 +35,7 @@ interface TransformerInterface
     /**
      * Transforms the data into a readable state
      *
-     * @param string $data
-     * @return array
+     * @throws InvalidDataException
      */
-    public function transform($data);
+    public function transform(mixed $data): \stdClass;
 }

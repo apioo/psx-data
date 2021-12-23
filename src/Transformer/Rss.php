@@ -23,6 +23,7 @@ namespace PSX\Data\Transformer;
 use DOMDocument;
 use DOMElement;
 use InvalidArgumentException;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\TransformerInterface;
 
 /**
@@ -34,10 +35,10 @@ use PSX\Data\TransformerInterface;
  */
 class Rss implements TransformerInterface
 {
-    public function transform($data)
+    public function transform(mixed $data): \stdClass
     {
         if (!$data instanceof DOMDocument) {
-            throw new InvalidArgumentException('Data must be an instanceof DOMDocument');
+            throw new InvalidDataException('Data must be an instanceof DOMDocument');
         }
 
         $name = strtolower($data->documentElement->localName);
@@ -48,7 +49,7 @@ class Rss implements TransformerInterface
             if ($channel->item(0) instanceof DOMElement) {
                 return $this->parseChannelElement($channel->item(0));
             } else {
-                throw new InvalidArgumentException('Found no channel element');
+                throw new InvalidDataException('Found no channel element');
             }
         } elseif ($name == 'item') {
             $rss = new \stdClass();
@@ -56,11 +57,11 @@ class Rss implements TransformerInterface
 
             return $rss;
         } else {
-            throw new InvalidArgumentException('Found no rss or item element');
+            throw new InvalidDataException('Found no rss or item element');
         }
     }
 
-    protected function parseChannelElement(DOMElement $channel)
+    private function parseChannelElement(DOMElement $channel): \stdClass
     {
         $result = new \stdClass();
 
@@ -118,7 +119,7 @@ class Rss implements TransformerInterface
         return $result;
     }
 
-    protected function parseItemElement(DOMElement $element)
+    private function parseItemElement(DOMElement $element): \stdClass
     {
         $result = new \stdClass();
 
@@ -167,7 +168,7 @@ class Rss implements TransformerInterface
         return $result;
     }
 
-    public static function categoryConstruct(DOMElement $category)
+    public static function categoryConstruct(DOMElement $category): \stdClass
     {
         $result = new \stdClass();
         $result->text = $category->nodeValue;

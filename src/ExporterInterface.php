@@ -20,6 +20,9 @@
 
 namespace PSX\Data;
 
+use PSX\Data\Exception\InvalidDataException;
+use PSX\Record\RecordInterface;
+
 /**
  * The exporter produces a readable result of an object. It uses a mechanism to
  * get the readable fields of an object
@@ -33,8 +36,7 @@ interface ExporterInterface
     /**
      * Transforms the data into a readable state
      *
-     * @param mixed $data
-     * @return array
+     * @throws InvalidDataException
      */
-    public function export($data);
+    public function export(mixed $data): array|\stdClass|RecordInterface;
 }

@@ -18,16 +18,15 @@
  * limitations under the License.
  */
 
-namespace PSX\Data\Validator;
+namespace PSX\Data\Exception;
 
 /**
- * Validator
+ * Exception thrown if data is missing or invalid when trying to import it into a record
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @deprecated 
  */
-class Validator extends \PSX\Schema\Validation\Validator
+class InvalidDataException extends \Exception
 {
 }

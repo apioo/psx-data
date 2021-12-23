@@ -23,6 +23,7 @@ namespace PSX\Data\Transformer;
 use DOMDocument;
 use DOMElement;
 use InvalidArgumentException;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\TransformerInterface;
 
 /**
@@ -36,23 +37,23 @@ use PSX\Data\TransformerInterface;
  */
 class XmlArray implements TransformerInterface
 {
-    protected $namespace;
+    protected ?string $namespace = null;
 
-    public function setNamespace($namespace)
+    public function setNamespace(string $namespace)
     {
         $this->namespace = $namespace;
     }
 
-    public function transform($data)
+    public function transform(mixed $data): \stdClass
     {
         if (!$data instanceof DOMDocument) {
-            throw new InvalidArgumentException('Data must be an instanceof DOMDocument');
+            throw new InvalidDataException('Data must be an instanceof DOMDocument');
         }
 
         return $this->recToXml($data->documentElement);
     }
 
-    protected function recToXml(DOMElement $element)
+    protected function recToXml(DOMElement $element): \stdClass
     {
         $result = new \stdClass();
 
@@ -92,7 +93,7 @@ class XmlArray implements TransformerInterface
         return $result;
     }
 
-    protected function hasChildElements(DOMElement $element, $namespace)
+    private function hasChildElements(DOMElement $element, ?string $namespace): bool
     {
         foreach ($element->childNodes as $node) {
             if ($node->nodeType === XML_ELEMENT_NODE && ($namespace === null || $node->namespaceURI == $namespace)) {
@@ -106,11 +107,8 @@ class XmlArray implements TransformerInterface
     /**
      * In XML we have now information about the data type but in the jsonschema
      * we require a specific type. This method tries to guess the correct type
-     * 
-     * @param string $value
-     * @return mixed
      */
-    protected function parseValue($value)
+    private function parseValue(string $value): string|int|bool|float
     {
         if (is_numeric($value)) {
             return strpos($value, '.') !== false ? (float) $value : (int) $value;

@@ -32,13 +32,13 @@ use XMLWriter;
  */
 class Item
 {
-    public static $mime = 'application/rss+xml';
+    public const MIME = 'application/rss+xml';
 
-    protected $writer;
+    private XMLWriter $writer;
 
     public function __construct(XMLWriter $writer = null)
     {
-        $this->writer = $writer === null ? new XMLWriter() : $writer;
+        $this->writer = $writer ?? new XMLWriter();
 
         if ($writer === null) {
             $this->writer->openMemory();

@@ -23,8 +23,10 @@ namespace PSX\Data\Test;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use PHPUnit\Framework\TestCase;
 use PSX\Data\Configuration;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Payload;
 use PSX\Data\Processor;
+use PSX\Schema\Exception\ValidationException;
 use PSX\Schema\SchemaManager;
 
 /**
@@ -40,10 +42,10 @@ abstract class SerializeTestCase extends TestCase
      * Checks whether the records can be serialzed to the content format and the
      * content format can be serialized to the record without loosing data
      *
-     * @param object $record
-     * @param string $content
+     * @throws InvalidDataException
+     * @throws ValidationException
      */
-    protected function assertRecordEqualsContent($record, $content)
+    protected function assertRecordEqualsContent(object $record, string $content): void
     {
         // serialize the record
         $response = $this->getProcessor()->write(Payload::json($record));
@@ -72,11 +74,6 @@ abstract class SerializeTestCase extends TestCase
             return $processor;
         }
 
-        $reader = new SimpleAnnotationReader();
-        $reader->addNamespace('PSX\\Schema\\Annotation');
-
-        $processor = new Processor(Configuration::createDefault($reader, new SchemaManager($reader)));
-
-        return $processor;
+        return new Processor(Configuration::createDefault(new SchemaManager()));
     }
 }

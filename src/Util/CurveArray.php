@@ -33,12 +33,8 @@ class CurveArray
 {
     /**
      * Converts a flat array into a nested object using a separator
-     *
-     * @param array $data
-     * @param string $separator
-     * @return \stdClass
      */
-    public static function nest(array $data, $separator = '_')
+    public static function nest(array $data, string $separator = '_'): array|\stdClass
     {
         if (self::isAssoc($data)) {
             $result = new \stdClass();
@@ -72,14 +68,8 @@ class CurveArray
      * Converts a nested array into a flat using a separator. The prefix and
      * result parameter are used internally for performance reason and should
      * not be used
-     *
-     * @param array $data
-     * @param string $separator
-     * @param string $prefix
-     * @param array $result
-     * @return array
      */
-    public static function flatten($data, $separator = '_', $prefix = null, array &$result = null)
+    public static function flatten(array|\stdClass $data, string $separator = '_', ?string $prefix = null, array &$result = null): array
     {
         if ($result === null) {
             $result = array();
@@ -103,13 +93,9 @@ class CurveArray
     }
 
     /**
-     * Replaces all associative arrays with stdClass in an arbitrary array
-     * structure
-     *
-     * @param array $data
-     * @return \stdClass|array
+     * Replaces all associative arrays with stdClass in an arbitrary array structure
      */
-    public static function objectify(array $data)
+    public static function objectify(array $data): \stdClass|array
     {
         if (self::isAssoc($data)) {
             $result = new \stdClass();
@@ -130,11 +116,8 @@ class CurveArray
 
     /**
      * Returns whether an array is index based or associative
-     *
-     * @param array $array
-     * @return boolean
      */
-    public static function isAssoc(array $array)
+    public static function isAssoc(array $array): bool
     {
         if (empty($array)) {
             return false;
@@ -149,7 +132,7 @@ class CurveArray
         }
     }
 
-    protected static function getParts(array $data, $prefix)
+    protected static function getParts(array $data, string $prefix): array
     {
         $result = array();
 

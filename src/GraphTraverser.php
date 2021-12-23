@@ -35,25 +35,16 @@ use Traversable;
  */
 class GraphTraverser
 {
-    /**
-     * @param mixed $record
-     * @param \PSX\Data\VisitorInterface $visitor
-     */
-    public function traverse($record, VisitorInterface $visitor)
+    public function traverse(mixed $record, VisitorInterface $visitor): void
     {
         $this->traverseValue(self::reveal($record), $visitor);
     }
 
-    /**
-     * @param object $object
-     * @param \PSX\Data\VisitorInterface $visitor
-     */
-    protected function traverseObject($object, VisitorInterface $visitor)
+    private function traverseObject(mixed $object, VisitorInterface $visitor): void
     {
         $name = null;
         if ($object instanceof RecordInterface) {
             $properties = $object->getProperties();
-            $name       = $object->getDisplayName();
         } else {
             $properties = (array) $object;
         }
@@ -77,11 +68,7 @@ class GraphTraverser
         $visitor->visitObjectEnd();
     }
 
-    /**
-     * @param array $values
-     * @param \PSX\Data\VisitorInterface $visitor
-     */
-    protected function traverseArray($values, VisitorInterface $visitor)
+    private function traverseArray(mixed $values, VisitorInterface $visitor): void
     {
         $visitor->visitArrayStart();
 
@@ -98,11 +85,7 @@ class GraphTraverser
         $visitor->visitArrayEnd();
     }
 
-    /**
-     * @param mixed $value
-     * @param \PSX\Data\VisitorInterface $visitor
-     */
-    protected function traverseValue($value, VisitorInterface $visitor)
+    private function traverseValue(mixed $value, VisitorInterface $visitor): void
     {
         if (self::isObject($value)) {
             $this->traverseObject($value, $visitor);
@@ -116,11 +99,8 @@ class GraphTraverser
     /**
      * Method which reveals the true value of an object if it has a known
      * interface. Note this resolves also all Traversable instances to an array
-     *
-     * @param mixed $object
-     * @return mixed
      */
-    public static function reveal($object)
+    public static function reveal(mixed $object): mixed
     {
         if ($object instanceof RecordInterface) {
             return $object;
@@ -137,40 +117,31 @@ class GraphTraverser
 
     /**
      * Checks whether a value is an object type
-     * 
-     * @param mixed $value
-     * @return boolean
      */
-    public static function isObject($value)
+    public static function isObject(mixed $value): bool
     {
         return $value instanceof RecordInterface || $value instanceof \stdClass || (is_array($value) && CurveArray::isAssoc($value));
     }
 
     /**
      * Checks whether a value is an array type
-     * 
-     * @param mixed $value
-     * @return boolean
      */
-    public static function isArray($value)
+    public static function isArray(mixed $value): bool
     {
         return is_array($value);
     }
 
     /**
      * Checks whether a value is empty
-     * 
-     * @param mixed $value
-     * @return boolean
      */
-    public static function isEmpty($value)
+    public static function isEmpty(mixed $value): bool
     {
         if (empty($value)) {
             return true;
         } elseif ($value instanceof \stdClass) {
             return count((array) $value) === 0;
         } elseif ($value instanceof RecordInterface) {
-            return count($value->getProperties()) === 0;
+            return $value->isEmpty();
         }
 
         return false;

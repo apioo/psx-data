@@ -94,13 +94,6 @@ class CurveArrayTest extends TestCase
         )));
     }
 
-    public function testFlattenInvalidData()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        CurveArray::flatten('foo');
-    }
-
     public function testInverseNest()
     {
         $this->assertEquals($this->nestArray, CurveArray::nest(CurveArray::flatten($this->nestArray)));

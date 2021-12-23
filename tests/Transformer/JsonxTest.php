@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Transformer;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Transformer\Jsonx;
 use PSX\Rss;
 
@@ -112,7 +113,7 @@ INPUT;
 
     public function testInvalidData()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
 
         $transformer = new Jsonx();
         $transformer->transform(array());
@@ -120,7 +121,7 @@ INPUT;
 
     public function testInvalidElementName()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
 
         $body = '<json:foo xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx" />';
 

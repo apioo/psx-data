@@ -29,22 +29,22 @@ namespace PSX\Data\Visitor;
  */
 class StdClassSerializeVisitor extends SerializeVisitorAbstract
 {
-    protected function newObject()
+    protected function newObject(): object
     {
         return new \stdClass();
     }
 
-    protected function addObjectValue($key, $value, &$object)
+    protected function addObjectValue(string $key, mixed $value, mixed &$object)
     {
         $object->$key = $value;
     }
 
-    protected function newArray()
+    protected function newArray(): array
     {
-        return array();
+        return [];
     }
 
-    protected function addArrayValue($value, &$array)
+    protected function addArrayValue(mixed $value, mixed &$array)
     {
         $array[] = $value;
     }

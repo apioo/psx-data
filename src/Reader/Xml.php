@@ -33,7 +33,7 @@ use PSX\Http\MediaType;
  */
 class Xml extends ReaderAbstract
 {
-    public function read($data)
+    public function read(string $data): mixed
     {
         if (!empty($data)) {
             $dom = new DOMDocument();
@@ -46,7 +46,7 @@ class Xml extends ReaderAbstract
         }
     }
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
         return MediaType\Xml::isMediaType($contentType);
     }

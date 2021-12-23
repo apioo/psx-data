@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Transformer;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Transformer\Atom;
 
 /**
@@ -152,7 +153,7 @@ INPUT;
 
     public function testNoFeedElement()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
 
         $body = <<<INPUT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -168,7 +169,7 @@ INPUT;
 
     public function testInvalidData()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
 
         $transformer = new Atom();
         $transformer->transform(array());

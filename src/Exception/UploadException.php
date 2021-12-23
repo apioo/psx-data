@@ -18,16 +18,15 @@
  * limitations under the License.
  */
 
-namespace PSX\Data;
+namespace PSX\Data\Exception;
 
 /**
- * Exception thrown if data is missing or invalid when trying to import it into
- * an record
+ * UploadException
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class InvalidDataException extends \Exception
+class UploadException extends \Exception
 {
 }

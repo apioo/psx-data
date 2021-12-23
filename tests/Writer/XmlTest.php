@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Writer;
 
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Tests\WriterTestCase;
 use PSX\Data\Writer\Xml;
 use PSX\Http\MediaType;
@@ -59,7 +60,7 @@ TEXT;
 
         $expect = <<<TEXT
 <?xml version="1.0"?>
-<collection type="object">
+<record type="object">
   <totalResults type="integer">2</totalResults>
   <startIndex type="integer">0</startIndex>
   <itemsPerPage type="integer">8</itemsPerPage>
@@ -79,7 +80,7 @@ TEXT;
       <date type="date-time">2012-03-11T13:37:21Z</date>
     </entry>
   </entry>
-</collection>
+</record>
 TEXT;
 
         $this->assertXmlStringEqualsXmlString($expect, $actual);
@@ -92,7 +93,7 @@ TEXT;
 
         $expect = <<<TEXT
 <?xml version="1.0"?>
-<activity type="object">
+<record type="object">
   <verb type="string">post</verb>
   <actor type="object">
     <id type="string">tag:example.org,2011:martin</id>
@@ -111,7 +112,7 @@ TEXT;
     <url type="string">http://example.org/blog/</url>
   </target>
   <published type="date-time">2011-02-10T15:04:55Z</published>
-</activity>
+</record>
 TEXT;
 
         $this->assertXmlStringEqualsXmlString($expect, $actual);
@@ -176,7 +177,7 @@ TEXT;
 
     public function testWriteScalar()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
         $this->expectExceptionMessage('Value must be an array or object');
 
         $writer = new Xml();

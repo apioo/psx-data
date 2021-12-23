@@ -33,7 +33,7 @@ use PSX\Json\Parser;
  */
 class Json extends ReaderAbstract
 {
-    public function read($data)
+    public function read(string $data): mixed
     {
         if (!empty($data)) {
             return Parser::decode($data, false);
@@ -42,7 +42,7 @@ class Json extends ReaderAbstract
         }
     }
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
         return MediaType\Json::isMediaType($contentType);
     }

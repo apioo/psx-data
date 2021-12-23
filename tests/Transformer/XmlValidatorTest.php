@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Transformer;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Transformer\XmlValidator;
 
 /**
@@ -58,7 +59,7 @@ INPUT;
 
     public function testInvalidData()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(InvalidDataException::class);
         $this->expectExceptionMessage('Element \'{http://phpsx.org}test\': Missing child element(s). Expected is ( {http://phpsx.org}bar ).');
 
         $body = <<<INPUT

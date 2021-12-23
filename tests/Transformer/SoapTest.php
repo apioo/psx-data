@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Transformer;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Transformer\Soap;
 
 /**
@@ -69,7 +70,7 @@ INPUT;
 
     public function testNoEnvelope()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(InvalidDataException::class);
 
         $body = <<<INPUT
 <test xmlns="http://phpsx.org/2014/data">
@@ -113,7 +114,7 @@ INPUT;
 
     public function testBodyWrongNamespace()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(InvalidDataException::class);
 
         $body = <<<INPUT
 <soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">
@@ -131,7 +132,7 @@ INPUT;
 
     public function testInvalidData()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidDataException::class);
 
         $transformer = new Soap('http://phpsx.org/2014/data');
         $transformer->transform(array());

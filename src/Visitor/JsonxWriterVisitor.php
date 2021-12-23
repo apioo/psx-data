@@ -34,25 +34,18 @@ use XMLWriter;
  */
 class JsonxWriterVisitor extends VisitorAbstract
 {
-    const XMLNS  = 'http://www.ibm.com/xmlns/prod/2009/jsonx';
-    const PREFIX = 'json';
+    public const XMLNS = 'http://www.ibm.com/xmlns/prod/2009/jsonx';
+    public const PREFIX = 'json';
 
-    /**
-     * @var \XMLWriter
-     */
-    protected $writer;
-
-    /**
-     * @var integer
-     */
-    protected $level = 0;
+    private XMLWriter $writer;
+    private int $level = 0;
 
     public function __construct(XMLWriter $writer)
     {
         $this->writer = $writer;
     }
 
-    public function visitObjectStart($name)
+    public function visitObjectStart(string $name)
     {
         if ($this->level == 0) {
             $this->writer->startElementNS(self::PREFIX, 'object', self::XMLNS);
@@ -70,7 +63,7 @@ class JsonxWriterVisitor extends VisitorAbstract
         }
     }
 
-    public function visitObjectValueStart($key, $value)
+    public function visitObjectValueStart(string $key, mixed $value)
     {
         $this->writer->startElementNS(self::PREFIX, $this->getDataType($value), null);
         $this->writer->writeAttribute('name', $key);
@@ -99,7 +92,7 @@ class JsonxWriterVisitor extends VisitorAbstract
         }
     }
 
-    public function visitArrayValueStart($value)
+    public function visitArrayValueStart(mixed $value)
     {
         $this->writer->startElementNS(self::PREFIX, $this->getDataType($value), null);
     }
@@ -109,7 +102,7 @@ class JsonxWriterVisitor extends VisitorAbstract
         $this->writer->endElement();
     }
 
-    public function visitValue($value)
+    public function visitValue(mixed $value)
     {
         if ($value instanceof \DateTime) {
             $value = DateTime::getFormat($value);
@@ -125,7 +118,7 @@ class JsonxWriterVisitor extends VisitorAbstract
         }
     }
 
-    protected function getDataType($value)
+    protected function getDataType(mixed $value): string
     {
         if (GraphTraverser::isObject($value)) {
             return 'object';

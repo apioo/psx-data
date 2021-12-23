@@ -21,6 +21,7 @@
 namespace PSX\Data\Writer;
 
 use PSX\Data\Visitor;
+use PSX\Data\VisitorInterface;
 use PSX\Http\MediaType;
 use XMLWriter;
 
@@ -33,19 +34,19 @@ use XMLWriter;
  */
 class Xml extends XmlWriterAbstract
 {
-    protected static $mime = 'application/xml';
+    protected const MIME = 'application/xml';
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
         return MediaType\Xml::isMediaType($contentType);
     }
 
-    public function getContentType()
+    public function getContentType(): string
     {
-        return self::$mime;
+        return self::MIME;
     }
 
-    protected function getVisitor(XMLWriter $writer)
+    protected function getVisitor(XMLWriter $writer): VisitorInterface
     {
         return new Visitor\XmlWriterVisitor($writer);
     }

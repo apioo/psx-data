@@ -187,7 +187,7 @@ JSON;
     {
         $graph   = new GraphTraverser();
         $visitor = new StdClassSerializeVisitor();
-        $record  = new Record('record', [
+        $record  = new Record([
             'string' => 'foo',
             'stringobject' => new StringObject(),
             'integer' => 1,
@@ -198,7 +198,7 @@ JSON;
             'array' => ['foo'],
             'arrayassoc' => ['foo' => 'bar'],
             'object' => (object) ['foo' => 'bar'],
-            'record' => new Record('record', ['foo' => 'bar']),
+            'record' => new Record(['foo' => 'bar']),
             'jsonobject' => new JsonObject(),
             'arrayobject' => new \ArrayObject(['foo' => 'bar']),
             'iterator' => new \ArrayIterator(['bar']),
@@ -216,7 +216,7 @@ JSON;
             'array_array' => [['foo']],
             'arrayassoc_array' => [['foo' => 'bar']],
             'object_array' => [(object) ['foo' => 'bar']],
-            'record_array' => [new Record('record', ['foo' => 'bar'])],
+            'record_array' => [new Record(['foo' => 'bar'])],
             'jsonobject_array' => [new JsonObject()],
             'arrayobject_array' => [new \ArrayObject(['foo' => 'bar'])],
             'iterator_array' => [new \ArrayIterator(['bar'])],

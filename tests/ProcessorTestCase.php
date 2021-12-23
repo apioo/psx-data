@@ -42,10 +42,7 @@ abstract class ProcessorTestCase extends TestCase
 
     protected function setUp(): void
     {
-        $reader = new SimpleAnnotationReader();
-        $reader->addNamespace('PSX\\Schema\\Annotation');
-
-        $processor = new Processor(Configuration::createDefault($reader, new SchemaManager($reader)));
+        $processor = new Processor(Configuration::createDefault(new SchemaManager()));
 
         $this->processor = $processor;
     }

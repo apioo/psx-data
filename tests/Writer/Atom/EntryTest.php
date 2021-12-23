@@ -36,7 +36,7 @@ class EntryTest extends TestCase
 {
     public function testSetContentXmlRecord()
     {
-        $record = new Record('foo', array(
+        $record = new Record(array(
             'title' => 'bar',
             'bar'   => 'foo',
         ));
@@ -56,10 +56,10 @@ class EntryTest extends TestCase
   <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
   <updated>2003-12-13T18:30:02+00:00</updated>
   <content type="application/xml">
-    <foo type="object">
+    <record type="object">
       <title type="string">bar</title>
       <bar type="string">foo</bar>
-    </foo>
+    </record>
   </content>
 </entry>
 XML;

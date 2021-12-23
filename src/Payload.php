@@ -29,129 +29,93 @@ namespace PSX\Data;
  */
 class Payload
 {
-    /**
-     * @var mixed
-     */
-    protected $data;
-
-    /**
-     * @var string
-     */
-    protected $contentType;
-
-    /**
-     * @var \PSX\Data\TransformerInterface
-     */
-    protected $transformer;
+    private mixed $data;
+    private string $contentType;
+    private ?TransformerInterface $transformer;
 
     /**
      * Absolute class name of a specific reader or writer
-     *
-     * @var string
      */
-    protected $rwType;
+    private ?string $rwType;
 
     /**
      * Array which contains absolute reader or writer class names to indicate
      * which are supported. By default all available reader or writer
      * implementations are used
-     *
-     * @var array
      */
-    protected $rwSupported;
+    private ?array $rwSupported;
 
-    public function __construct($data, $contentType)
+    public function __construct(mixed $data, string $contentType)
     {
-        $this->data        = $data;
+        $this->data = $data;
         $this->contentType = $contentType;
+        $this->transformer = null;
+        $this->rwType = null;
+        $this->rwSupported = null;
     }
 
-    /**
-     * @return string
-     */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
     }
 
-    /**
-     * @return string
-     */
-    public function getContentType()
+    public function getContentType(): string
     {
         return $this->contentType ?: 'application/json';
     }
 
-    /**
-     * @return \PSX\Data\TransformerInterface
-     */
-    public function getTransformer()
+    public function getTransformer(): ?TransformerInterface
     {
         return $this->transformer;
     }
 
-    /**
-     * @param \PSX\Data\TransformerInterface $transformer
-     */
-    public function setTransformer($transformer)
+    public function setTransformer(TransformerInterface $transformer): self
     {
         $this->transformer = $transformer;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getRwType()
+    public function getRwType(): ?string
     {
         return $this->rwType;
     }
 
-    /**
-     * @param string $rwType
-     */
-    public function setRwType($rwType)
+    public function setRwType(string $rwType): self
     {
         $this->rwType = $rwType;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getRwSupported()
+    public function getRwSupported(): ?array
     {
         return $this->rwSupported;
     }
 
-    /**
-     * @param array $rwSupported
-     */
-    public function setRwSupported(array $rwSupported)
+    public function setRwSupported(array $rwSupported): self
     {
         $this->rwSupported = $rwSupported;
 
         return $this;
     }
 
-    public static function create($data, $contentType)
+    public static function create(mixed $data, string $contentType): self
     {
         return new self($data, $contentType);
     }
 
-    public static function json($data)
+    public static function json(mixed $data): self
     {
         return self::create($data, "application/json");
     }
 
-    public static function xml($data)
+    public static function xml(mixed $data): self
     {
         return self::create($data, "application/xml");
     }
 
-    public static function form($data)
+    public static function form(mixed $data): self
     {
         return self::create($data, "application/x-www-form-urlencoded");
     }

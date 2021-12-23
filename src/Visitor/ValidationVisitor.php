@@ -32,16 +32,16 @@ use PSX\Validate\ValidatorInterface;
  */
 class ValidationVisitor implements VisitorInterface
 {
-    protected $validator;
-    protected $pathStack = array();
-    protected $arrayIndex;
+    private ValidatorInterface $validator;
+    private array $pathStack = array();
+    private int $arrayIndex = 0;
 
     public function __construct(ValidatorInterface $validator)
     {
         $this->validator = $validator;
     }
 
-    public function visitObjectStart($name)
+    public function visitObjectStart(string $name)
     {
     }
 
@@ -49,7 +49,7 @@ class ValidationVisitor implements VisitorInterface
     {
     }
 
-    public function visitObjectValueStart($key, $value)
+    public function visitObjectValueStart(string $key, mixed $value)
     {
         $this->pathStack[] = $key;
     }
@@ -68,7 +68,7 @@ class ValidationVisitor implements VisitorInterface
     {
     }
 
-    public function visitArrayValueStart($value)
+    public function visitArrayValueStart(mixed $value)
     {
         $this->pathStack[] = $this->arrayIndex;
 
@@ -80,12 +80,12 @@ class ValidationVisitor implements VisitorInterface
         array_pop($this->pathStack);
     }
 
-    public function visitValue($value)
+    public function visitValue(mixed $value)
     {
         $this->validator->validateProperty($this->getCurrentPath(), $value);
     }
 
-    protected function getCurrentPath()
+    protected function getCurrentPath(): string
     {
         return '/' . implode('/', $this->pathStack);
     }

@@ -23,6 +23,7 @@ namespace PSX\Data\Transformer;
 use DOMDocument;
 use DOMElement;
 use InvalidArgumentException;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\TransformerInterface;
 
 /**
@@ -35,25 +36,36 @@ use PSX\Data\TransformerInterface;
  */
 class Jsonx implements TransformerInterface
 {
-    public function transform($data)
+    public function transform(mixed $data): \stdClass
     {
         if (!$data instanceof DOMDocument) {
-            throw new InvalidArgumentException('Data must be an instanceof DOMDocument');
+            throw new InvalidDataException('Data must be an instanceof DOMDocument');
         }
 
         return $this->recToXml($data->documentElement);
     }
 
-    protected function recToXml(DOMElement $element)
+    /**
+     * @throws InvalidDataException
+     */
+    private function recToXml(DOMElement $element): \stdClass
     {
         if ($element->localName != 'object') {
-            throw new InvalidArgumentException('Root element must be an object');
+            throw new InvalidDataException('Root element must be an object');
         }
 
-        return $this->getValue($element);
+        $value = $this->getValue($element);
+        if (!$value instanceof \stdClass) {
+            throw new InvalidDataException('Root element must be an object');
+        }
+
+        return $value;
     }
 
-    protected function getValue(DOMElement $node)
+    /**
+     * @throws InvalidDataException
+     */
+    private function getValue(DOMElement $node)
     {
         switch ($node->localName) {
             case 'object':
@@ -69,17 +81,20 @@ class Jsonx implements TransformerInterface
                 return $node->textContent;
 
             case 'number':
-                return strpos($node->textContent, '.') !== false ? (float) $node->textContent : (int) $node->textContent;
+                return str_contains($node->textContent, '.') ? (float) $node->textContent : (int) $node->textContent;
 
             case 'null':
                 return null;
 
             default:
-                throw new InvalidArgumentException('Invalid element name');
+                throw new InvalidDataException('Invalid element name');
         }
     }
 
-    protected function getObject(DOMElement $element)
+    /**
+     * @throws InvalidDataException
+     */
+    private function getObject(DOMElement $element): \stdClass
     {
         $result = new \stdClass();
 
@@ -98,7 +113,10 @@ class Jsonx implements TransformerInterface
         return $result;
     }
 
-    protected function getArray(DOMElement $element)
+    /**
+     * @throws InvalidDataException
+     */
+    private function getArray(DOMElement $element): array
     {
         $result = array();
 

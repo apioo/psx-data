@@ -76,7 +76,7 @@ class TextWriterVisitorTest extends VisitorTestCase
     public function testTraverseTextLong()
     {
         $visitor = new TextWriterVisitor();
-        $record  = new Record('foo', array(
+        $record  = new Record(array(
             'title' => 'Lorem ipsum dolor' . "\n" . 'sit amet, consetetur sadipscin'
         ));
 
@@ -84,7 +84,7 @@ class TextWriterVisitorTest extends VisitorTestCase
         $graph->traverse($record, $visitor);
 
         $except = <<<TEXT
-Object(foo){
+Object(record){
     title = Lorem ipsum dolor sit amet, cons (...)
 }
 
@@ -105,12 +105,12 @@ Object(record){
     age = null
     date = 2014-01-01T12:34:47+01:00
     href = http://foo.com
-    person = Object(person){
+    person = Object(record){
         title = Foo
     }
-    category = Object(category){
-        general = Object(category){
-            news = Object(category){
+    category = Object(record){
+        general = Object(record){
+            news = Object(record){
                 technic = Foo
             }
         }
@@ -121,10 +121,10 @@ Object(record){
         test
     ]
     entry = Array[
-        Object(entry){
+        Object(record){
             title = bar
         }
-        Object(entry){
+        Object(record){
             title = foo
         }
     ]

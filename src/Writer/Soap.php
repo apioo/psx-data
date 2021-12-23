@@ -35,21 +35,21 @@ use XMLWriter;
  */
 class Soap extends Xml
 {
-    protected static $mime = 'application/soap+xml';
+    protected const MIME = 'application/soap+xml';
 
-    protected $requestMethod;
+    private ?string $requestMethod;
 
-    public function setRequestMethod($requestMethod)
+    public function setRequestMethod(string $requestMethod)
     {
         $this->requestMethod = strtolower($requestMethod);
     }
 
-    public function getRequestMethod()
+    public function getRequestMethod(): ?string
     {
         return $this->requestMethod;
     }
 
-    public function write($data)
+    public function write(mixed $data): string
     {
         $xmlWriter = new XMLWriter();
         $xmlWriter->openMemory();
@@ -92,12 +92,12 @@ class Soap extends Xml
         return $xmlWriter->outputMemory();
     }
 
-    public function isContentTypeSupported(MediaType $contentType)
+    public function isContentTypeSupported(MediaType $contentType): bool
     {
-        return $contentType->getName() == self::$mime;
+        return $contentType->getName() == self::MIME;
     }
 
-    public function getContentType()
+    public function getContentType(): string
     {
         return 'text/xml';
     }

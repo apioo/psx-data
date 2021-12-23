@@ -332,7 +332,7 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <entry xmlns="http://www.w3.org/2005/Atom">
  <content type="application/xml">
-  <collection type="object">
+  <record type="object">
    <totalResults type="integer">2</totalResults>
    <startIndex type="integer">0</startIndex>
    <itemsPerPage type="integer">8</itemsPerPage>
@@ -352,7 +352,7 @@ XML;
      <date type="date-time">2012-03-11T13:37:21Z</date>
     </entry>
    </entry>
-  </collection>
+  </record>
  </content>
 </entry>
 XML;
@@ -369,7 +369,7 @@ XML;
 <?xml version="1.0" encoding="UTF-8"?>
 <entry xmlns="http://www.w3.org/2005/Atom">
  <content type="application/xml">
-  <activity type="object">
+  <record type="object">
    <verb type="string">post</verb>
    <actor type="object">
     <id type="string">tag:example.org,2011:martin</id>
@@ -388,7 +388,7 @@ XML;
     <url type="string">http://example.org/blog/</url>
    </target>
    <published type="date-time">2011-02-10T15:04:55Z</published>
-  </activity>
+  </record>
  </content>
 </entry>
 XML;

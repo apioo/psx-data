@@ -20,6 +20,7 @@
 
 namespace PSX\Data;
 
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Http\MediaType;
 
 /**
@@ -31,35 +32,29 @@ use PSX\Http\MediaType;
  */
 interface WriterInterface
 {
-    const ATOM  = 'PSX\Data\Writer\Atom';
-    const FORM  = 'PSX\Data\Writer\Form';
-    const JSON  = 'PSX\Data\Writer\Json';
-    const JSONP = 'PSX\Data\Writer\Jsonp';
-    const JSONX = 'PSX\Data\Writer\Jsonx';
-    const RSS   = 'PSX\Data\Writer\Rss';
-    const SOAP  = 'PSX\Data\Writer\Soap';
-    const XML   = 'PSX\Data\Writer\Xml';
+    const ATOM  = Writer\Atom::class;
+    const FORM  = Writer\Form::class;
+    const JSON  = Writer\Json::class;
+    const JSONP = Writer\Jsonp::class;
+    const JSONX = Writer\Jsonx::class;
+    const RSS   = Writer\Rss::class;
+    const SOAP  = Writer\Soap::class;
+    const XML   = Writer\Xml::class;
 
     /**
      * Returns the string representation of this record from the writer
      *
-     * @param mixed $data
-     * @return string
+     * @throws InvalidDataException
      */
-    public function write($data);
+    public function write(mixed $data): string;
 
     /**
      * Returns whether the content type is supported by this writer
-     *
-     * @param \PSX\Http\MediaType $contentType
-     * @return boolean
      */
-    public function isContentTypeSupported(MediaType $contentType);
+    public function isContentTypeSupported(MediaType $contentType): bool;
 
     /**
      * Returns the content type of this writer
-     *
-     * @return string
      */
-    public function getContentType();
+    public function getContentType(): string;
 }

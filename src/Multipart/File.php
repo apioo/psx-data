@@ -20,137 +20,86 @@
 
 namespace PSX\Data\Multipart;
 
+use PSX\Data\Exception\UploadException;
+use PSX\Schema\Attribute\Description;
+use PSX\Schema\Attribute\Key;
+
 /**
  * File
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
- * @Title("file")
- * @Description("File upload provided through a multipart/form-data post")
  */
+#[Description('File upload provided through a multipart/form-data post')]
 class File
 {
-    /**
-     * @var string
-     * @Key("name")
-     */
-    public $name;
+    private ?string $name;
+    private ?string $type;
+    private ?int $size;
+    #[Key('tmp_name')]
+    private ?string $tmpName;
+    private ?int $error;
 
-    /**
-     * @var string
-     * @Key("type")
-     */
-    public $type;
-
-    /**
-     * @var integer
-     * @Key("size")
-     */
-    public $size;
-
-    /**
-     * @var string
-     * @Key("tmp_name")
-     */
-    public $tmpName;
-
-    /**
-     * @var integer
-     * @Key("error")
-     */
-    public $error;
-
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
-    public function setType($type)
+    public function setType(?string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * @return integer
-     */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    /**
-     * @param integer $size
-     */
-    public function setSize($size)
+    public function setSize(?int $size): void
     {
         $this->size = $size;
     }
 
-    /**
-     * @return string
-     */
-    public function getTmpName()
+    public function getTmpName(): ?string
     {
         return $this->tmpName;
     }
 
-    /**
-     * @param string $tmpName
-     */
-    public function setTmpName($tmpName)
+    public function setTmpName(?string $tmpName): void
     {
         $this->tmpName = $tmpName;
     }
 
-    /**
-     * @return integer
-     */
-    public function getError()
+    public function getError(): ?int
     {
         return $this->error;
     }
 
-    /**
-     * @param integer $error
-     */
-    public function setError($error)
+    public function setError(?int $error): void
     {
         $this->error = $error;
     }
 
     /**
      * Moves a temporary uploaded file to a destination
-     * 
-     * @param string $path
-     * @return boolean
+     *
+     * @throws UploadException
      */
-    public function moveTo($path)
+    public function moveTo(string $path): bool
     {
         if (!$this->isValidUpload()) {
-            throw new \RuntimeException('Invalid file upload');
+            throw new UploadException('Invalid file upload');
         }
 
         return $this->moveUploadedFile($path);
@@ -158,78 +107,54 @@ class File
 
     /**
      * Checks whether the file upload is valid
-     * 
-     * @return boolean
+     *
+     * @throws UploadException
      */
-    protected function isValidUpload()
+    private function isValidUpload(): bool
     {
         $error = $this->error ?: UPLOAD_ERR_NO_FILE;
 
         switch ($error) {
             case UPLOAD_ERR_OK:
                 return $this->isUploadedFile();
-                break;
 
             case UPLOAD_ERR_INI_SIZE:
-                throw new \RuntimeException('The uploaded file exceeds the upload_max_filesize directive in php.ini');
-                break;
+                throw new UploadException('The uploaded file exceeds the upload_max_filesize directive in php.ini', UPLOAD_ERR_INI_SIZE);
 
             case UPLOAD_ERR_FORM_SIZE:
-                throw new \RuntimeException('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form');
-                break;
+                throw new UploadException('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form', UPLOAD_ERR_FORM_SIZE);
 
             case UPLOAD_ERR_PARTIAL:
-                throw new \RuntimeException('The uploaded file was only partially uploaded');
-                break;
+                throw new UploadException('The uploaded file was only partially uploaded', UPLOAD_ERR_PARTIAL);
 
             case UPLOAD_ERR_NO_FILE:
-                throw new \RuntimeException('No file was uploaded');
-                break;
+                throw new UploadException('No file was uploaded', UPLOAD_ERR_NO_FILE);
 
             case UPLOAD_ERR_NO_TMP_DIR:
-                throw new \RuntimeException('Missing a temporary folder');
-                break;
+                throw new UploadException('Missing a temporary folder', UPLOAD_ERR_NO_TMP_DIR);
 
             case UPLOAD_ERR_CANT_WRITE:
-                throw new \RuntimeException('Failed to write file to disk');
-                break;
+                throw new UploadException('Failed to write file to disk', UPLOAD_ERR_CANT_WRITE);
 
             case UPLOAD_ERR_EXTENSION:
-                throw new \RuntimeException('A PHP extension stopped the file upload');
-                break;
+                throw new UploadException('A PHP extension stopped the file upload', UPLOAD_ERR_EXTENSION);
 
             default:
-                throw new \RuntimeException('Invalid error code');
-                break;
+                throw new UploadException('Invalid error code');
         }
     }
 
-    /**
-     * Checks whether the file was uploaded
-     * 
-     * @return boolean
-     */
-    protected function isUploadedFile()
+    private function isUploadedFile(): bool
     {
         return is_uploaded_file($this->tmpName);
     }
 
-    /**
-     * Moves the uploaded file
-     * 
-     * @param string $path
-     * @return boolean
-     */
-    protected function moveUploadedFile($path)
+    private function moveUploadedFile(string $path): bool
     {
         return move_uploaded_file($this->tmpName, $path);
     }
 
-    /**
-     * @param array|\ArrayAccess $file
-     * @return \PSX\Data\Multipart\File
-     */
-    public static function fromArray($file)
+    public static function fromArray(array|\ArrayAccess $file): self
     {
         $self = new self();
         $self->setName($file['name'] ?? null);

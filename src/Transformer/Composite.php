@@ -31,14 +31,14 @@ use PSX\Data\TransformerInterface;
  */
 class Composite implements TransformerInterface
 {
-    protected $transformers;
+    private array $transformers;
 
     public function __construct(array $transformers)
     {
         $this->transformers = $transformers;
     }
 
-    public function transform($data)
+    public function transform(mixed $data): \stdClass
     {
         foreach ($this->transformers as $transformer) {
             if ($transformer instanceof TransformerInterface) {

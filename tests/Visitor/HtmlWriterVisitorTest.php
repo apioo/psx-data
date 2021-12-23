@@ -75,72 +75,73 @@ class HtmlWriterVisitorTest extends VisitorTestCase
     protected function getExpectedObject()
     {
         return <<<HTML
+<?xml version="1.0"?>
 <dl data-name="record">
-    <dt>id</dt>
-    <dd>1</dd>
-    <dt>title</dt>
-    <dd>foobar</dd>
-    <dt>active</dt>
-    <dd>true</dd>
-    <dt>disabled</dt>
-    <dd>false</dd>
-    <dt>rating</dt>
-    <dd>12.45</dd>
-    <dt>age</dt>
-    <dd/>
-    <dt>date</dt>
-    <dd>2014-01-01T12:34:47+01:00</dd>
-    <dt>href</dt>
-    <dd>http://foo.com</dd>
-    <dt>person</dt>
-    <dd>
-        <dl data-name="person">
-            <dt>title</dt>
-            <dd>Foo</dd>
+  <dt>id</dt>
+  <dd>1</dd>
+  <dt>title</dt>
+  <dd>foobar</dd>
+  <dt>active</dt>
+  <dd>true</dd>
+  <dt>disabled</dt>
+  <dd>false</dd>
+  <dt>rating</dt>
+  <dd>12.45</dd>
+  <dt>age</dt>
+  <dd/>
+  <dt>date</dt>
+  <dd>2014-01-01T12:34:47+01:00</dd>
+  <dt>href</dt>
+  <dd>http://foo.com</dd>
+  <dt>person</dt>
+  <dd>
+    <dl data-name="record">
+      <dt>title</dt>
+      <dd>Foo</dd>
+    </dl>
+  </dd>
+  <dt>category</dt>
+  <dd>
+    <dl data-name="record">
+      <dt>general</dt>
+      <dd>
+        <dl data-name="record">
+          <dt>news</dt>
+          <dd>
+            <dl data-name="record">
+              <dt>technic</dt>
+              <dd>Foo</dd>
+            </dl>
+          </dd>
         </dl>
-    </dd>
-    <dt>category</dt>
-    <dd>
-        <dl data-name="category">
-            <dt>general</dt>
-            <dd>
-                <dl data-name="category">
-                    <dt>news</dt>
-                    <dd>
-                        <dl data-name="category">
-                            <dt>technic</dt>
-                            <dd>Foo</dd>
-                        </dl>
-                    </dd>
-                </dl>
-            </dd>
+      </dd>
+    </dl>
+  </dd>
+  <dt>tags</dt>
+  <dd>
+    <ul>
+      <li>bar</li>
+      <li>foo</li>
+      <li>test</li>
+    </ul>
+  </dd>
+  <dt>entry</dt>
+  <dd>
+    <ul>
+      <li>
+        <dl data-name="record">
+          <dt>title</dt>
+          <dd>bar</dd>
         </dl>
-    </dd>
-    <dt>tags</dt>
-    <dd>
-        <ul>
-            <li>bar</li>
-            <li>foo</li>
-            <li>test</li>
-        </ul>
-    </dd>
-    <dt>entry</dt>
-    <dd>
-        <ul>
-            <li>
-                <dl data-name="entry">
-                    <dt>title</dt>
-                    <dd>bar</dd>
-                </dl>
-            </li>
-            <li>
-                <dl data-name="entry">
-                    <dt>title</dt>
-                    <dd>foo</dd>
-                </dl>
-            </li>
-        </ul>
-    </dd>
+      </li>
+      <li>
+        <dl data-name="record">
+          <dt>title</dt>
+          <dd>foo</dd>
+        </dl>
+      </li>
+    </ul>
+  </dd>
 </dl>
 HTML;
     }

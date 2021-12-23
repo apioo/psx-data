@@ -20,9 +20,10 @@
 
 namespace PSX\Data\Exporter;
 
-use Doctrine\Common\Annotations\Reader;
+use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\ExporterInterface;
 use PSX\Data\GraphTraverser;
+use PSX\Record\RecordInterface;
 use PSX\Schema\Parser\Popo\Dumper;
 
 /**
@@ -34,17 +35,14 @@ use PSX\Schema\Parser\Popo\Dumper;
  */
 class Popo implements ExporterInterface
 {
-    /**
-     * @var \PSX\Schema\Parser\Popo\Dumper
-     */
-    protected $dumper;
+    private Dumper $dumper;
 
-    public function __construct(Reader $reader)
+    public function __construct()
     {
-        $this->dumper = new Dumper($reader);
+        $this->dumper = new Dumper();
     }
 
-    public function export($data)
+    public function export(mixed $data): array|\stdClass|RecordInterface
     {
         if (GraphTraverser::isObject($data)) {
             return $data;
@@ -53,7 +51,7 @@ class Popo implements ExporterInterface
         } elseif (is_object($data)) {
             return $this->dumper->dump($data);
         } else {
-            throw new \InvalidArgumentException('Data must be an object');
+            throw new InvalidDataException('Data must be an object');
         }
     }
 }

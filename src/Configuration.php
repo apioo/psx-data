@@ -20,7 +20,6 @@
 
 namespace PSX\Data;
 
-use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use PSX\Schema\SchemaManagerInterface;
 
 /**
@@ -32,93 +31,52 @@ use PSX\Schema\SchemaManagerInterface;
  */
 class Configuration
 {
-    /**
-     * @var \Doctrine\Common\Annotations\Reader
-     */
-    protected $annotationReader;
+    private SchemaManagerInterface $schemaManager;
+    private ReaderFactory $readerFactory;
+    private WriterFactory $writerFactory;
 
-    /**
-     * @var \PSX\Schema\SchemaManagerInterface
-     */
-    protected $schemaManager;
-
-    /**
-     * @var \PSX\Data\ReaderFactory
-     */
-    protected $readerFactory;
-
-    /**
-     * @var \PSX\Data\WriterFactory
-     */
-    protected $writerFactory;
-
-    public function __construct(AnnotationReader $reader, SchemaManagerInterface $schemaManager, ReaderFactory $readerFactory, WriterFactory $writerFactory)
+    public function __construct(SchemaManagerInterface $schemaManager, ReaderFactory $readerFactory, WriterFactory $writerFactory)
     {
-        $this->annotationReader = $reader;
-        $this->schemaManager    = $schemaManager;
-        $this->readerFactory    = $readerFactory;
-        $this->writerFactory    = $writerFactory;
+        $this->schemaManager = $schemaManager;
+        $this->readerFactory = $readerFactory;
+        $this->writerFactory = $writerFactory;
     }
 
-    /**
-     * @return \Doctrine\Common\Annotations\Reader
-     */
-    public function getAnnotationReader()
-    {
-        return $this->annotationReader;
-    }
-
-    /**
-     * @return \PSX\Schema\SchemaManagerInterface
-     */
-    public function getSchemaManager()
+    public function getSchemaManager(): SchemaManagerInterface
     {
         return $this->schemaManager;
     }
 
-    /**
-     * @param \PSX\Data\ReaderFactory $readerFactory
-     */
-    public function setReaderFactory(ReaderFactory $readerFactory)
+    public function setReaderFactory(ReaderFactory $readerFactory): void
     {
         $this->readerFactory = $readerFactory;
     }
 
-    /**
-     * @return \PSX\Data\ReaderFactory
-     */
-    public function getReaderFactory()
+    public function getReaderFactory(): ReaderFactory
     {
         return $this->readerFactory;
     }
 
-    /**
-     * @param \PSX\Data\WriterFactory $writerFactory
-     */
-    public function setWriterFactory(WriterFactory $writerFactory)
+    public function setWriterFactory(WriterFactory $writerFactory): void
     {
         $this->writerFactory = $writerFactory;
     }
 
-    /**
-     * @return \PSX\Data\WriterFactory
-     */
-    public function getWriterFactory()
+    public function getWriterFactory(): WriterFactory
     {
         return $this->writerFactory;
     }
 
-    public static function createDefault(AnnotationReader $reader, SchemaManagerInterface $schemaManager)
+    public static function createDefault(SchemaManagerInterface $schemaManager): self
     {
         return new self(
-            $reader, 
-            $schemaManager, 
+            $schemaManager,
             self::createDefaultReaderFactory(),
             self::createDefaultWriterFactory()
         );
     }
 
-    protected static function createDefaultReaderFactory()
+    protected static function createDefaultReaderFactory(): ReaderFactory
     {
         $readerFactory = new ReaderFactory();
         $readerFactory->addReader(new Reader\Json(), 16);
@@ -129,7 +87,7 @@ class Configuration
         return $readerFactory;
     }
 
-    protected static function createDefaultWriterFactory()
+    protected static function createDefaultWriterFactory(): WriterFactory
     {
         $writerFactory = new WriterFactory();
         $writerFactory->addWriter(new Writer\Json(), 48);

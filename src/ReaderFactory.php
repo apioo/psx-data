@@ -32,30 +32,19 @@ use PSX\Http\MediaType;
  */
 class ReaderFactory
 {
-    /**
-     * @var \PSX\Data\ReaderInterface[]
-     */
-    protected $readers;
+    private PriorityQueue $readers;
 
     public function __construct()
     {
         $this->readers = new PriorityQueue();
     }
 
-    /**
-     * @param \PSX\Data\ReaderInterface $reader
-     * @param integer $priority
-     */
-    public function addReader(ReaderInterface $reader, $priority = 0)
+    public function addReader(ReaderInterface $reader, int $priority = 0): void
     {
         $this->readers->insert($reader, $priority);
     }
 
-    /**
-     * @param array $supportedReader
-     * @return \PSX\Data\ReaderInterface
-     */
-    public function getDefaultReader(array $supportedReader = null)
+    public function getDefaultReader(?array $supportedReader = null): ?ReaderInterface
     {
         foreach ($this->readers as $reader) {
             $className = get_class($reader);
@@ -70,12 +59,7 @@ class ReaderFactory
         return null;
     }
 
-    /**
-     * @param string $contentType
-     * @param array $supportedReader
-     * @return \PSX\Data\ReaderInterface|null
-     */
-    public function getReaderByContentType($contentType, array $supportedReader = null)
+    public function getReaderByContentType(string $contentType, ?array $supportedReader = null): ?ReaderInterface
     {
         if (empty($contentType)) {
             return null;
@@ -96,11 +80,7 @@ class ReaderFactory
         return null;
     }
 
-    /**
-     * @param string $className
-     * @return \PSX\Data\ReaderInterface|null
-     */
-    public function getReaderByInstance($className)
+    public function getReaderByInstance(string $className): ?ReaderInterface
     {
         foreach ($this->readers as $reader) {
             if (get_class($reader) === $className) {

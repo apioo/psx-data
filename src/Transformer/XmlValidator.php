@@ -21,8 +21,7 @@
 namespace PSX\Data\Transformer;
 
 use DOMDocument;
-use InvalidArgumentException;
-use RuntimeException;
+use PSX\Data\Exception\InvalidDataException;
 
 /**
  * XmlValidator
@@ -33,17 +32,17 @@ use RuntimeException;
  */
 class XmlValidator extends XmlArray
 {
-    protected $xsdSchema;
+    private string $xsdSchema;
 
-    public function __construct($xsdSchema)
+    public function __construct(string $xsdSchema)
     {
         $this->xsdSchema = $xsdSchema;
     }
 
-    public function transform($data)
+    public function transform(mixed $data): \stdClass
     {
         if (!$data instanceof DOMDocument) {
-            throw new InvalidArgumentException('Data must be an instanceof DOMDocument');
+            throw new InvalidDataException('Data must be an instanceof DOMDocument');
         }
 
         $useErrors = libxml_use_internal_errors(true);
@@ -61,7 +60,7 @@ class XmlValidator extends XmlArray
         return parent::transform($data);
     }
 
-    protected function getXmlErrors()
+    private function getXmlErrors(): array
     {
         $errors = libxml_get_errors();
         $result = [];
@@ -77,8 +76,11 @@ class XmlValidator extends XmlArray
         return $result;
     }
 
-    protected function throwXmlError(\LibXMLError $error)
+    /**
+     * @throws InvalidDataException
+     */
+    private function throwXmlError(\LibXMLError $error): void
     {
-        throw new RuntimeException(rtrim($error->message));
+        throw new InvalidDataException(rtrim($error->message));
     }
 }

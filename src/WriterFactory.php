@@ -32,20 +32,20 @@ use PSX\Http\MediaType;
  */
 class WriterFactory
 {
-    protected $writers;
-    protected $contentNegotiation = array();
+    private PriorityQueue $writers;
+    private array $contentNegotiation = [];
 
     public function __construct()
     {
         $this->writers = new PriorityQueue();
     }
 
-    public function addWriter(WriterInterface $writer, $priority = 0)
+    public function addWriter(WriterInterface $writer, int $priority = 0): void
     {
         $this->writers->insert($writer, $priority);
     }
 
-    public function getDefaultWriter(array $supportedWriter = null)
+    public function getDefaultWriter(?array $supportedWriter = null): ?WriterInterface
     {
         foreach ($this->writers as $writer) {
             $className = get_class($writer);
@@ -60,7 +60,7 @@ class WriterFactory
         return null;
     }
 
-    public function getWriterByContentType($contentType, array $supportedWriter = null)
+    public function getWriterByContentType(string $contentType, ?array $supportedWriter = null): ?WriterInterface
     {
         if (empty($contentType)) {
             return null;
@@ -95,7 +95,7 @@ class WriterFactory
         return null;
     }
 
-    public function getWriterByInstance($className)
+    public function getWriterByInstance(string $className): ?WriterInterface
     {
         foreach ($this->writers as $writer) {
             if (get_class($writer) === $className) {
@@ -108,11 +108,8 @@ class WriterFactory
 
     /**
      * Returns a writer class by the class short name
-     * 
-     * @param string $format
-     * @return string|null
      */
-    public function getWriterClassNameByFormat($format)
+    public function getWriterClassNameByFormat(string $format): ?string
     {
         $format = strtolower($format);
         foreach ($this->writers as $writer) {
@@ -130,11 +127,8 @@ class WriterFactory
     /**
      * With this method you can set which writer should be used for an specific
      * content type. The content type can be i.e. text/plain or image/*
-     *
-     * @param string $contentType
-     * @param string $writerClass
      */
-    public function setContentNegotiation($contentType, $writerClass)
+    public function setContentNegotiation(string $contentType, string $writerClass): void
     {
         $this->contentNegotiation[$contentType] = $writerClass;
     }
@@ -142,12 +136,8 @@ class WriterFactory
     /**
      * Returns the fitting writer according to the content negotiation. If no
      * fitting writer could be found null gets returned
-     *
-     * @param \PSX\Http\MediaType $contentType
-     * @param array $supportedWriter
-     * @return \PSX\Data\WriterInterface
      */
-    protected function getWriterFromContentNegotiation(MediaType $contentType, array $supportedWriter = null)
+    protected function getWriterFromContentNegotiation(MediaType $contentType, ?array $supportedWriter = null): ?WriterInterface
     {
         if (empty($this->contentNegotiation)) {
             return null;

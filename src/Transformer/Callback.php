@@ -32,15 +32,15 @@ use PSX\Data\TransformerInterface;
  */
 class Callback implements TransformerInterface
 {
-    protected $callback;
+    private \Closure $callback;
 
     public function __construct(Closure $callback)
     {
         $this->callback = $callback;
     }
 
-    public function transform($data)
+    public function transform(mixed $data): \stdClass
     {
-        return call_user_func_array($this->callback, array($data));
+        return call_user_func_array($this->callback, [$data]);
     }
 }
