@@ -59,7 +59,7 @@ class ReaderFactory
         return null;
     }
 
-    public function getReaderByContentType(string $contentType, ?array $supportedReader = null): ?ReaderInterface
+    public function getReaderByContentType(?string $contentType, ?array $supportedReader = null): ?ReaderInterface
     {
         if (empty($contentType)) {
             return null;

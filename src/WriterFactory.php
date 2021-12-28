@@ -60,7 +60,7 @@ class WriterFactory
         return null;
     }
 
-    public function getWriterByContentType(string $contentType, ?array $supportedWriter = null): ?WriterInterface
+    public function getWriterByContentType(?string $contentType, ?array $supportedWriter = null): ?WriterInterface
     {
         if (empty($contentType)) {
             return null;

@@ -24,6 +24,7 @@ use PSX\Data\Exception\InvalidDataException;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\MediaType;
 use PSX\Record\RecordInterface;
+use PSX\Schema\Exception\InvalidSchemaException;
 use PSX\Schema\Exception\ValidationException;
 use PSX\Schema\Parser;
 use PSX\Schema\ParserInterface;
@@ -149,7 +150,7 @@ class Processor
      * unsupported media exception. It is also possible to explicit select a
      * reader by providing the class name as reader type.
      */
-    public function getReader(string $contentType, ?string $readerType = null, ?array $supportedReader = null): ReaderInterface
+    public function getReader(?string $contentType, ?string $readerType = null, ?array $supportedReader = null): ReaderInterface
     {
         if ($readerType === null) {
             $reader = $this->config->getReaderFactory()->getReaderByContentType($contentType, $supportedReader);
@@ -173,7 +174,7 @@ class Processor
      * acceptable exception. It is also possible to explicit select a writer by
      * providing the class name as writer type.
      */
-    public function getWriter(string $contentType, ?string $writerType = null, ?array $supportedWriter = null): WriterInterface
+    public function getWriter(?string $contentType, ?string $writerType = null, ?array $supportedWriter = null): WriterInterface
     {
         if ($writerType === null) {
             $writer = $this->config->getWriterFactory()->getWriterByContentType($contentType, $supportedWriter);
@@ -192,8 +193,12 @@ class Processor
         return $writer;
     }
 
-    protected function getDefaultTransformer(string $contentType): ?TransformerInterface
+    protected function getDefaultTransformer(?string $contentType): ?TransformerInterface
     {
+        if (empty($contentType)) {
+            return null;
+        }
+
         $mime = new MediaType($contentType);
 
         if ($mime->getName() == 'application/atom+xml') {
@@ -213,6 +218,10 @@ class Processor
         return null;
     }
 
+    /**
+     * @throws InvalidSchemaException
+     * @throws InvalidDataException
+     */
     protected function getSchema(mixed $schema): SchemaInterface
     {
         if (is_string($schema)) {
