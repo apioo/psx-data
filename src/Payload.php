@@ -30,7 +30,7 @@ namespace PSX\Data;
 class Payload
 {
     private mixed $data;
-    private string $contentType;
+    private ?string $contentType;
     private ?TransformerInterface $transformer;
 
     /**
@@ -39,13 +39,12 @@ class Payload
     private ?string $rwType;
 
     /**
-     * Array which contains absolute reader or writer class names to indicate
-     * which are supported. By default all available reader or writer
-     * implementations are used
+     * Array which contains absolute reader or writer class names to indicate which are supported. By default all
+     * available reader or writer implementations are used
      */
     private ?array $rwSupported;
 
-    public function __construct(mixed $data, string $contentType)
+    public function __construct(mixed $data, ?string $contentType)
     {
         $this->data = $data;
         $this->contentType = $contentType;
@@ -61,7 +60,7 @@ class Payload
 
     public function getContentType(): string
     {
-        return $this->contentType ?: 'application/json';
+        return $this->contentType ?? 'application/json';
     }
 
     public function getTransformer(): ?TransformerInterface
@@ -100,23 +99,23 @@ class Payload
         return $this;
     }
 
-    public static function create(mixed $data, string $contentType): self
+    public static function create(mixed $data, ?string $contentType): self
     {
         return new self($data, $contentType);
     }
 
     public static function json(mixed $data): self
     {
-        return self::create($data, "application/json");
+        return self::create($data, 'application/json');
     }
 
     public static function xml(mixed $data): self
     {
-        return self::create($data, "application/xml");
+        return self::create($data, 'application/xml');
     }
 
     public static function form(mixed $data): self
     {
-        return self::create($data, "application/x-www-form-urlencoded");
+        return self::create($data, 'application/x-www-form-urlencoded');
     }
 }
