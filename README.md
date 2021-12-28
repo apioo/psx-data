@@ -150,7 +150,7 @@ class News
      #[MaxLength(255)]
     private ?string $text = null;
 
-    #[\PSX\Schema\Attribute\Enum(['active', 'deleted'])]
+    #[Enum(['active', 'deleted'])]
     private ?string $status = null;
 
     #[Minimum(0)]
