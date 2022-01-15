@@ -102,6 +102,7 @@ class Processor
      * Parses the payload and returns the data in a normalized format
      *
      * @throws StatusCode\UnsupportedMediaTypeException
+     * @throws InvalidDataException
      */
     public function parse(Payload $payload): \stdClass
     {
@@ -116,6 +117,10 @@ class Processor
 
         if ($transformer instanceof TransformerInterface) {
             $data = $transformer->transform($data);
+        }
+
+        if (!$data instanceof \stdClass) {
+            return new \stdClass();
         }
 
         return $data;
