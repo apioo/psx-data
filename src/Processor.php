@@ -104,7 +104,7 @@ class Processor
      * @throws StatusCode\UnsupportedMediaTypeException
      * @throws InvalidDataException
      */
-    public function parse(Payload $payload): \stdClass
+    public function parse(Payload $payload): mixed
     {
         $reader = $this->getReader($payload->getContentType(), $payload->getRwType(), $payload->getRwSupported());
         $data   = $reader->read($payload->getData());
@@ -117,10 +117,6 @@ class Processor
 
         if ($transformer instanceof TransformerInterface) {
             $data = $transformer->transform($data);
-        }
-
-        if (!$data instanceof \stdClass) {
-            return new \stdClass();
         }
 
         return $data;
