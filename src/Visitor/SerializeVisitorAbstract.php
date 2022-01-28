@@ -41,6 +41,12 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
     private array $lastArray;
     private array $stack = [];
 
+    public function __construct()
+    {
+        $this->lastObject = new \stdClass();
+        $this->lastArray = [];
+    }
+
     public function getObject(): object
     {
         return $this->lastObject;
