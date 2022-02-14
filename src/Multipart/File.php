@@ -92,7 +92,7 @@ class File implements \JsonSerializable
      */
     private function isValidUpload(): bool
     {
-        $error = $this->error ?: UPLOAD_ERR_NO_FILE;
+        $error = $this->error ?? null;
 
         switch ($error) {
             case UPLOAD_ERR_OK:
