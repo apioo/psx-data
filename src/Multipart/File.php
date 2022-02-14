@@ -140,7 +140,7 @@ class File implements \JsonSerializable
             'name' => $this->name,
             'type' => $this->type,
             'size' => $this->size,
-            'tmpName' => $this->tmpName,
+            'tmp_name' => $this->tmpName,
             'error' => $this->error,
         ];
     }

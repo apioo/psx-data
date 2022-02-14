@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Reader;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Multipart\Body;
 use PSX\Data\Reader\Multipart;
 
 /**
@@ -69,6 +70,6 @@ JSON;
         $reader = new Multipart();
         $file   = $reader->read('');
 
-        $this->assertNull($file);
+        $this->assertInstanceOf(Body::class, $file);
     }
 }
