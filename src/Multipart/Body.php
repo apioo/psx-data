@@ -18,50 +18,52 @@
  * limitations under the License.
  */
 
-namespace PSX\Data\Reader;
+namespace PSX\Data\Multipart;
 
-use PSX\Data\Multipart\Body;
-use PSX\Data\Multipart\File;
-use PSX\Data\ReaderAbstract;
-use PSX\Http\MediaType;
+use PSX\Data\Exception\UploadException;
 
 /**
- * Multipart
+ * Body
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class Multipart extends ReaderAbstract
+class Body implements \JsonSerializable
 {
-    private array $files;
-    private array $post;
+    private array $parts = [];
 
-    public function __construct(?array $files = null, ?array $post = null)
+    public function addPart(string $name, mixed $value): void
     {
-        $this->files = $files === null ? $_FILES : $files;
-        $this->post  = $post  === null ? $_POST  : $post;
+        $this->parts[$name] = $value;
     }
 
-    public function read(string $data): mixed
+    public function getPart(string $name): mixed
     {
-        $multipart = new Body();
-
-        foreach ($this->files as $name => $file) {
-            if (isset($file['error'])) {
-                $multipart->addPart($name, File::fromArray($file));
-            }
-        }
-
-        foreach ($this->post as $name => $value) {
-            $multipart->addPart($name, $value);
-        }
-
-        return $multipart;
+        return $this->parts[$name] ?? null;
     }
 
-    public function isContentTypeSupported(MediaType $contentType): bool
+    public function isFile(string $name): bool
     {
-        return $contentType->getName() == 'multipart/form-data';
+        return isset($this->parts[$name]) && $this->parts[$name] instanceof File;
+    }
+
+    public function getFile(string $name): File
+    {
+        if (isset($this->parts[$name]) && $this->parts[$name] instanceof File) {
+            return $this->parts[$name];
+        } else {
+            throw new UploadException('No file was uploaded for the field ' . $name);
+        }
+    }
+
+    public function __get($name)
+    {
+        return $this->parts[$name] ?? null;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->parts;
     }
 }

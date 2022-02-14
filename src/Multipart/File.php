@@ -21,8 +21,6 @@
 namespace PSX\Data\Multipart;
 
 use PSX\Data\Exception\UploadException;
-use PSX\Schema\Attribute\Description;
-use PSX\Schema\Attribute\Key;
 
 /**
  * File
@@ -31,24 +29,26 @@ use PSX\Schema\Attribute\Key;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-#[Description('File upload provided through a multipart/form-data post')]
-class File
+class File implements \JsonSerializable
 {
     private ?string $name;
     private ?string $type;
     private ?int $size;
-    #[Key('tmp_name')]
     private ?string $tmpName;
     private ?int $error;
+
+    public function __construct(?string $name, ?string $type, ?int $size, ?string $tmpName, ?int $error)
+    {
+        $this->name = $name;
+        $this->type = $type;
+        $this->size = $size;
+        $this->tmpName = $tmpName;
+        $this->error = $error;
+    }
 
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function setName(?string $name): void
-    {
-        $this->name = $name;
     }
 
     public function getType(): ?string
@@ -56,19 +56,9 @@ class File
         return $this->type;
     }
 
-    public function setType(?string $type): void
-    {
-        $this->type = $type;
-    }
-
     public function getSize(): ?int
     {
         return $this->size;
-    }
-
-    public function setSize(?int $size): void
-    {
-        $this->size = $size;
     }
 
     public function getTmpName(): ?string
@@ -76,19 +66,9 @@ class File
         return $this->tmpName;
     }
 
-    public function setTmpName(?string $tmpName): void
-    {
-        $this->tmpName = $tmpName;
-    }
-
     public function getError(): ?int
     {
         return $this->error;
-    }
-
-    public function setError(?int $error): void
-    {
-        $this->error = $error;
     }
 
     /**
@@ -154,15 +134,25 @@ class File
         return move_uploaded_file($this->tmpName, $path);
     }
 
+    public function jsonSerialize(): array
+    {
+        return [
+            'name' => $this->name,
+            'type' => $this->type,
+            'size' => $this->size,
+            'tmpName' => $this->tmpName,
+            'error' => $this->error,
+        ];
+    }
+
     public static function fromArray(array|\ArrayAccess $file): self
     {
-        $self = new self();
-        $self->setName($file['name'] ?? null);
-        $self->setType($file['type'] ?? null);
-        $self->setSize($file['size'] ?? null);
-        $self->setTmpName($file['tmp_name'] ?? null);
-        $self->setError($file['error'] ?? null);
-
-        return $self;
+        return new self(
+            $file['name'] ?? null,
+            $file['type'] ?? null,
+            $file['size'] ?? null,
+            $file['tmp_name'] ?? null,
+            $file['error'] ?? null
+        );
     }
 }
