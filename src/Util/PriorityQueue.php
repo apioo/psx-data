@@ -41,17 +41,17 @@ class PriorityQueue implements IteratorAggregate, Countable
         $this->queue = new SplPriorityQueue();
     }
 
-    public function insert($value, $priority)
+    public function insert($value, $priority): void
     {
         $this->queue->insert($value, $priority);
     }
 
-    public function count()
+    public function count(): int
     {
         return $this->queue->count();
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return clone $this->queue;
     }
