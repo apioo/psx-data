@@ -29,7 +29,7 @@ namespace PSX\Data;
  */
 abstract class VisitorAbstract implements VisitorInterface
 {
-    public function visitObjectStart(string $name)
+    public function visitObjectStart()
     {
     }
 

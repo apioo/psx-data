@@ -22,6 +22,8 @@ namespace PSX\Data\Visitor;
 
 use PSX\Data\VisitorAbstract;
 use PSX\DateTime\DateTime;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\Period;
 
 /**
  * TextWriterVisitor
@@ -49,9 +51,9 @@ class TextWriterVisitor extends VisitorAbstract
         return $this->output;
     }
 
-    public function visitObjectStart(string $name)
+    public function visitObjectStart()
     {
-        $this->writeLn('Object(' . $name . '){', $this->nested != -1 && $this->types[$this->nested] == self::IN_ARRAY);
+        $this->writeLn('Object{', $this->nested != -1 && $this->types[$this->nested] == self::IN_ARRAY);
 
         $this->nested++;
         $this->types[] = self::IN_OBJECT;
@@ -107,8 +109,10 @@ class TextWriterVisitor extends VisitorAbstract
 
     protected function getValue(mixed $value): string
     {
-        if ($value instanceof \DateTime) {
-            return DateTime::getFormat($value);
+        if ($value instanceof \DateTimeInterface) {
+            return LocalDateTime::from($value)->toString();
+        } elseif ($value instanceof \DateInterval) {
+            return Period::from($value)->toString();
         } elseif (is_bool($value)) {
             return $value ? 'true' : 'false';
         } elseif (is_null($value)) {

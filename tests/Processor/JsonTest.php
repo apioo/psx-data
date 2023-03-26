@@ -25,6 +25,7 @@ use PSX\Data\Tests\Processor\Model\Comment;
 use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Data\Tests\Processor\Model\Person;
 use PSX\Data\Tests\ProcessorTestCase;
+use PSX\DateTime\LocalDateTime;
 
 /**
  * JsonTest
@@ -67,8 +68,8 @@ JSON;
         $this->assertEquals(true, $entry->isActive());
         $this->assertEquals(12, $entry->getCount());
         $this->assertEquals(4.8, $entry->getRating());
-        $this->assertInstanceOf('DateTime', $entry->getDate());
-        $this->assertEquals('Tue, 29 Jul 2014 23:37:00 +0000', $entry->getDate()->format('r'));
+        $this->assertInstanceOf(LocalDateTime::class, $entry->getDate());
+        $this->assertEquals('2014-07-29T23:37:00Z', $entry->getDate()->toString());
         $this->assertInstanceOf(Person::class, $entry->getPerson());
         $this->assertEquals('foo', $entry->getPerson()->getName());
         $this->assertEquals('http://foo.com', $entry->getPerson()->getUri());

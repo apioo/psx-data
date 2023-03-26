@@ -226,8 +226,8 @@ TEXT;
     {
         $writer = new Jsonp();
 
-        $this->assertTrue($writer->isContentTypeSupported(new MediaType('application/javascript')));
-        $this->assertFalse($writer->isContentTypeSupported(new MediaType('text/html')));
+        $this->assertTrue($writer->isContentTypeSupported(MediaType::parse('application/javascript')));
+        $this->assertFalse($writer->isContentTypeSupported(MediaType::parse('text/html')));
     }
 
     public function testGetContentType()

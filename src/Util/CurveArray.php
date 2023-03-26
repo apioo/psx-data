@@ -69,16 +69,10 @@ class CurveArray
      * result parameter are used internally for performance reason and should
      * not be used
      */
-    public static function flatten(array|\stdClass $data, string $separator = '_', ?string $prefix = null, array &$result = null): array
+    public static function flatten(array|\stdClass $data, string $separator = '_', ?string $prefix = null, array &$result = []): array
     {
-        if ($result === null) {
-            $result = array();
-        }
-
         if ($data instanceof \stdClass) {
             $data = (array) $data;
-        } elseif (!is_array($data)) {
-            throw new InvalidArgumentException('Data must be either an stdClass or array');
         }
 
         foreach ($data as $key => $value) {

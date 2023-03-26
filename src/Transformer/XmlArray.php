@@ -27,9 +27,8 @@ use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\TransformerInterface;
 
 /**
- * Takes an DOMDocument and formats it into an stdClass structure which can be
- * used by an importer. It takes the approach that if XML child elements have
- * the same name they become an array
+ * Takes an DOMDocument and formats it into an stdClass structure which can be used by an importer. It takes the
+ * approach that if XML child elements have the same name they become an array
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -58,7 +57,7 @@ class XmlArray implements TransformerInterface
         $result = new \stdClass();
 
         foreach ($element->childNodes as $node) {
-            if ($node->nodeType !== XML_ELEMENT_NODE) {
+            if (!$node instanceof DOMElement) {
                 continue;
             }
 

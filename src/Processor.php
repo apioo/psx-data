@@ -200,14 +200,10 @@ class Processor
             return null;
         }
 
-        $mime = new MediaType($contentType);
+        $mime = MediaType::parse($contentType);
 
-        if ($mime->getName() == 'application/atom+xml') {
-            return new Transformer\Atom();
-        } elseif ($mime->getName() == 'application/jsonx+xml') {
+        if ($mime->getName() == 'application/jsonx+xml') {
             return new Transformer\Jsonx();
-        } elseif ($mime->getName() == 'application/rss+xml') {
-            return new Transformer\Rss();
         } elseif ($mime->getName() == 'application/soap+xml') {
             return new Transformer\Soap();
         } elseif (in_array($mime->getName(), MediaType\Xml::getMediaTypes()) ||

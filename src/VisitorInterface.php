@@ -32,7 +32,7 @@ interface VisitorInterface
     /**
      * Visited if an object begins
      */
-    public function visitObjectStart(string $name);
+    public function visitObjectStart();
 
     /**
      * Visited if an object ends

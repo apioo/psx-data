@@ -84,7 +84,7 @@ class TextWriterVisitorTest extends VisitorTestCase
         $graph->traverse($record, $visitor);
 
         $except = <<<TEXT
-Object(record){
+Object{
     title = Lorem ipsum dolor sit amet, cons (...)
 }
 
@@ -96,21 +96,21 @@ TEXT;
     protected function getExpectedObject()
     {
         return <<<TEXT
-Object(record){
+Object{
     id = 1
     title = foobar
     active = true
     disabled = false
     rating = 12.45
     age = null
-    date = 2014-01-01T12:34:47+01:00
+    date = 2014-01-01T12:34:47Z
     href = http://foo.com
-    person = Object(record){
+    person = Object{
         title = Foo
     }
-    category = Object(record){
-        general = Object(record){
-            news = Object(record){
+    category = Object{
+        general = Object{
+            news = Object{
                 technic = Foo
             }
         }
@@ -121,10 +121,10 @@ Object(record){
         test
     ]
     entry = Array[
-        Object(record){
+        Object{
             title = bar
         }
-        Object(record){
+        Object{
             title = foo
         }
     ]
@@ -137,14 +137,14 @@ TEXT;
     {
         return <<<TEXT
 Array[
-    Object(record){
+    Object{
         id = 1
         title = foobar
         active = true
         disabled = false
         rating = 12.45
     }
-    Object(record){
+    Object{
         id = 2
         title = foo
         active = false

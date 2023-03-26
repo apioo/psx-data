@@ -65,7 +65,7 @@ class ReaderFactory
             return null;
         }
 
-        $contentType = new MediaType($contentType);
+        $contentType = MediaType::parse($contentType);
 
         foreach ($this->readers as $reader) {
             if ($supportedReader !== null && !in_array(get_class($reader), $supportedReader)) {

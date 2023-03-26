@@ -113,39 +113,39 @@ XML;
     protected function getExpectedObject()
     {
         return <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <json:object xmlns:json="http://www.ibm.com/xmlns/prod/2009/jsonx">
- <json:number name="id">1</json:number>
- <json:string name="title">foobar</json:string>
- <json:boolean name="active">true</json:boolean>
- <json:boolean name="disabled">false</json:boolean>
- <json:number name="rating">12.45</json:number>
- <json:null name="age"/>
- <json:string name="date">2014-01-01T12:34:47+01:00</json:string>
- <json:string name="href">http://foo.com</json:string>
- <json:object name="person">
-  <json:string name="title">Foo</json:string>
- </json:object>
- <json:object name="category">
-  <json:object name="general">
-   <json:object name="news">
-    <json:string name="technic">Foo</json:string>
-   </json:object>
+  <json:number name="id">1</json:number>
+  <json:string name="title">foobar</json:string>
+  <json:boolean name="active">true</json:boolean>
+  <json:boolean name="disabled">false</json:boolean>
+  <json:number name="rating">12.45</json:number>
+  <json:null name="age"/>
+  <json:string name="date">2014-01-01T12:34:47Z</json:string>
+  <json:string name="href">http://foo.com</json:string>
+  <json:object name="person">
+    <json:string name="title">Foo</json:string>
   </json:object>
- </json:object>
- <json:array name="tags">
-  <json:string>bar</json:string>
-  <json:string>foo</json:string>
-  <json:string>test</json:string>
- </json:array>
- <json:array name="entry">
-  <json:object>
-   <json:string name="title">bar</json:string>
+  <json:object name="category">
+    <json:object name="general">
+      <json:object name="news">
+        <json:string name="technic">Foo</json:string>
+      </json:object>
+    </json:object>
   </json:object>
-  <json:object>
-   <json:string name="title">foo</json:string>
-  </json:object>
- </json:array>
+  <json:array name="tags">
+    <json:string>bar</json:string>
+    <json:string>foo</json:string>
+    <json:string>test</json:string>
+  </json:array>
+  <json:array name="entry">
+    <json:object>
+      <json:string name="title">bar</json:string>
+    </json:object>
+    <json:object>
+      <json:string name="title">foo</json:string>
+    </json:object>
+  </json:array>
 </json:object>
 XML;
     }

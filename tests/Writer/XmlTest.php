@@ -188,8 +188,8 @@ TEXT;
     {
         $writer = new Xml();
 
-        $this->assertTrue($writer->isContentTypeSupported(new MediaType('application/xml')));
-        $this->assertFalse($writer->isContentTypeSupported(new MediaType('text/html')));
+        $this->assertTrue($writer->isContentTypeSupported(MediaType::parse('application/xml')));
+        $this->assertFalse($writer->isContentTypeSupported(MediaType::parse('text/html')));
     }
 
     public function testGetContentType()

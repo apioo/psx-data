@@ -99,7 +99,7 @@ class Jsonx implements TransformerInterface
         $result = new \stdClass();
 
         foreach ($element->childNodes as $node) {
-            if ($node->nodeType !== XML_ELEMENT_NODE) {
+            if (!$node instanceof \DOMElement) {
                 continue;
             }
 
@@ -121,7 +121,7 @@ class Jsonx implements TransformerInterface
         $result = array();
 
         foreach ($element->childNodes as $node) {
-            if ($node->nodeType !== XML_ELEMENT_NODE) {
+            if (!$node instanceof DOMElement) {
                 continue;
             }
 

@@ -188,8 +188,8 @@ TEXT;
     {
         $writer = new Jsonx();
 
-        $this->assertTrue($writer->isContentTypeSupported(new MediaType('application/jsonx+xml')));
-        $this->assertFalse($writer->isContentTypeSupported(new MediaType('application/xml')));
+        $this->assertTrue($writer->isContentTypeSupported(MediaType::parse('application/jsonx+xml')));
+        $this->assertFalse($writer->isContentTypeSupported(MediaType::parse('application/xml')));
     }
 
     public function testGetContentType()

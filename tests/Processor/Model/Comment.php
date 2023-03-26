@@ -20,6 +20,8 @@
 
 namespace PSX\Data\Tests\Processor\Model;
 
+use PSX\DateTime\LocalDateTime;
+
 /**
  * Comment
  *
@@ -30,44 +32,25 @@ namespace PSX\Data\Tests\Processor\Model;
  */
 class Comment
 {
-    /**
-     * @var string
-     */
-    protected $title;
+    private ?string $title = null;
+    private ?LocalDateTime $date = null;
 
-    /**
-     * @var \DateTime
-     */
-    protected $date;
-
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getDate()
+    public function getDate(): ?LocalDateTime
     {
         return $this->date;
     }
 
-    /**
-     * @param \DateTime $date
-     */
-    public function setDate(\DateTime $date)
+    public function setDate(?LocalDateTime $date): void
     {
         $this->date = $date;
     }

@@ -106,8 +106,8 @@ TEXT;
     {
         $writer = new Form();
 
-        $this->assertTrue($writer->isContentTypeSupported(new MediaType('application/x-www-form-urlencoded')));
-        $this->assertFalse($writer->isContentTypeSupported(new MediaType('application/xml')));
+        $this->assertTrue($writer->isContentTypeSupported(MediaType::parse('application/x-www-form-urlencoded')));
+        $this->assertFalse($writer->isContentTypeSupported(MediaType::parse('application/xml')));
     }
 
     public function testGetContentType()

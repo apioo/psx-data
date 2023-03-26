@@ -22,6 +22,8 @@ namespace PSX\Data\Visitor;
 
 use PSX\Data\VisitorAbstract;
 use PSX\DateTime\DateTime;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\Period;
 
 /**
  * HtmlWriterVisitor
@@ -44,9 +46,9 @@ class HtmlWriterVisitor extends VisitorAbstract
         return $this->output;
     }
 
-    public function visitObjectStart(string $name)
+    public function visitObjectStart()
     {
-        $this->write('<dl data-name="' . htmlspecialchars($name) . '">');
+        $this->write('<dl>');
     }
 
     public function visitObjectEnd()
@@ -96,8 +98,10 @@ class HtmlWriterVisitor extends VisitorAbstract
 
     protected function getValue(mixed $value): string
     {
-        if ($value instanceof \DateTime) {
-            return DateTime::getFormat($value);
+        if ($value instanceof \DateTimeInterface) {
+            return LocalDateTime::from($value)->toString();
+        } elseif ($value instanceof \DateInterval) {
+            return Period::from($value)->toString();
         } elseif (is_bool($value)) {
             return $value ? 'true' : 'false';
         } else {

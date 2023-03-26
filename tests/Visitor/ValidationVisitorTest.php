@@ -22,6 +22,7 @@ namespace PSX\Data\Tests\Visitor;
 
 use PSX\Data\GraphTraverser;
 use PSX\Data\Visitor\ValidationVisitor;
+use PSX\DateTime\LocalDateTime;
 use PSX\Uri\Uri;
 use PSX\Validate\ValidatorInterface;
 
@@ -49,8 +50,8 @@ class ValidationVisitorTest extends VisitorTestCase
             '/disabled' => false,
             '/rating' => 12.45,
             '/age' => null,
-            '/date' => new \DateTime('2014-01-01T12:34:47+0100'),
-            '/href' => new Uri('http://foo.com'),
+            '/date' => LocalDateTime::parse('2014-01-01T12:34:47'),
+            '/href' => Uri::parse('http://foo.com'),
             '/person/title' => 'Foo',
             '/category/general/news/technic' => 'Foo',
             '/tags/0' => 'bar',

@@ -23,6 +23,8 @@ namespace PSX\Data\Visitor;
 use PSX\Data\GraphTraverser;
 use PSX\Data\VisitorAbstract;
 use PSX\DateTime\DateTime;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\Period;
 use XMLWriter;
 
 /**
@@ -45,7 +47,7 @@ class JsonxWriterVisitor extends VisitorAbstract
         $this->writer = $writer;
     }
 
-    public function visitObjectStart(string $name)
+    public function visitObjectStart()
     {
         if ($this->level == 0) {
             $this->writer->startElementNS(self::PREFIX, 'object', self::XMLNS);
@@ -104,12 +106,14 @@ class JsonxWriterVisitor extends VisitorAbstract
 
     public function visitValue(mixed $value)
     {
-        if ($value instanceof \DateTime) {
-            $value = DateTime::getFormat($value);
+        if ($value instanceof \DateTimeInterface) {
+            $value = LocalDateTime::from($value)->toString();
+        } elseif ($value instanceof \DateInterval) {
+            $value = Period::from($value)->toString();
         }
 
         if (is_int($value) || is_float($value)) {
-            $this->writer->text($value);
+            $this->writer->text((string) $value);
         } elseif (is_bool($value)) {
             $this->writer->text($value ? 'true' : 'false');
         } elseif (is_null($value)) {

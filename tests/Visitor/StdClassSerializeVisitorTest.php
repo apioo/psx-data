@@ -95,7 +95,7 @@ class StdClassSerializeVisitorTest extends VisitorTestCase
         $record->disabled = false;
         $record->rating = 12.45;
         $record->age = null;
-        $record->date = '2014-01-01T12:34:47+01:00';
+        $record->date = '2014-01-01T12:34:47Z';
         $record->href = 'http://foo.com';
         $record->person = $person;
         $record->category = $category;

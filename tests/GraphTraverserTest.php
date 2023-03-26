@@ -50,7 +50,7 @@ class GraphTraverserTest extends VisitorTestCase
     "disabled": false,
     "rating": 12.45,
     "age": null,
-    "date": "2014-01-01T12:34:47+01:00",
+    "date": "2014-01-01T12:34:47Z",
     "href": "http:\/\/foo.com",
     "person": {
         "title": "Foo"
@@ -321,7 +321,7 @@ JSON;
 
 class JsonObject implements \JsonSerializable
 {
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return ['foo' => 'bar'];
     }

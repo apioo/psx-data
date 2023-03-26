@@ -22,7 +22,11 @@ namespace PSX\Data\Visitor;
 
 use PSX\Data\GraphTraverser;
 use PSX\Data\VisitorAbstract;
-use PSX\DateTime\DateTime;
+use PSX\DateTime\Duration;
+use PSX\DateTime\LocalDate;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\LocalTime;
+use PSX\DateTime\Period;
 use PSX\Uri\Uri;
 use XMLWriter;
 
@@ -45,10 +49,10 @@ class XmlWriterVisitor extends VisitorAbstract
         $this->namespace = $namespace;
     }
 
-    public function visitObjectStart($name)
+    public function visitObjectStart()
     {
         if ($this->level == 0) {
-            $this->writer->startElement($name);
+            $this->writer->startElement('record');
             $this->writer->writeAttribute('type', 'object');
 
             if ($this->namespace !== null) {
@@ -122,10 +126,12 @@ class XmlWriterVisitor extends VisitorAbstract
         $this->writer->text($this->getValue($value));
     }
 
-    protected function getValue($value)
+    protected function getValue($value): string
     {
-        if ($value instanceof \DateTime) {
-            return DateTime::getFormat($value);
+        if ($value instanceof \DateTimeInterface) {
+            return LocalDateTime::from($value)->toString();
+        } elseif ($value instanceof \DateInterval) {
+            return Period::from($value)->toString();
         } elseif (is_bool($value)) {
             return $value ? 'true' : 'false';
         } else {
@@ -152,6 +158,18 @@ class XmlWriterVisitor extends VisitorAbstract
             $type = 'null';
         } elseif ($value instanceof \DateTime) {
             $type = 'date-time';
+        } elseif ($value instanceof \DateInterval) {
+            $type = 'period';
+        } elseif ($value instanceof LocalDate) {
+            $type = 'date';
+        } elseif ($value instanceof LocalDateTime) {
+            $type = 'date-time';
+        } elseif ($value instanceof LocalTime) {
+            $type = 'time';
+        } elseif ($value instanceof Period) {
+            $type = 'period';
+        } elseif ($value instanceof Duration) {
+            $type = 'duration';
         } elseif ($value instanceof Uri) {
             $type = 'uri';
         }

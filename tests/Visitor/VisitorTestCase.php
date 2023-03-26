@@ -22,6 +22,7 @@ namespace PSX\Data\Tests\Visitor;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
+use PSX\DateTime\LocalDateTime;
 use PSX\Record\Record;
 use PSX\Uri\Uri;
 
@@ -34,7 +35,7 @@ use PSX\Uri\Uri;
  */
 class VisitorTestCase extends TestCase
 {
-    protected function getObject()
+    protected function getObject(): object
     {
         return (object) [
             'id' => 1,
@@ -43,31 +44,31 @@ class VisitorTestCase extends TestCase
             'disabled' => false,
             'rating' => 12.45,
             'age' => null,
-            'date' => new DateTime('2014-01-01T12:34:47+01:00'),
-            'href' => new Uri('http://foo.com'),
-            'person' => new Record(array(
+            'date' => LocalDateTime::parse('2014-01-01T12:34:47+01:00'),
+            'href' => Uri::parse('http://foo.com'),
+            'person' => new Record([
                 'title' => 'Foo',
-            )),
-            'category' => new Record(array(
-                'general' => new Record(array(
-                    'news' => new Record(array(
+            ]),
+            'category' => new Record([
+                'general' => new Record([
+                    'news' => new Record([
                         'technic' => 'Foo',
-                    )),
-                )),
-            )),
-            'tags' => array('bar', 'foo', 'test'),
-            'entry' => array(
-                new Record(array(
+                    ]),
+                ]),
+            ]),
+            'tags' => ['bar', 'foo', 'test'],
+            'entry' => [
+                new Record([
                     'title' => 'bar'
-                )),
-                new Record(array(
+                ]),
+                new Record([
                     'title' => 'foo'
-                )),
-            ),
+                ]),
+            ],
         ];
     }
 
-    protected function getArray()
+    protected function getArray(): array
     {
         return [
             [
@@ -87,14 +88,14 @@ class VisitorTestCase extends TestCase
         ];
     }
 
-    protected function getArrayNested()
+    protected function getArrayNested(): array
     {
         return [
             ['foo', 'bar']
         ];
     }
 
-    protected function getArrayScalar()
+    protected function getArrayScalar(): array
     {
         return ['foo', 'bar'];
     }

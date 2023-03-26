@@ -226,8 +226,8 @@ TEXT;
     {
         $writer = new Soap();
 
-        $this->assertTrue($writer->isContentTypeSupported(new MediaType('application/soap+xml')));
-        $this->assertFalse($writer->isContentTypeSupported(new MediaType('text/html')));
+        $this->assertTrue($writer->isContentTypeSupported(MediaType::parse('application/soap+xml')));
+        $this->assertFalse($writer->isContentTypeSupported(MediaType::parse('text/html')));
     }
 
     public function testGetContentType()

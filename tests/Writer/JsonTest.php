@@ -179,8 +179,8 @@ TEXT;
     {
         $writer = new Json();
 
-        $this->assertTrue($writer->isContentTypeSupported(new MediaType('application/json')));
-        $this->assertFalse($writer->isContentTypeSupported(new MediaType('text/html')));
+        $this->assertTrue($writer->isContentTypeSupported(MediaType::parse('application/json')));
+        $this->assertFalse($writer->isContentTypeSupported(MediaType::parse('text/html')));
     }
 
     public function testGetContentType()

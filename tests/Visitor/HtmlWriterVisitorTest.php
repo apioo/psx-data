@@ -76,7 +76,7 @@ class HtmlWriterVisitorTest extends VisitorTestCase
     {
         return <<<HTML
 <?xml version="1.0"?>
-<dl data-name="record">
+<dl>
   <dt>id</dt>
   <dd>1</dd>
   <dt>title</dt>
@@ -90,25 +90,25 @@ class HtmlWriterVisitorTest extends VisitorTestCase
   <dt>age</dt>
   <dd/>
   <dt>date</dt>
-  <dd>2014-01-01T12:34:47+01:00</dd>
+  <dd>2014-01-01T12:34:47Z</dd>
   <dt>href</dt>
   <dd>http://foo.com</dd>
   <dt>person</dt>
   <dd>
-    <dl data-name="record">
+    <dl>
       <dt>title</dt>
       <dd>Foo</dd>
     </dl>
   </dd>
   <dt>category</dt>
   <dd>
-    <dl data-name="record">
+    <dl>
       <dt>general</dt>
       <dd>
-        <dl data-name="record">
+        <dl>
           <dt>news</dt>
           <dd>
-            <dl data-name="record">
+            <dl>
               <dt>technic</dt>
               <dd>Foo</dd>
             </dl>
@@ -129,13 +129,13 @@ class HtmlWriterVisitorTest extends VisitorTestCase
   <dd>
     <ul>
       <li>
-        <dl data-name="record">
+        <dl>
           <dt>title</dt>
           <dd>bar</dd>
         </dl>
       </li>
       <li>
-        <dl data-name="record">
+        <dl>
           <dt>title</dt>
           <dd>foo</dd>
         </dl>
@@ -152,7 +152,7 @@ HTML;
 <?xml version="1.0"?>
 <ul>
   <li>
-    <dl data-name="record">
+    <dl>
       <dt>id</dt>
       <dd>1</dd>
       <dt>title</dt>
@@ -166,7 +166,7 @@ HTML;
     </dl>
   </li>
   <li>
-    <dl data-name="record">
+    <dl>
       <dt>id</dt>
       <dd>2</dd>
       <dt>title</dt>

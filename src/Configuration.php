@@ -91,7 +91,6 @@ class Configuration
     {
         $writerFactory = new WriterFactory();
         $writerFactory->addWriter(new Writer\Json(), 48);
-        $writerFactory->addWriter(new Writer\Atom(), 32);
         $writerFactory->addWriter(new Writer\Form(), 24);
         $writerFactory->addWriter(new Writer\Jsonp(), 16);
         $writerFactory->addWriter(new Writer\Jsonx(), 15);

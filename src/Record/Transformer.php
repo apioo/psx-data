@@ -21,7 +21,6 @@
 namespace PSX\Data\Record;
 
 use PSX\Data\GraphTraverser;
-use PSX\Data\Visitor\ArraySerializeVisitor;
 use PSX\Data\Visitor\RecordSerializeVisitor;
 use PSX\Data\Visitor\StdClassSerializeVisitor;
 use PSX\Record\RecordInterface;
@@ -40,11 +39,15 @@ class Transformer
      */
     public static function toRecord(mixed $data, RecordInterface $root = null): RecordInterface
     {
-        $visitor   = new RecordSerializeVisitor($root);
-        $traverser = new GraphTraverser();
-        $traverser->traverse($data, $visitor);
+        $visitor = new RecordSerializeVisitor($root);
+        (new GraphTraverser())->traverse($data, $visitor);
 
-        return $visitor->getObject();
+        $result = $visitor->getObject();
+        if ($result instanceof RecordInterface) {
+            return $result;
+        } else {
+            throw new \RuntimeException('Could not transform to record');
+        }
     }
 
     /**
@@ -52,10 +55,14 @@ class Transformer
      */
     public static function toStdClass(mixed $data): \stdClass
     {
-        $visitor   = new StdClassSerializeVisitor();
-        $traverser = new GraphTraverser();
-        $traverser->traverse($data, $visitor);
+        $visitor = new StdClassSerializeVisitor();
+        (new GraphTraverser())->traverse($data, $visitor);
 
-        return $visitor->getObject();
+        $result = $visitor->getObject();
+        if ($result instanceof \stdClass) {
+            return $result;
+        } else {
+            throw new \RuntimeException('Could not transform to stdClass');
+        }
     }
 }

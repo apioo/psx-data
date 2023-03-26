@@ -31,13 +31,13 @@ use PSX\Data\Exception\UploadException;
  */
 class File implements \JsonSerializable
 {
-    private ?string $name;
-    private ?string $type;
-    private ?int $size;
-    private ?string $tmpName;
-    private ?int $error;
+    private string $name;
+    private string $type;
+    private int $size;
+    private string $tmpName;
+    private int $error;
 
-    public function __construct(?string $name, ?string $type, ?int $size, ?string $tmpName, ?int $error)
+    public function __construct(string $name, string $type, int $size, string $tmpName, int $error)
     {
         $this->name = $name;
         $this->type = $type;
@@ -92,9 +92,7 @@ class File implements \JsonSerializable
      */
     private function isValidUpload(): bool
     {
-        $error = $this->error ?? null;
-
-        switch ($error) {
+        switch ($this->error) {
             case UPLOAD_ERR_OK:
                 return $this->isUploadedFile();
 
@@ -145,14 +143,17 @@ class File implements \JsonSerializable
         ];
     }
 
+    /**
+     * @throws UploadException
+     */
     public static function fromArray(array|\ArrayAccess $file): self
     {
-        return new self(
-            $file['name'] ?? null,
-            $file['type'] ?? null,
-            $file['size'] ?? null,
-            $file['tmp_name'] ?? null,
-            $file['error'] ?? null
-        );
+        $name = $file['name'] ?? throw new UploadException('No file name provided');
+        $type = $file['type'] ?? throw new UploadException('No file type provided');
+        $size = $file['size'] ?? throw new UploadException('No file size provided');
+        $tmpName = $file['tmp_name'] ?? throw new UploadException('No file tmp name provided');
+        $error = $file['error'] ?? throw new UploadException('No file error provided');
+
+        return new self($name, $type, $size, $tmpName, $error);
     }
 }

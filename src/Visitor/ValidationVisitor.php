@@ -41,7 +41,7 @@ class ValidationVisitor implements VisitorInterface
         $this->validator = $validator;
     }
 
-    public function visitObjectStart(string $name)
+    public function visitObjectStart()
     {
     }
 

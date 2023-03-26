@@ -23,6 +23,8 @@ namespace PSX\Data\Visitor;
 use PSX\Data\GraphTraverser;
 use PSX\Data\VisitorAbstract;
 use PSX\DateTime\DateTime;
+use PSX\DateTime\LocalDateTime;
+use PSX\DateTime\Period;
 
 /**
  * SerializeVisitorAbstract
@@ -33,7 +35,7 @@ use PSX\DateTime\DateTime;
  */
 abstract class SerializeVisitorAbstract extends VisitorAbstract
 {
-    private array $objectStack = [];
+    protected array $objectStack = [];
     private int $objectCount = -1;
     private array $arrayStack = [];
     private int $arrayCount = -1;
@@ -57,7 +59,7 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
         return $this->lastArray;
     }
 
-    public function visitObjectStart(string $name)
+    public function visitObjectStart()
     {
         $this->objectStack[] = $this->newObject();
 
@@ -78,9 +80,11 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
 
     public function visitObjectValueEnd()
     {
-        [$key, $value] = array_pop($this->stack);
-
-        $this->addObjectValue($key, $this->getValue($value), $this->objectStack[$this->objectCount]);
+        $result = array_pop($this->stack);
+        if (is_array($result)) {
+            [$key, $value] = $result;
+            $this->addObjectValue($key, $this->getValue($value), $this->objectStack[$this->objectCount]);
+        }
     }
 
     public function visitArrayStart()
@@ -104,9 +108,11 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
 
     public function visitArrayValueEnd()
     {
-        [$value] = array_pop($this->stack);
-
-        $this->addArrayValue($this->getValue($value), $this->arrayStack[$this->arrayCount]);
+        $result = array_pop($this->stack);
+        if (is_array($result)) {
+            [$value] = $result;
+            $this->addArrayValue($this->getValue($value), $this->arrayStack[$this->arrayCount]);
+        }
     }
 
     /**
@@ -134,8 +140,10 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
 
     protected function newValue(mixed $value): mixed
     {
-        if ($value instanceof \DateTime) {
-            return DateTime::getFormat($value);
+        if ($value instanceof \DateTimeInterface) {
+            return LocalDateTime::from($value)->toString();
+        } elseif ($value instanceof \DateInterval) {
+            return Period::from($value)->toString();
         } elseif (is_scalar($value)) {
             return $value;
         } elseif (is_null($value)) {

@@ -114,7 +114,8 @@ class WriterFactory
         $format = strtolower($format);
         foreach ($this->writers as $writer) {
             $class = get_class($writer);
-            $name  = strtolower(substr($class, strrpos($class, '\\') + 1));
+            $pos   = strrpos($class, '\\');
+            $name  = strtolower(substr($class, $pos !== false ? $pos + 1 : 0));
 
             if ($name == $format) {
                 return $class;
@@ -148,7 +149,7 @@ class WriterFactory
                 continue;
             }
 
-            $acceptedContentType = new MediaType($acceptedContentType);
+            $acceptedContentType = MediaType::parse($acceptedContentType);
 
             if ($acceptedContentType->match($contentType)) {
                 $writer = $this->getWriterByInstance($writerClass);

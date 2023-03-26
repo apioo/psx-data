@@ -157,8 +157,8 @@ XML;
   <disabled type="boolean">false</disabled>
   <rating type="float">12.45</rating>
   <age type="null"/>
-  <date type="date-time">2014-01-01T12:34:47+01:00</date>
-  <href type="uri">http://foo.com</href>
+  <date type="string">2014-01-01T12:34:47Z</date>
+  <href type="string">http://foo.com</href>
   <person type="object">
     <title type="string">Foo</title>
   </person>

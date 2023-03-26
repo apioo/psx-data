@@ -42,18 +42,13 @@ class GraphTraverser
 
     private function traverseObject(mixed $object, VisitorInterface $visitor): void
     {
-        $name = null;
         if ($object instanceof RecordInterface) {
-            $properties = $object->getProperties();
+            $properties = $object->getAll();
         } else {
             $properties = (array) $object;
         }
 
-        if (empty($name)) {
-            $name = 'record';
-        }
-
-        $visitor->visitObjectStart($name);
+        $visitor->visitObjectStart();
 
         foreach ($properties as $key => $value) {
             $value = self::reveal($value);

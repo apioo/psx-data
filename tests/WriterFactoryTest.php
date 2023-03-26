@@ -43,7 +43,6 @@ class WriterFactoryTest extends TestCase
     {
         $this->writerFactory = new WriterFactory();
         $this->writerFactory->addWriter(new Writer\Json(), 48);
-        $this->writerFactory->addWriter(new Writer\Atom(), 32);
         $this->writerFactory->addWriter(new Writer\Form(), 24);
         $this->writerFactory->addWriter(new Writer\Jsonp(), 16);
         $this->writerFactory->addWriter(new Writer\Soap(), 8);
@@ -65,7 +64,6 @@ class WriterFactoryTest extends TestCase
     public function testGetWriterByContentType()
     {
         $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getWriterByContentType('application/json'));
-        $this->assertInstanceOf(Writer\Atom::class, $this->writerFactory->getWriterByContentType('application/atom+xml'));
         $this->assertInstanceOf(Writer\Form::class, $this->writerFactory->getWriterByContentType('application/x-www-form-urlencoded'));
         $this->assertInstanceOf(Writer\Jsonp::class, $this->writerFactory->getWriterByContentType('application/javascript'));
         $this->assertInstanceOf(Writer\Soap::class, $this->writerFactory->getWriterByContentType('application/soap+xml'));
@@ -93,7 +91,6 @@ class WriterFactoryTest extends TestCase
     public function testGetWriterByInstance()
     {
         $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getWriterByInstance(Writer\Json::class));
-        $this->assertInstanceOf(Writer\Atom::class, $this->writerFactory->getWriterByInstance(Writer\Atom::class));
         $this->assertInstanceOf(Writer\Form::class, $this->writerFactory->getWriterByInstance(Writer\Form::class));
         $this->assertInstanceOf(Writer\Jsonp::class, $this->writerFactory->getWriterByInstance(Writer\Jsonp::class));
         $this->assertInstanceOf(Writer\Soap::class, $this->writerFactory->getWriterByInstance(Writer\Soap::class));
@@ -104,7 +101,6 @@ class WriterFactoryTest extends TestCase
     public function testGetWriterClassNameByFormat()
     {
         $this->assertEquals(Writer\Json::class, $this->writerFactory->getWriterClassNameByFormat('json'));
-        $this->assertEquals(Writer\Atom::class, $this->writerFactory->getWriterClassNameByFormat('atom'));
         $this->assertEquals(Writer\Form::class, $this->writerFactory->getWriterClassNameByFormat('form'));
         $this->assertEquals(Writer\Jsonp::class, $this->writerFactory->getWriterClassNameByFormat('jsonp'));
         $this->assertEquals(Writer\Soap::class, $this->writerFactory->getWriterClassNameByFormat('soap'));
