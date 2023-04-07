@@ -23,7 +23,7 @@ namespace PSX\Data\Tests\Writer;
 use PSX\Data\Tests\WriterTestCase;
 use PSX\Data\Writer\Soap;
 use PSX\Http\MediaType;
-use PSX\Model\Common\Error;
+use PSX\Model\Error;
 
 /**
  * SoapTest
