@@ -20,7 +20,6 @@
 
 namespace PSX\Data;
 
-use PSX\Api\Model\Passthru;
 use PSX\Data\Exception\InvalidDataException;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\MediaType;
@@ -85,12 +84,7 @@ class Processor
      */
     public function read(mixed $schema, Payload $payload, ?SchemaVisitorInterface $visitor = null): mixed
     {
-        $data = $this->parse($payload);
-
-        if ($schema === Passthru::class) {
-            return Passthru::fromPayload($data);
-        }
-
+        $data   = $this->parse($payload);
         $schema = $this->getSchema($schema);
 
         if ($visitor === null) {
