@@ -19,7 +19,7 @@
     "psx/json": "^3.0",
     "psx/model": "^5.0",
     "psx/record": "^3.0",
-    "psx/schema": "^5.0",
+    "psx/schema": "^6.0",
     "psx/validate": "^2.0"
   },
   "require-dev": {
