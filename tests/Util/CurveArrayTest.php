@@ -112,11 +112,7 @@ class CurveArrayTest extends TestCase
         $this->assertFalse(CurveArray::isAssoc(['foo']));
         $this->assertTrue(CurveArray::isAssoc(['foo' => null, 'bar' => null]));
         $this->assertTrue(CurveArray::isAssoc([0 => 'foo', 'foo' => null, 'bar' => null]));
-
-        // it is a know problem that this should return false. Since we use
-        // isset for performance reasons it returns true. If it becomes
-        // important we can switch to array_key_exists
-        $this->assertTrue(CurveArray::isAssoc([null]));
+        $this->assertFalse(CurveArray::isAssoc([null]));
     }
 
     public function testObjectify()
