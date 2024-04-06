@@ -117,6 +117,10 @@ class CurveArray
             return false;
         }
 
+        if (function_exists('array_is_list')) {
+            return !array_is_list($array);
+        }
+
         if (isset($array[0])) {
             $n = count($array) - 1;
 
