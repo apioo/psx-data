@@ -47,6 +47,10 @@ class MultipartTest extends TestCase
         $post = ['bar' => 'foo'];
 
         $reader = new Multipart($files, $post);
+        $data = $reader->read('');
+
+        $this->assertInstanceOf(Body::class, $data);
+
         $actual = json_encode($reader->read(''), JSON_PRETTY_PRINT);
 
         $expect = <<<JSON
@@ -65,11 +69,34 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
+    public function testReadNoFiles()
+    {
+        $files = [];
+        $files['foo'] = [];
+
+        $post = ['bar' => 'foo'];
+
+        $reader = new Multipart($files, $post);
+        $data = $reader->read('');
+
+        $this->assertInstanceOf(\stdClass::class, $data);
+
+        $actual = json_encode($data, JSON_PRETTY_PRINT);
+
+        $expect = <<<JSON
+{
+    "bar": "foo"
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
     public function testReadEmpty()
     {
         $reader = new Multipart();
         $file   = $reader->read('');
 
-        $this->assertInstanceOf(Body::class, $file);
+        $this->assertEmpty($file);
     }
 }

@@ -64,7 +64,7 @@ class Multipart extends ReaderAbstract
             // we use the multipart body only in case there are file uploads, otherwise we return a stdClass similar to
             // the form reader, this is needed since some HTTP clients like RestSharp always uses a multipart content
             // type containing the form values
-            return CurveArray::objectify($this->post);
+            return !empty($this->post) ? CurveArray::objectify($this->post) : null;
         }
     }
 
