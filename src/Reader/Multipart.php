@@ -23,6 +23,7 @@ namespace PSX\Data\Reader;
 use PSX\Data\Multipart\Body;
 use PSX\Data\Multipart\File;
 use PSX\Data\ReaderAbstract;
+use PSX\Data\Util\CurveArray;
 use PSX\Http\MediaType;
 
 /**
@@ -53,11 +54,18 @@ class Multipart extends ReaderAbstract
             }
         }
 
-        foreach ($this->post as $name => $value) {
-            $multipart->addPart($name, $value);
-        }
+        if ($multipart->hasFile()) {
+            foreach ($this->post as $name => $value) {
+                $multipart->addPart($name, $value);
+            }
 
-        return $multipart;
+            return $multipart;
+        } else {
+            // we use the multipart body only in case there are file uploads, otherwise we return a stdClass similar to
+            // the form reader, this is needed since some HTTP clients like RestSharp always uses a multipart content
+            // type containing the form values
+            return CurveArray::objectify($this->post);
+        }
     }
 
     public function isContentTypeSupported(MediaType $contentType): bool
