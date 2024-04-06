@@ -57,9 +57,40 @@ class Body implements \JsonSerializable
         }
     }
 
+    /**
+     * Returns whether the body contains a file
+     */
+    public function hasFile(): bool
+    {
+        foreach ($this->parts as $value) {
+            if ($value instanceof File) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function __get($name)
     {
         return $this->parts[$name] ?? null;
+    }
+
+    /**
+     * Returns all additional parameters of the body which are no files
+     */
+    public function toArray(): array
+    {
+        $result = [];
+        foreach ($this->parts as $key => $value) {
+            if ($value instanceof File) {
+                continue;
+            }
+
+            $result[$key] = $value;
+        }
+
+        return $result;
     }
 
     public function jsonSerialize(): array
