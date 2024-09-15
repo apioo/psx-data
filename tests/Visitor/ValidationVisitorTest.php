@@ -69,11 +69,11 @@ class SpyValidator implements ValidatorInterface
 {
     protected $calls = array();
 
-    public function validate($data)
+    public function validate(mixed $data): void
     {
     }
 
-    public function validateProperty($path, $data)
+    public function validateProperty(string $path, mixed $data): void
     {
         $this->calls[$path] = $data;
     }
