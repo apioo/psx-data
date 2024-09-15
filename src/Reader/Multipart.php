@@ -20,7 +20,7 @@
 
 namespace PSX\Data\Reader;
 
-use PSX\Data\Multipart\Body;
+use PSX\Data\Body;
 use PSX\Data\Multipart\File;
 use PSX\Data\ReaderAbstract;
 use PSX\Data\Util\CurveArray;
@@ -46,7 +46,7 @@ class Multipart extends ReaderAbstract
 
     public function read(string $data): mixed
     {
-        $multipart = new Body();
+        $multipart = new Body\Multipart();
 
         foreach ($this->files as $name => $file) {
             if (isset($file['error'])) {
