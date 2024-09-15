@@ -71,6 +71,11 @@ class Body implements \JsonSerializable
         return false;
     }
 
+    public function getAll(): array
+    {
+        return $this->parts;
+    }
+
     public function __get($name)
     {
         return $this->parts[$name] ?? null;
