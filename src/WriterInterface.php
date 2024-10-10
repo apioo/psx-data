@@ -32,12 +32,10 @@ use PSX\Http\MediaType;
  */
 interface WriterInterface
 {
-    const ATOM  = Writer\Atom::class;
     const FORM  = Writer\Form::class;
     const JSON  = Writer\Json::class;
     const JSONP = Writer\Jsonp::class;
     const JSONX = Writer\Jsonx::class;
-    const RSS   = Writer\Rss::class;
     const SOAP  = Writer\Soap::class;
     const XML   = Writer\Xml::class;
 
