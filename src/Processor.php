@@ -21,13 +21,14 @@
 namespace PSX\Data;
 
 use PSX\Data\Exception\InvalidDataException;
+use PSX\Data\Exception\ParseException;
+use PSX\Data\Exception\ReadException;
+use PSX\Data\Exception\WriteException;
 use PSX\Http\Exception as StatusCode;
 use PSX\Http\MediaType;
 use PSX\Record\RecordInterface;
 use PSX\Schema\Exception\InvalidSchemaException;
-use PSX\Schema\Exception\ValidationException;
-use PSX\Schema\Parser;
-use PSX\Schema\ParserInterface;
+use PSX\Schema\Exception\TraverserException;
 use PSX\Schema\SchemaInterface;
 use PSX\Schema\SchemaTraverser;
 use PSX\Schema\Visitor\TypeVisitor;
@@ -55,14 +56,12 @@ use PSX\Schema\VisitorInterface as SchemaVisitorInterface;
 class Processor
 {
     private Configuration $config;
-    private ParserInterface $parser;
     private ExporterInterface $exporter;
     private SchemaTraverser $traverser;
 
     public function __construct(Configuration $config)
     {
         $this->config = $config;
-        $this->parser = new Parser\Popo();
         $this->exporter = new Exporter\Popo();
         $this->traverser = new SchemaTraverser();
     }
@@ -78,48 +77,53 @@ class Processor
      * explicit specified. Then we validate the data according to the provided
      * schema
      *
-     * @throws InvalidDataException
-     * @throws StatusCode\UnsupportedMediaTypeException
-     * @throws ValidationException
+     * @throws ReadException
      */
     public function read(mixed $schema, Payload $payload, ?SchemaVisitorInterface $visitor = null): mixed
     {
-        $data   = $this->parse($payload);
-        $schema = $this->getSchema($schema);
+        try {
+            $data   = $this->parse($payload);
+            $schema = $this->getSchema($schema);
 
-        if ($visitor === null) {
-            $visitor = new TypeVisitor();
+            if ($visitor === null) {
+                $visitor = new TypeVisitor();
+            }
+
+            return $this->traverser->traverse(
+                $data,
+                $schema,
+                $visitor
+            );
+        } catch (TraverserException|ParseException|InvalidSchemaException|InvalidDataException $e) {
+            throw new ReadException($e->getMessage(), previous: $e);
         }
-
-        return $this->traverser->traverse(
-            $data,
-            $schema,
-            $visitor
-        );
     }
 
     /**
      * Parses the payload and returns the data in a normalized format
      *
-     * @throws StatusCode\UnsupportedMediaTypeException
-     * @throws InvalidDataException
+     * @throws ParseException
      */
     public function parse(Payload $payload): mixed
     {
-        $reader = $this->getReader($payload->getContentType(), $payload->getRwType(), $payload->getRwSupported());
-        $data   = $reader->read($payload->getData());
+        try {
+            $reader = $this->getReader($payload->getContentType(), $payload->getRwType(), $payload->getRwSupported());
+            $data = $reader->read($payload->getData());
 
-        $transformer = $payload->getTransformer();
+            $transformer = $payload->getTransformer();
 
-        if ($transformer === null) {
-            $transformer = $this->getDefaultTransformer($payload->getContentType());
+            if ($transformer === null) {
+                $transformer = $this->getDefaultTransformer($payload->getContentType());
+            }
+
+            if ($transformer instanceof TransformerInterface) {
+                $data = $transformer->transform($data);
+            }
+
+            return $data;
+        } catch (InvalidDataException $e) {
+            throw new ParseException($e->getMessage(), previous: $e);
         }
-
-        if ($transformer instanceof TransformerInterface) {
-            $data = $transformer->transform($data);
-        }
-
-        return $data;
     }
 
     /**
@@ -127,19 +131,24 @@ class Processor
      * string. The writer depends on the content type of the payload or on the
      * writer type if explicit specified
      *
-     * @throws StatusCode\NotAcceptableException
+     * @throws WriteException
      */
     public function write(Payload $payload): string
     {
-        $data   = $payload->getData();
-        $data   = $this->transform($data);
-        $writer = $this->getWriter($payload->getContentType(), $payload->getRwType(), $payload->getRwSupported());
+        try {
+            $data = $this->transform($payload->getData());
+            $writer = $this->getWriter($payload->getContentType(), $payload->getRwType(), $payload->getRwSupported());
 
-        return $writer->write($data);
+            return $writer->write($data);
+        } catch (InvalidDataException $e) {
+            throw new WriteException($e->getMessage(), previous: $e);
+        }
     }
 
     /**
      * Returns the data of the payload in a normalized format
+     *
+     * @throws InvalidDataException
      */
     public function transform(mixed $data): array|\stdClass|RecordInterface
     {
@@ -207,8 +216,8 @@ class Processor
         } elseif ($mime->getName() == 'application/soap+xml') {
             return new Transformer\Soap();
         } elseif (in_array($mime->getName(), MediaType\Xml::getMediaTypes()) ||
-            substr($mime->getSubType(), -4) == '+xml' ||
-            substr($mime->getSubType(), -4) == '/xml') {
+            str_ends_with($mime->getSubType(), '+xml') ||
+            str_ends_with($mime->getSubType(), '/xml')) {
             return new Transformer\XmlArray();
         }
 
@@ -216,8 +225,8 @@ class Processor
     }
 
     /**
-     * @throws InvalidSchemaException
      * @throws InvalidDataException
+     * @throws InvalidSchemaException
      */
     protected function getSchema(mixed $schema): SchemaInterface
     {
@@ -226,7 +235,7 @@ class Processor
         } elseif ($schema instanceof SchemaInterface) {
             return $schema;
         } else {
-            throw new InvalidDataException('Schema must be either a string or \PSX\Schema\SchemaInterface');
+            throw new InvalidDataException('Schema must be either a string or ' . SchemaInterface::class);
         }
     }
 }

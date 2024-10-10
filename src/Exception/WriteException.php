@@ -21,12 +21,12 @@
 namespace PSX\Data\Exception;
 
 /**
- * Exception thrown if data is missing or invalid when trying to import it into a record
+ * WriteException
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class InvalidDataException extends DataException
+class WriteException extends DataException
 {
 }

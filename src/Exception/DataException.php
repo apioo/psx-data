@@ -27,6 +27,6 @@ namespace PSX\Data\Exception;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
  */
-class InvalidDataException extends DataException
+class DataException extends \Exception
 {
 }
