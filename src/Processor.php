@@ -22,9 +22,10 @@ namespace PSX\Data;
 
 use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Exception\ParseException;
+use PSX\Data\Exception\ReaderNotFoundException;
 use PSX\Data\Exception\ReadException;
 use PSX\Data\Exception\WriteException;
-use PSX\Http\Exception as StatusCode;
+use PSX\Data\Exception\WriterNotFoundException;
 use PSX\Http\MediaType;
 use PSX\Record\RecordInterface;
 use PSX\Schema\Exception\InvalidSchemaException;
@@ -78,6 +79,7 @@ class Processor
      * schema
      *
      * @throws ReadException
+     * @throws ReaderNotFoundException
      */
     public function read(mixed $schema, Payload $payload, ?SchemaVisitorInterface $visitor = null): mixed
     {
@@ -103,6 +105,7 @@ class Processor
      * Parses the payload and returns the data in a normalized format
      *
      * @throws ParseException
+     * @throws ReaderNotFoundException
      */
     public function parse(Payload $payload): mixed
     {
@@ -132,6 +135,7 @@ class Processor
      * writer type if explicit specified
      *
      * @throws WriteException
+     * @throws WriterNotFoundException
      */
     public function write(Payload $payload): string
     {
@@ -159,6 +163,8 @@ class Processor
      * Returns a fitting reader for the given content type or throws an
      * unsupported media exception. It is also possible to explicit select a
      * reader by providing the class name as reader type.
+     *
+     * @throws ReaderNotFoundException
      */
     public function getReader(?string $contentType, ?string $readerType = null, ?array $supportedReader = null): ReaderInterface
     {
@@ -173,7 +179,7 @@ class Processor
         }
 
         if (!$reader instanceof ReaderInterface) {
-            throw new StatusCode\UnsupportedMediaTypeException('Could not find fitting data reader');
+            throw new ReaderNotFoundException('Could not find fitting data reader for content type');
         }
 
         return $reader;
@@ -183,6 +189,8 @@ class Processor
      * Returns a fitting writer for the given content type or throws an not
      * acceptable exception. It is also possible to explicit select a writer by
      * providing the class name as writer type.
+     *
+     * @throws WriterNotFoundException
      */
     public function getWriter(?string $contentType, ?string $writerType = null, ?array $supportedWriter = null): WriterInterface
     {
@@ -197,7 +205,7 @@ class Processor
         }
 
         if (!$writer instanceof WriterInterface) {
-            throw new StatusCode\NotAcceptableException('Could not find fitting data writer');
+            throw new WriterNotFoundException('Could not find fitting data writer');
         }
 
         return $writer;
