@@ -135,32 +135,6 @@ The writer factory can also be extended with custom writer implementations.
 $configuration->getWriterFactory()->addWriter(new Acme\Writer(), 64);
 ```
 
-## Constraints
-
-It is also possible to add specific constraints to your model class. In the following some examples:
-
-```php
-#[Required(['title'])]
-class News
-{
-    #[Pattern('[A-z]')]
-    private ?string $title = null;
-
-     #[MinLength(3)]
-     #[MaxLength(255)]
-    private ?string $text = null;
-
-    #[Enum(['active', 'deleted'])]
-    private ?string $status = null;
-
-    #[Minimum(0)]
-    #[Maximum(5)]
-    private ?int $rating = null;
-}
-```
-
-All available attributes are located at the [psx/schema](https://github.com/apioo/psx-schema) project.
-
 ## Transformations
 
 Each reader class returns the data in a form which can be easily processed. I.e.
