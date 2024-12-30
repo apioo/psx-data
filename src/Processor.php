@@ -31,6 +31,7 @@ use PSX\Record\RecordInterface;
 use PSX\Schema\Exception\InvalidSchemaException;
 use PSX\Schema\Exception\TraverserException;
 use PSX\Schema\SchemaInterface;
+use PSX\Schema\SchemaSource;
 use PSX\Schema\SchemaTraverser;
 use PSX\Schema\Visitor\TypeVisitor;
 use PSX\Schema\VisitorInterface as SchemaVisitorInterface;
@@ -238,7 +239,7 @@ class Processor
      */
     protected function getSchema(mixed $schema): SchemaInterface
     {
-        if (is_string($schema)) {
+        if (is_string($schema) || $schema instanceof SchemaSource) {
             return $this->config->getSchemaManager()->getSchema($schema);
         } elseif ($schema instanceof SchemaInterface) {
             return $schema;
