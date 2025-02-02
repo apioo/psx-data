@@ -42,7 +42,6 @@ class CurveArray
             foreach ($data as $key => $value) {
                 if (($pos = strpos($key, $separator)) !== false) {
                     $subKey = substr($key, 0, $pos);
-                    $name   = substr($key, $pos + 1);
 
                     if (!isset($result->{$subKey})) {
                         $result->{$subKey} = self::nest(self::getParts($data, $subKey . $separator), $separator);

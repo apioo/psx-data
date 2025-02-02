@@ -31,6 +31,8 @@ use SplPriorityQueue;
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://phpsx.org
+ *
+ * @implements IteratorAggregate<mixed>
  */
 class PriorityQueue implements IteratorAggregate, Countable
 {
