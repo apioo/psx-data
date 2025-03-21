@@ -26,6 +26,7 @@ use PSX\Data\Exception\ReaderNotFoundException;
 use PSX\Data\Exception\ReadException;
 use PSX\Data\Exception\WriteException;
 use PSX\Data\Exception\WriterNotFoundException;
+use PSX\Data\Transformer\Noop;
 use PSX\Http\MediaType;
 use PSX\Record\RecordInterface;
 use PSX\Schema\Exception\InvalidSchemaException;
@@ -120,7 +121,7 @@ class Processor
                 $transformer = $this->getDefaultTransformer($payload->getContentType());
             }
 
-            if ($transformer instanceof TransformerInterface) {
+            if ($transformer instanceof TransformerInterface && !$transformer instanceof Noop) {
                 $data = $transformer->transform($data);
             }
 
