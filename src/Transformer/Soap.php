@@ -22,9 +22,8 @@ namespace PSX\Data\Transformer;
 
 use DOMDocument;
 use DOMElement;
-use InvalidArgumentException;
 use PSX\Data\Exception\InvalidDataException;
-use RuntimeException;
+use stdClass;
 
 /**
  * Transforms an incoming SOAP request
@@ -37,7 +36,7 @@ class Soap extends XmlArray
 {
     const ENVELOPE_NS = 'http://schemas.xmlsoap.org/soap/envelope/';
 
-    public function transform(mixed $data): \stdClass
+    public function transform(mixed $data): stdClass
     {
         if (!$data instanceof DOMDocument) {
             throw new InvalidDataException('Data must be an instanceof DOMDocument');
@@ -49,7 +48,7 @@ class Soap extends XmlArray
     /**
      * @throws InvalidDataException
      */
-    protected function extractBody(DOMElement $element): \stdClass
+    protected function extractBody(DOMElement $element): stdClass
     {
         $body = $element->getElementsByTagNameNS(self::ENVELOPE_NS, 'Body')->item(0);
 
@@ -60,7 +59,7 @@ class Soap extends XmlArray
                 return $this->recToXml($root);
             }
 
-            return new \stdClass();
+            return new stdClass();
         } else {
             throw new InvalidDataException('Found no SOAP (' . self::ENVELOPE_NS . ') Body element');
         }
@@ -73,7 +72,7 @@ class Soap extends XmlArray
                 continue;
             }
 
-            if ($this->namespace !== null && $childNode->namespaceURI != $this->namespace) {
+            if (!empty($this->namespace) && $childNode->namespaceURI != $this->namespace) {
                 continue;
             }
 

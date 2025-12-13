@@ -37,9 +37,9 @@ class Soap extends Xml
 {
     protected const MIME = 'application/soap+xml';
 
-    private ?string $requestMethod;
+    private ?string $requestMethod = null;
 
-    public function setRequestMethod(string $requestMethod)
+    public function setRequestMethod(string $requestMethod): void
     {
         $this->requestMethod = strtolower($requestMethod);
     }

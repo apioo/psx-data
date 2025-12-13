@@ -23,6 +23,7 @@ namespace PSX\Data\Util;
 use Countable;
 use IteratorAggregate;
 use SplPriorityQueue;
+use Traversable;
 
 /**
  * A priority queue which you can iterate multiple times. The SplPriorityQueue
@@ -53,7 +54,7 @@ class PriorityQueue implements IteratorAggregate, Countable
         return $this->queue->count();
     }
 
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         return clone $this->queue;
     }

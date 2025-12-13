@@ -23,6 +23,7 @@ namespace PSX\Data\Tests;
 use PSX\Data\Payload;
 use PSX\Data\Tests\Processor\Model\Entry;
 use PSX\Schema\Visitor\OutgoingVisitor;
+use stdClass;
 
 /**
  * ProcessorTest
@@ -46,7 +47,7 @@ class ProcessorTest extends ProcessorTestCase
         $data = $this->processor->parse(Payload::json('{"title": "foo"}'));
 
         $this->assertInstanceOf('stdClass', $data);
-        $this->assertEquals('foo', $data->title);
+        $this->assertEquals('foo', $data->title ?? null);
     }
 
     public function testWrite()
@@ -67,6 +68,6 @@ class ProcessorTest extends ProcessorTestCase
         $data = $this->processor->transform($entry);
 
         $this->assertInstanceOf('PSX\Record\Record', $data);
-        $this->assertEquals('foo', $data->title);
+        $this->assertEquals('foo', $data->get('title'));
     }
 }

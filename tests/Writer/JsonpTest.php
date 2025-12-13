@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Writer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Tests\WriterTestCase;
 use PSX\Data\Writer\Jsonp;
@@ -182,9 +183,7 @@ TEXT;
         $writer->write($this->getScalar());
     }
 
-    /**
-     * @dataProvider providerValidCallbackNames
-     */
+    #[DataProvider('providerValidCallbackNames')]
     public function testSetCallbackName($name)
     {
         $writer = new Jsonp();
@@ -193,7 +192,7 @@ TEXT;
         $this->assertEquals($name, $writer->getCallbackName());
     }
 
-    public function providerValidCallbackNames()
+    public static function providerValidCallbackNames(): array
     {
         return [
             ['foo'],
@@ -202,9 +201,7 @@ TEXT;
         ];
     }
 
-    /**
-     * @dataProvider providerInvalidCallbackNames
-     */
+    #[DataProvider('providerInvalidCallbackNames')]
     public function testSetCallbackNameInvalid($name)
     {
         $writer = new Jsonp();
@@ -213,7 +210,7 @@ TEXT;
         $this->assertEquals(null, $writer->getCallbackName());
     }
 
-    public function providerInvalidCallbackNames()
+    public static function providerInvalidCallbackNames(): array
     {
         return [
             ['!foo'],
@@ -255,7 +252,7 @@ TEXT;
         $this->assertJsonStringEqualsJsonString($expect, $actual);
     }
 
-    protected function assertJsonp($expect, $actual)
+    protected function assertJsonp($expect, $actual): void
     {
         preg_match('/^foo\((.*)\)$/s', $expect, $matchesExpect);
         preg_match('/^foo\((.*)\)$/s', $actual, $matchesActual);

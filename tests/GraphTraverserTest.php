@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PSX\Data\GraphTraverser;
 use PSX\Data\Tests\Visitor\VisitorTestCase;
 use PSX\Data\Visitor\StdClassSerializeVisitor;
@@ -115,15 +116,13 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    /**
-     * @dataProvider isObjectProvider
-     */
+    #[DataProvider('isObjectProvider')]
     public function testIsObject($expect, $data)
     {
         $this->assertSame($expect, GraphTraverser::isObject($data));
     }
 
-    public function isObjectProvider()
+    public static function isObjectProvider(): array
     {
         return [
             [true, new Record()],
@@ -136,15 +135,13 @@ JSON;
         ];
     }
 
-    /**
-     * @dataProvider isArrayProvider
-     */
+    #[DataProvider('isArrayProvider')]
     public function testIsArray($expect, $data)
     {
         $this->assertSame($expect, GraphTraverser::isArray($data));
     }
 
-    public function isArrayProvider()
+    public static function isArrayProvider(): array
     {
         return [
             [true, []],
@@ -156,15 +153,13 @@ JSON;
         ];
     }
 
-    /**
-     * @dataProvider isEmptyProvider
-     */
+    #[DataProvider('isEmptyProvider')]
     public function testIsEmpty($expect, $data)
     {
         $this->assertSame($expect, GraphTraverser::isEmpty($data));
     }
 
-    public function isEmptyProvider()
+    public static function isEmptyProvider(): array
     {
         return [
             [true, new Record()],

@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PSX\Data\Accessor;
 use PSX\Record\Record;
@@ -34,9 +35,7 @@ use PSX\Validate\Filter;
  */
 class AccessorTest extends TestCase
 {
-    /**
-     * @dataProvider provideSources
-     */
+    #[DataProvider('provideSources')]
     public function testGet($source)
     {
         $this->assertEquals('bar', Accessor::get($source, '/foo'));
@@ -49,9 +48,7 @@ class AccessorTest extends TestCase
         $this->assertNull(Accessor::get(['foo' => 'bar'], 'bar')); 
     }
 
-    /**
-     * @dataProvider provideSources
-     */
+    #[DataProvider('provideSources')]
     public function testGetFilter($source)
     {
         $this->assertEquals('bar', Accessor::get($source, '/foo'));
@@ -59,7 +56,7 @@ class AccessorTest extends TestCase
         $this->assertEquals('bar', Accessor::get($source, '/tes/0/foo', [new Filter\Length(3, 8)]));
     }
 
-    public function provideSources()
+    public static function provideSources(): array
     {
         $sources = [];
 

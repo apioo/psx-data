@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PSX\Data\Writer;
 use PSX\Data\WriterFactory;
@@ -34,10 +35,7 @@ use PSX\Data\WriterInterface;
  */
 class WriterFactoryTest extends TestCase
 {
-    /**
-     * @var \PSX\Data\WriterFactory
-     */
-    protected $writerFactory;
+    protected ?WriterFactory $writerFactory = null;
 
     public function setUp(): void
     {
@@ -51,7 +49,7 @@ class WriterFactoryTest extends TestCase
 
     public function testGetDefaultWriter()
     {
-        $this->assertInstanceOf('PSX\Data\Writer\Json', $this->writerFactory->getDefaultWriter());
+        $this->assertInstanceOf(Writer\Json::class, $this->writerFactory->getDefaultWriter());
     }
 
     public function testGetDefaultWriterEmpty()
@@ -149,15 +147,14 @@ class WriterFactoryTest extends TestCase
 
     /**
      * Check whether we serve known browsers with html
-     *
-     * @dataProvider browserAcceptHeaderProvider
      */
+    #[DataProvider('browserAcceptHeaderProvider')]
     public function testBrowserAcceptHeaders($contentType, $className)
     {
         $this->assertInstanceOf($className, $this->writerFactory->getWriterByContentType($contentType));
     }
 
-    public function browserAcceptHeaderProvider()
+    public static function browserAcceptHeaderProvider(): array
     {
         return [
             ['text/html, application/xhtml+xml, */*', Writer\Xml::class], // IE Version 11.0

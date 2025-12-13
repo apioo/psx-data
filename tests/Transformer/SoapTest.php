@@ -20,6 +20,7 @@
 
 namespace PSX\Data\Tests\Transformer;
 
+use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Transformer\Soap;
@@ -50,11 +51,10 @@ class SoapTest extends TestCase
 </soap:Envelope>
 INPUT;
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($body);
 
         $transformer = new Soap();
-        $transformer->setNamespace('http://phpsx.org/2014/data');
 
         $expect = new \stdClass();
         $expect->foo = 'bar';
@@ -83,10 +83,10 @@ INPUT;
 </test>
 INPUT;
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($body);
 
-        $transformer = new Soap('http://phpsx.org/2014/data');
+        $transformer = new Soap();
         $transformer->transform($dom);
     }
 
@@ -99,10 +99,10 @@ INPUT;
 </soap:Envelope>
 INPUT;
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($body);
 
-        $transformer = new Soap('http://phpsx.org/2014/data');
+        $transformer = new Soap();
 
         $expect = new \stdClass();
 
@@ -123,10 +123,10 @@ INPUT;
 </soap:Envelope>
 INPUT;
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($body);
 
-        $transformer = new Soap('http://phpsx.org/2014/data');
+        $transformer = new Soap();
         $transformer->transform($dom);
     }
 
@@ -134,7 +134,7 @@ INPUT;
     {
         $this->expectException(InvalidDataException::class);
 
-        $transformer = new Soap('http://phpsx.org/2014/data');
+        $transformer = new Soap();
         $transformer->transform(array());
     }
 }

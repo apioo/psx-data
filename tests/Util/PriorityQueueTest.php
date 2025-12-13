@@ -22,6 +22,7 @@ namespace PSX\Data\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
 use PSX\Data\Util\PriorityQueue;
+use SplPriorityQueue;
 
 /**
  * PriorityQueueTest
@@ -45,6 +46,7 @@ class PriorityQueueTest extends TestCase
         $this->assertEquals(3, $queue->count());
         $this->assertEquals(3, count($queue));
 
+        /** @var SplPriorityQueue $iterator */
         $iterator = $queue->getIterator();
 
         $this->assertEquals('test', $iterator->current());

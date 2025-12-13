@@ -38,7 +38,7 @@ class XmlArray implements TransformerInterface
 {
     protected ?string $namespace = null;
 
-    public function setNamespace(string $namespace)
+    public function setNamespace(?string $namespace): void
     {
         $this->namespace = $namespace;
     }

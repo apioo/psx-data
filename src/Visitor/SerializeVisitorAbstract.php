@@ -132,9 +132,6 @@ abstract class SerializeVisitorAbstract extends VisitorAbstract
 
     /**
      * Adds a value to an array
-     *
-     * @param mixed $value
-     * @param mixed $array
      */
     abstract protected function addArrayValue(string $value, mixed &$array);
 

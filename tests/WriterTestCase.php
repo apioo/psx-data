@@ -33,113 +33,135 @@ use PSX\Record\Record;
  */
 abstract class WriterTestCase extends TestCase
 {
-    public function getRecord()
+    /**
+     * @return Record<mixed>
+     */
+    public function getRecord(): Record
     {
+        /** @var Record<mixed> $record */
         $record = new Record();
-        $record->id = 1;
-        $record->author = 'foo';
-        $record->title = 'bar';
-        $record->content = 'foobar';
-        $record->date = new DateTime('2012-03-11 13:37:21');
+        $record->put('id', 1);
+        $record->put('author', 'foo');
+        $record->put('title', 'bar');
+        $record->put('content', 'foobar');
+        $record->put('date', new DateTime('2012-03-11 13:37:21'));
 
         return $record;
     }
 
-    public function getCollection()
+    /**
+     * @return Record<mixed>
+     */
+    public function getCollection(): Record
     {
         $entries = array();
 
+        /** @var Record<mixed> $record */
         $record = new Record();
-        $record->id = 1;
-        $record->author = 'foo';
-        $record->title = 'bar';
-        $record->content = 'foobar';
-        $record->date = new DateTime('2012-03-11 13:37:21');
+        $record->put('id', 1);
+        $record->put('author', 'foo');
+        $record->put('title', 'bar');
+        $record->put('content', 'foobar');
+        $record->put('date', new DateTime('2012-03-11 13:37:21'));
 
         $entries[] = $record;
 
+        /** @var Record<mixed> $record */
         $record = new Record();
-        $record->id = 2;
-        $record->author = 'foo';
-        $record->title = 'bar';
-        $record->content = 'foobar';
-        $record->date = new DateTime('2012-03-11 13:37:21');
+        $record->put('id', 2);
+        $record->put('author', 'foo');
+        $record->put('title', 'bar');
+        $record->put('content', 'foobar');
+        $record->put('date', new DateTime('2012-03-11 13:37:21'));
 
         $entries[] = $record;
 
+        /** @var Record<mixed> $record */
         $record = new Record();
-        $record->totalResults = 2;
-        $record->startIndex = 0;
-        $record->itemsPerPage = 8;
-        $record->entry = $entries;
+        $record->put('totalResults', 2);
+        $record->put('startIndex', 0);
+        $record->put('itemsPerPage', 8);
+        $record->put('entry', $entries);
 
         return $record;
     }
 
-    public function getComplex()
+    public function getComplex(): Record
     {
+        /** @var Record<mixed> $actor */
         $actor = new Record();
-        $actor->id = 'tag:example.org,2011:martin';
-        $actor->objectType = 'person';
-        $actor->displayName = 'Martin Smith';
-        $actor->url = 'http://example.org/martin';
+        $actor->put('id', 'tag:example.org,2011:martin');
+        $actor->put('objectType', 'person');
+        $actor->put('displayName', 'Martin Smith');
+        $actor->put('url', 'http://example.org/martin');
 
+        /** @var Record<mixed> $object */
         $object = new Record();
-        $object->id = 'tag:example.org,2011:abc123/xyz';
-        $object->url = 'http://example.org/blog/2011/02/entry';
+        $object->put('id', 'tag:example.org,2011:abc123/xyz');
+        $object->put('url', 'http://example.org/blog/2011/02/entry');
 
+        /** @var Record<mixed> $target */
         $target = new Record();
-        $target->id = 'tag:example.org,2011:abc123';
-        $target->objectType = 'blog';
-        $target->displayName = 'Martin\'s Blog';
-        $target->url = 'http://example.org/blog/';
+        $target->put('id', 'tag:example.org,2011:abc123');
+        $target->put('objectType', 'blog');
+        $target->put('displayName', 'Martin\'s Blog');
+        $target->put('url', 'http://example.org/blog/');
 
+        /** @var Record<mixed> $activity */
         $activity = new Record();
-        $activity->verb = 'post';
-        $activity->actor = $actor;
-        $activity->object = $object;
-        $activity->target = $target;
-        $activity->published = new DateTime('2011-02-10T15:04:55Z');
+        $activity->put('verb', 'post');
+        $activity->put('actor', $actor);
+        $activity->put('object', $object);
+        $activity->put('target', $target);
+        $activity->put('published', new DateTime('2011-02-10T15:04:55Z'));
 
         return $activity;
     }
 
-    public function getEmpty()
+    public function getEmpty(): Record
     {
         return new Record([]);
     }
 
-    public function getArray()
+    /**
+     * @return array<Record<mixed>>
+     */
+    public function getArray(): array
     {
         $entries = array();
 
+        /** @var Record<mixed> $record */
         $record = new Record();
-        $record->id = 1;
-        $record->author = 'foo';
-        $record->title = 'bar';
-        $record->content = 'foobar';
-        $record->date = new DateTime('2012-03-11 13:37:21');
+        $record->put('id', 1);
+        $record->put('author', 'foo');
+        $record->put('title', 'bar');
+        $record->put('content', 'foobar');
+        $record->put('date', new DateTime('2012-03-11 13:37:21'));
 
         $entries[] = $record;
 
+        /** @var Record<mixed> $record */
         $record = new Record();
-        $record->id = 2;
-        $record->author = 'foo';
-        $record->title = 'bar';
-        $record->content = 'foobar';
-        $record->date = new DateTime('2012-03-11 13:37:21');
+        $record->put('id', 2);
+        $record->put('author', 'foo');
+        $record->put('title', 'bar');
+        $record->put('content', 'foobar');
+        $record->put('date', new DateTime('2012-03-11 13:37:21'));
 
         $entries[] = $record;
 
         return $entries;
     }
 
-    public function getArrayScalar()
+    /**
+     * @return array<string>
+     */
+    public function getArrayScalar(): array
     {
         return ['foo', 'bar'];
     }
 
-    public function getScalar()
+    public function getScalar(): string
     {
         return 'foobar';
     }

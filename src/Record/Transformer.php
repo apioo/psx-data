@@ -37,7 +37,7 @@ class Transformer
     /**
      * Transforms an arbitrary data structure into a record graph
      */
-    public static function toRecord(mixed $data, RecordInterface $root = null): RecordInterface
+    public static function toRecord(mixed $data, ?RecordInterface $root = null): RecordInterface
     {
         $visitor = new RecordSerializeVisitor($root);
         (new GraphTraverser())->traverse($data, $visitor);

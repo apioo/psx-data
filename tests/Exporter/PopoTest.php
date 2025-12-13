@@ -20,7 +20,7 @@
 
 namespace PSX\Data\Tests\Exporter;
 
-use Doctrine\Common\Annotations\AnnotationReader;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PSX\Data\Exception\InvalidDataException;
 use PSX\Data\Exporter\Popo;
@@ -35,9 +35,7 @@ use PSX\Record\Record;
  */
 class PopoTest extends TestCase
 {
-    /**
-     * @dataProvider exportProvider
-     */
+    #[DataProvider('exportProvider')]
     public function testExport($data, $expect)
     {
         $exporter = $this->getExporter();
@@ -46,7 +44,7 @@ class PopoTest extends TestCase
         $this->assertEquals($expect, $record);
     }
 
-    public function exportProvider()
+    public static function exportProvider(): array
     {
         return [
             [[], []],
@@ -55,7 +53,7 @@ class PopoTest extends TestCase
             [['foo' => 'bar'], ['foo' => 'bar']],
             [(object) ['foo' => 'bar'], (object) ['foo' => 'bar']],
             [Record::fromArray(['foo' => 'bar']), Record::fromArray(['foo' => 'bar'])],
-            [new Location(12, 34), Record::fromArray(['lat' => 12, 'long' => 34], 'Location')],
+            [new Location(12, 34), Record::fromArray(['lat' => 12, 'long' => 34])],
         ];
     }
 
