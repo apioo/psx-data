@@ -73,66 +73,67 @@ class RecordSerializeVisitorTest extends VisitorTestCase
         $this->assertEquals($this->getExpectedArrayScalar(), $visitor->getArray());
     }
 
-    protected function getExpectedObject()
+    protected function getExpectedObject(): Record
     {
         $person = new Record();
-        $person->setProperty('title', 'Foo');
+        $person->put('title', 'Foo');
 
+        /** @var Record<Record<Record<string>>> $category */
         $category = new Record();
-        $category->setProperty('general', new Record());
-        $category['general']->setProperty('news', new Record());
-        $category['general']['news']->setProperty('technic', 'Foo');
+        $category->put('general', new Record());
+        $category->get('general')->put('news', new Record());
+        $category->get('general')->get('news')->put('technic', 'Foo');
 
         $entry = array();
         $entry[0] = new Record();
-        $entry[0]->setProperty('title', 'bar');
+        $entry[0]->put('title', 'bar');
         $entry[1] = new Record();
-        $entry[1]->setProperty('title', 'foo');
+        $entry[1]->put('title', 'foo');
 
         $record = new Record();
-        $record->setProperty('id', 1);
-        $record->setProperty('title', 'foobar');
-        $record->setProperty('active', true);
-        $record->setProperty('disabled', false);
-        $record->setProperty('rating', 12.45);
-        $record->setProperty('age', null);
-        $record->setProperty('date', '2014-01-01T12:34:47Z');
-        $record->setProperty('href', 'http://foo.com');
-        $record->setProperty('person', $person);
-        $record->setProperty('category', $category);
-        $record->setProperty('tags', ['bar', 'foo', 'test']);
-        $record->setProperty('entry', $entry);
+        $record->put('id', 1);
+        $record->put('title', 'foobar');
+        $record->put('active', true);
+        $record->put('disabled', false);
+        $record->put('rating', 12.45);
+        $record->put('age', null);
+        $record->put('date', '2014-01-01T12:34:47Z');
+        $record->put('href', 'http://foo.com');
+        $record->put('person', $person);
+        $record->put('category', $category);
+        $record->put('tags', ['bar', 'foo', 'test']);
+        $record->put('entry', $entry);
 
         return $record;
     }
 
-    protected function getExpectedArray()
+    protected function getExpectedArray(): array
     {
         $record1 = new Record();
-        $record1->setProperty('id', 1);
-        $record1->setProperty('title', 'foobar');
-        $record1->setProperty('active', true);
-        $record1->setProperty('disabled', false);
-        $record1->setProperty('rating', 12.45);
+        $record1->put('id', 1);
+        $record1->put('title', 'foobar');
+        $record1->put('active', true);
+        $record1->put('disabled', false);
+        $record1->put('rating', 12.45);
 
         $record2 = new Record();
-        $record2->setProperty('id', 2);
-        $record2->setProperty('title', 'foo');
-        $record2->setProperty('active', false);
-        $record2->setProperty('disabled', false);
-        $record2->setProperty('rating', 12.45);
+        $record2->put('id', 2);
+        $record2->put('title', 'foo');
+        $record2->put('active', false);
+        $record2->put('disabled', false);
+        $record2->put('rating', 12.45);
 
         return [$record1, $record2];
     }
 
-    protected function getExpectedArrayNested()
+    protected function getExpectedArrayNested(): array
     {
         return [
             ['foo', 'bar']
         ];
     }
 
-    protected function getExpectedArrayScalar()
+    protected function getExpectedArrayScalar(): array
     {
         return ['foo', 'bar'];
     }
