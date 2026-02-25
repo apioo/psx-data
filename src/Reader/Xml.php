@@ -21,6 +21,7 @@
 namespace PSX\Data\Reader;
 
 use DOMDocument;
+use PSX\Data\Exception\XmlReadException;
 use PSX\Data\ReaderAbstract;
 use PSX\Http\MediaType;
 
@@ -35,15 +36,24 @@ class Xml extends ReaderAbstract
 {
     public function read(string $data): mixed
     {
-        if (!empty($data)) {
-            $dom = new DOMDocument();
-            $dom->encoding = 'UTF-8';
-            $dom->loadXML($data);
-
-            return $dom;
-        } else {
+        if (empty($data)) {
             return null;
         }
+
+        libxml_use_internal_errors(true);
+
+        $dom = new DOMDocument();
+        $dom->encoding = 'UTF-8';
+        $result = $dom->loadXML($data);
+
+        if ($result === false) {
+            $errors = libxml_get_errors();
+            libxml_clear_errors();
+
+            throw new XmlReadException($errors);
+        }
+
+        return $dom;
     }
 
     public function isContentTypeSupported(MediaType $contentType): bool

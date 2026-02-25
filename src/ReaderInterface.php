@@ -20,7 +20,7 @@
 
 namespace PSX\Data;
 
-use PSX\Data\Reader\Form;
+use PSX\Data\Exception\ReadException;
 use PSX\Http\MediaType;
 
 /**
@@ -39,6 +39,8 @@ interface ReaderInterface
 
     /**
      * Transforms the $request into a parseable form this can be an array or DOMDocument etc.
+     *
+     * @throws ReadException
      */
     public function read(string $data): mixed;
 

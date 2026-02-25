@@ -35,15 +35,14 @@ class Form extends ReaderAbstract
 {
     public function read(string $data): mixed
     {
-        $form = array();
-
-        if (!empty($data)) {
-            parse_str($data, $form);
-
-            return CurveArray::objectify($form);
-        } else {
+        if (empty($data)) {
             return null;
         }
+
+        $form = [];
+        parse_str($data, $form);
+
+        return CurveArray::objectify($form);
     }
 
     public function isContentTypeSupported(MediaType $contentType): bool

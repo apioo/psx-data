@@ -22,6 +22,7 @@ namespace PSX\Data\Tests\Reader;
 
 use DOMDocument;
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Exception\ReadException;
 use PSX\Data\Reader\Xml;
 
 /**
@@ -56,5 +57,14 @@ INPUT;
         $dom    = $reader->read('');
 
         $this->assertNull($dom);
+    }
+
+    public function testReadInvalid()
+    {
+        $this->expectException(ReadException::class);
+        $this->expectExceptionMessage('Could not parse xml payload: Start tag expected, \'<\' not found on line 1 at column 1');
+
+        $reader = new Xml();
+        $reader->read('foobar');
     }
 }

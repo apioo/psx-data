@@ -107,6 +107,7 @@ class Processor
      * Parses the payload and returns the data in a normalized format
      *
      * @throws ParseException
+     * @throws ReadException
      * @throws ReaderNotFoundException
      */
     public function parse(Payload $payload): mixed

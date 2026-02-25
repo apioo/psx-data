@@ -21,6 +21,7 @@
 namespace PSX\Data\Tests\Reader;
 
 use PHPUnit\Framework\TestCase;
+use PSX\Data\Exception\ReadException;
 use PSX\Data\Reader\Json;
 
 /**
@@ -80,5 +81,14 @@ INPUT;
         $json   = $reader->read('');
 
         $this->assertNull($json);
+    }
+
+    public function testReadInvalid()
+    {
+        $this->expectException(ReadException::class);
+        $this->expectExceptionMessage('Could not parse json payload: Syntax error');
+
+        $reader = new Json();
+        $reader->read('foobar');
     }
 }

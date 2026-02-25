@@ -21,6 +21,8 @@
 namespace PSX\Data\Reader;
 
 use PSX\Data\Body;
+use PSX\Data\Exception\ReadException;
+use PSX\Data\Exception\UploadException;
 use PSX\Data\Multipart\File;
 use PSX\Data\ReaderAbstract;
 use PSX\Data\Util\CurveArray;
@@ -48,10 +50,14 @@ class Multipart extends ReaderAbstract
     {
         $multipart = new Body\Multipart();
 
-        foreach ($this->files as $name => $file) {
-            if (isset($file['error'])) {
-                $multipart->addPart($name, File::fromArray($file));
+        try {
+            foreach ($this->files as $name => $file) {
+                if (isset($file['error'])) {
+                    $multipart->addPart($name, File::fromArray($file));
+                }
             }
+        } catch (UploadException $e) {
+            throw new ReadException($e->getMessage(), previous: $e);
         }
 
         if ($multipart->hasFile()) {

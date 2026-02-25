@@ -20,6 +20,8 @@
 
 namespace PSX\Data\Reader;
 
+use JsonException;
+use PSX\Data\Exception\ReadException;
 use PSX\Data\ReaderAbstract;
 use PSX\Http\MediaType;
 use PSX\Json\Parser;
@@ -35,10 +37,14 @@ class Json extends ReaderAbstract
 {
     public function read(string $data): mixed
     {
-        if (!empty($data)) {
-            return Parser::decode($data, false);
-        } else {
+        if (empty($data)) {
             return null;
+        }
+
+        try {
+            return Parser::decode($data, false);
+        } catch (JsonException $e) {
+            throw new ReadException('Could not parse json payload: ' . $e->getMessage(), previous: $e);
         }
     }
 
