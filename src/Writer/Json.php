@@ -52,7 +52,7 @@ class Json implements WriterInterface
             throw new InvalidDataException('Value must be an array or object');
         }
 
-        return Parser::encode($value, JSON_PRETTY_PRINT);
+        return Parser::encode($value);
     }
 
     public function isContentTypeSupported(MediaType $contentType): bool
